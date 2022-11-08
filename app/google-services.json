@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "602040677767",
+    "firebase_url": "https://poemsbase-7c9df-default-rtdb.firebaseio.com",
+    "project_id": "poemsbase-7c9df",
+    "storage_bucket": "poemsbase-7c9df.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:602040677767:android:a96dfe55c577f5a8ee8f22",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "602040677767-qv6vi2iuchk71ujuhri2mp1rf8o06l7u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myapplication",
+            "certificate_hash": "ebf6be160b6cbfe8665efdb56d745bb5497a21d8"
+          }
+        },
+        {
+          "client_id": "602040677767-l7jqpe1a8u3brv5bdd4evbrga97cks3f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-Z8lfwgrn-AikoWDUd4u0rnA5ON9mec8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "602040677767-l7jqpe1a8u3brv5bdd4evbrga97cks3f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
