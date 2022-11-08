@@ -9,6 +9,9 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import okhttp3.*
+import okhttp3.internal.EMPTY_REQUEST
+import java.io.IOException
 
 
 const val ARG_OBJECT = "object"
@@ -38,20 +41,56 @@ class NumberFragment() : Fragment() {
             textView.text = poema.text
             var flag = true
             likeButton = requireView().findViewById(R.id.like)
+            if(poema.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_like_after)
+            else likeButton.setImageResource(R.drawable.ic_like_before);
             commentButton = requireView().findViewById(R.id.comment)
             likeButton.setOnClickListener{
-                if (!flag){
-                    val like = (likes.text as String).toInt() - 1
-                    likeButton.setImageResource(R.drawable.ic_like_before)
-                    likes.text = like.toString()
+                if (poema.isLikedByCurrentUser){
+                    val url = "http://185.119.56.91/api/Poems/RemoveLikeFromPoem?userId=e4e60c56-f038-4a1a-89b9-70a4c869d8e0&poemId=${poema.poemId}"
+                    val client = OkHttpClient()
+                    val request = Request.Builder()
+                        .url(url)
+                        .post(EMPTY_REQUEST)
+                        .build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + e.message)
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            val like = (likes.text as String).toInt() - 1
+                            likeButton.setImageResource(R.drawable.ic_like_before)
+                            likes.text = like.toString()
+                            poema.isLikedByCurrentUser = !poema.isLikedByCurrentUser
+                            poema.likes--
+                            //println("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN" + response.code)
+                        }
+                    })
+
                 }
                 else
                 {
-                    val like = (likes.text as String).toInt() + 1
-                    likeButton.setImageResource(R.drawable.ic_like_after);
-                    likes.text = like.toString()
+                    var url = "http://185.119.56.91/api/Poems/SetLikeToPoem?userId=e4e60c56-f038-4a1a-89b9-70a4c869d8e0&poemId=${poema.poemId}"
+                    val client = OkHttpClient()
+                    val request = Request.Builder()
+                        .url(url)
+                        .post(EMPTY_REQUEST)
+                        .build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + e.message)
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            val like = (likes.text as String).toInt() + 1
+                            likeButton.setImageResource(R.drawable.ic_like_after);
+                            likes.text = like.toString()
+                            poema.isLikedByCurrentUser = !poema.isLikedByCurrentUser
+                            poema.likes++
+                            //println("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN" + response.code)
+                        }
+                    })
                 }
-                flag = !flag;
             }
             commentButton.setOnClickListener{
                 val intent = Intent(context, Comment::class.java)

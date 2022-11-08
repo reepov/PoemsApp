@@ -30,6 +30,7 @@ class MainActivity : FragmentActivity() {
             }
             override fun onResponse(call: Call, response: Response) {
                 responseGet = response?.body?.string().toString()
+                println(responseGet + "  dsjkahslfkgjhdflkjghldkfjhglkdjfhglksdfjhg")
                 val JSON = jacksonObjectMapper()
                 List = JSON.readValue<ArrayList<PoemsModel>>(responseGet)
                 set(List)

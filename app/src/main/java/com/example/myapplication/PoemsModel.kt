@@ -3,11 +3,12 @@ package com.example.myapplication
 import java.io.Serializable
 
 data class PoemsModel
-    (val id : String,
+    (val poemId : String,
      val title : String,
      val text : String,
-     val likes : Int,
+     var likes : Int,
      val views : Int,
-     val commentIds : String?,
-     val authorId : String,
-     val author : String?) : Serializable
+     val isViewedByCurrentUser : Boolean,
+     var isLikedByCurrentUser : Boolean,
+     val commentIds : List<String>?,
+     val authorId : String) : Serializable
