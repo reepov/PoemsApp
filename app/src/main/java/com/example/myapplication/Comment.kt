@@ -1,50 +1,72 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.PackageManagerCompat.LOG_TAG
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.android.gms.common.internal.safeparcel.SafeParcelable
+import okhttp3.*
+import okhttp3.internal.EMPTY_REQUEST
+import org.w3c.dom.Text
+import java.io.IOException
 import java.time.LocalDate
 
 
 class Comment : AppCompatActivity(){
-    @RequiresApi(Build.VERSION_CODES.O)
-    var comments : ArrayList<CommentModel> = arrayListOf(
-        CommentModel("Елена Ивановна", 0, LocalDate.now().toString(), "Отличное стихотворение! Мне очень понравилось! Чувствуется рука мастера!", false),
-        CommentModel("Слава Бразилии", 0, LocalDate.now().toString(), "Фу, сразу видно какой-то душевно больной писал этот кошмар.", false),
-        CommentModel("Наркоман999", 0, LocalDate.now().toString(), "Мдаа, потраченное время жаль, конечно, но ладно", false),
-        CommentModel("ivanzolo2004", 0, LocalDate.now().toString(), "Первый можно медальку?", false),
-        CommentModel("brawl_leon2011", 0, LocalDate.now().toString(), "хз я лучше стихи писал когда разговаривать не умел еще", false),
-        CommentModel("mne_nichego_ne_nravitsa", 0, LocalDate.now().toString(), "Кринж", false),
-        CommentModel("check_zakrep", 0, LocalDate.now().toString(), "Шk0льHiцы ищи в tелеge skdjfh76", false),
-        CommentModel("Мама", 0, LocalDate.now().toString(), "Супер! Так держать!", false)
-    )
+    var List : ArrayList<CommentModel> = arrayListOf()
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
+        val client = OkHttpClient()
+        var bool = true
+        val poemId = intent.getStringExtra("poemId")
+        val request = Request.Builder()
+            .url("http://185.119.56.91/api/Poems/GetCommentsByPoemId?userId=e4e60c56-f038-4a1a-89b9-70a4c869d8e0&poemId=$poemId")
+            .build()
+        var responseGet : String = ""
+        client.newCall(request).enqueue(object: Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                println("error")
+            }
+            override fun onResponse(call: Call, response: Response) {
+                responseGet = response?.body?.string().toString()
+                println(response.code.toString() + " " + responseGet + "  dsjkahslfkgjhdflkjghldkfjhglkdjfhglksdfjhg")
+                val JSON = jacksonObjectMapper()
+                List = JSON.readValue<ArrayList<CommentModel>>(responseGet)
+                if(response.code == 200) bool = false
+            }
+        })
+        while(bool){
+            Thread.sleep(100)
+            continue
+        }
+        bool = true
         super.onCreate(savedInstanceState)
         setContentView(R.layout.comment_layout)
         val linearLayout : LinearLayout = findViewById(R.id.linearLayoutComment)
         val sendComment : Button = findViewById(R.id.sendComment)
         var child: View
-        for (i in 0 until comments.size)
+        for (i in 0 until List.size)
         {
-            val comment = comments[i]
+            val comment = List[i]
             child = layoutInflater.inflate(R.layout.comment_layout_item, null)
             val user = child.findViewById<TextView>(R.id.userName)
             user.text = comment.userName
             val textComment = child.findViewById<TextView>(R.id.commentText)
-            textComment.text = comment.textComment
+            textComment.text = comment.text
             val date = child.findViewById<TextView>(R.id.dateTime)
-            date.text = comment.dateTime
+            date.text = comment.created
             val image = child.findViewById<ImageView>(R.id.avatar)
             image.setImageResource(R.mipmap.ic_launcher)
             val likeButton = child.findViewById<ImageButton>(R.id.commentLike)
             val likes : TextView = child.findViewById(R.id.countCommLikes)
-            likes.text = comment.countLikes.toString()
+            likes.text = comment.likes.toString()
             var flag = true
             likeButton.setOnClickListener{
                 if (!flag){
@@ -63,45 +85,34 @@ class Comment : AppCompatActivity(){
             linearLayout.addView(child)
         }
         sendComment.setOnClickListener {
-            var child1 = layoutInflater.inflate(R.layout.comment_layout_item, null)
             val textview : EditText = findViewById(R.id.commentEnterText)
-            val comment : CommentModel
             if (textview.text.toString() != "") {
-                val date = LocalDate.now().toString()
-                comment = CommentModel("admin", 0, date, textview.text.toString(), false)
-                child1 = layoutInflater.inflate(R.layout.comment_layout_item, null)
-                val user = child1.findViewById<TextView>(R.id.userName)
-                user.text = comment.userName
-                val textComment = child1.findViewById<TextView>(R.id.commentText)
-                textComment.text = comment.textComment
-                val dateView = child1.findViewById<TextView>(R.id.dateTime)
-                dateView.text = comment.dateTime
-                val image = child1.findViewById<ImageView>(R.id.avatar)
-                image.setImageResource(R.mipmap.ic_launcher)
-                comments.add(comment)
-                val likeButton = child1.findViewById<ImageButton>(R.id.commentLike)
-                val likes : TextView = child1.findViewById(R.id.countCommLikes)
-                likes.text = comment.countLikes.toString()
-                var flag = true
-                likeButton.setOnClickListener{
-                    if (!flag){
-                        val like = (likes.text as String).toInt() - 1
-                        likeButton.setImageResource(R.drawable.ic_like_before)
-                        likes.text = like.toString()
-                        comment.isLiked = false
+                var url = "http://185.119.56.91/api/Poems/SetCommentToPoem?userId=e4e60c56-f038-4a1a-89b9-70a4c869d8e0&poemId=$poemId&text=${textview.text}"
+                val client = OkHttpClient()
+                val request = Request.Builder()
+                    .url(url)
+                    .post(EMPTY_REQUEST)
+                    .build()
+                client.newCall(request).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+                        println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + e.message)
                     }
-                    else
-                    {
-                        val like = (likes.text as String).toInt() + 1
-                        likeButton.setImageResource(R.drawable.ic_like_after);
-                        likes.text = like.toString()
-                        comment.isLiked = true
+                    override fun onResponse(call: Call, response: Response) {
+                        finish()
+                        println("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN" + response.code)
                     }
-                    flag = !flag
-                }
+                })
             }
-            linearLayout.addView(child1)
             textview.text.clear()
         }
+    }
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        if (event != null) {
+            if (keyCode == KeyEvent.KEYCODE_BACK && !event.isCanceled()) {
+                finish()
+                return true
+            }
+        }
+        return super.onKeyDown(keyCode, event)
     }
 }

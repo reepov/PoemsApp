@@ -34,9 +34,11 @@ class NumberFragment() : Fragment() {
             val textView: TextView = view.findViewById(R.id.textView)
             val title : TextView = view.findViewById(R.id.titleTextView)
             val likes : TextView = view.findViewById(R.id.countLikes)
+            val comms : TextView = view.findViewById(R.id.countComms)
             textView.movementMethod = ScrollingMovementMethod()
             val poema = poem!!
             likes.text = poema.likes.toString();
+            comms.text = if(poema.commentIds != null) poema.commentIds.size.toString() else "0"
             title.text = poema.title
             textView.text = poema.text
             var flag = true
@@ -94,6 +96,7 @@ class NumberFragment() : Fragment() {
             }
             commentButton.setOnClickListener{
                 val intent = Intent(context, Comment::class.java)
+                intent.putExtra("poemId", poema.poemId)
                 startActivity(intent)
             }
         }

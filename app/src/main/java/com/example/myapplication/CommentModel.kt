@@ -2,11 +2,16 @@ package com.example.myapplication
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.io.Serializable
 
-class CommentModel(
+data class CommentModel(
+    var commentId : String,
     var userName: String?,
-    var countLikes: Int = 0,
-    var dateTime: String?,
-    var textComment: String?,
-    var isLiked : Boolean) {
+    var text: String?,
+    var likes: Int = 0,
+    var isLikedByCurrentUser : Boolean,
+    var created : String?,
+    var repliesId : List<String>?,
+    var upReplyId : String?,
+    var poemId : String) : Serializable {
 }
