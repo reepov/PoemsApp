@@ -24,6 +24,8 @@
         </activity>
         <activity android:name=".Comment"></activity>
         <activity android:name=".Create"/>
+        <activity android:name=".Profile"/>
+        <activity android:name=".Poems"/>
     </application>
 
 </manifest>

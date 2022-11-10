@@ -15,6 +15,8 @@ class MainActivity : FragmentActivity() {
     private lateinit var adapter: NumberAdapter
     private lateinit var viewPager: ViewPager2
     private lateinit var createButton : ImageButton
+    private lateinit var homeButton : ImageButton
+    private lateinit var profileButton : ImageButton
     var List : ArrayList<PoemsModel> = arrayListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +32,6 @@ class MainActivity : FragmentActivity() {
             }
             override fun onResponse(call: Call, response: Response) {
                 responseGet = response?.body?.string().toString()
-                println(responseGet + "  dsjkahslfkgjhdflkjghldkfjhglkdjfhglksdfjhg")
                 val JSON = jacksonObjectMapper()
                 List = JSON.readValue<ArrayList<PoemsModel>>(responseGet)
                 set(List)
@@ -39,12 +40,24 @@ class MainActivity : FragmentActivity() {
         while (List.isEmpty()) continue
         adapter = NumberAdapter(this)
         viewPager = findViewById(R.id.pager)
+        homeButton = findViewById(R.id.homeButton)
         viewPager.adapter = adapter
         adapter.List = List
-        createButton = findViewById(R.id.button18)
+        createButton = findViewById(R.id.createButton)
+        profileButton = findViewById(R.id.profileButton)
+        profileButton.setOnClickListener {
+            val intent = Intent(this, Profile::class.java)
+            intent.putExtra("userId", "e4e60c56-f038-4a1a-89b9-70a4c869d8e0")
+            startActivity(intent)
+        }
         createButton.setOnClickListener{
             val intent = Intent(this, Create::class.java)
             startActivity(intent)
+        }
+        homeButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
     fun set(list : ArrayList<PoemsModel>)
