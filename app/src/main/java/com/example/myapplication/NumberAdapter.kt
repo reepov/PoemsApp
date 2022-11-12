@@ -10,9 +10,7 @@ class NumberAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragment)
     var index = 0
     override fun getItemCount(): Int = List.size
     override fun createFragment(position: Int): Fragment {
-
-        val fragment = NumberFragment(List[index])
-        if (index == List.size - 1) index = 0 else index++
+        val fragment = NumberFragment(List[position])
         fragment.arguments = Bundle().apply {
             putInt(ARG_OBJECT, position + 1)
         }

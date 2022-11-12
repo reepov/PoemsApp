@@ -19,6 +19,10 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></androidx.viewpager2.widget.ViewPager2>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black" />
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
@@ -26,29 +30,32 @@
 
         <ImageButton
             android:id="@+id/profileButton"
+            android:layout_marginTop="15dp"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_profile"
+            android:src="@drawable/ic_profile_try"
             tools:ignore="SpeakableTextPresentCheck" />
 
         <ImageButton
             android:id="@+id/createButton"
+            android:layout_marginTop="15dp"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="true"
-            android:src="@drawable/ic_add"
+            android:src="@drawable/ic_add_try"
             tools:ignore="SpeakableTextPresentCheck" />
 
         <ImageButton
             android:id="@+id/homeButton"
+            android:layout_marginTop="15dp"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_home"
+            android:src="@drawable/ic_home_try"
             tools:ignore="SpeakableTextPresentCheck" />
     </RelativeLayout>
 </LinearLayout>

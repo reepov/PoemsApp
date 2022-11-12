@@ -49,10 +49,12 @@ class MainActivity : FragmentActivity() {
             val intent = Intent(this, Profile::class.java)
             intent.putExtra("userId", "e4e60c56-f038-4a1a-89b9-70a4c869d8e0")
             startActivity(intent)
+            finish()
         }
         createButton.setOnClickListener{
             val intent = Intent(this, Create::class.java)
             startActivity(intent)
+            finish()
         }
         homeButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)

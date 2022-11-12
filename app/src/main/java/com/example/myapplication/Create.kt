@@ -8,6 +8,7 @@ import android.os.StrictMode.ThreadPolicy
 import android.view.KeyEvent
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import io.ktor.client.request.forms.*
@@ -16,6 +17,8 @@ import java.io.IOException
 
 
 class Create : AppCompatActivity(){
+    private lateinit var homeButton : ImageButton
+    private lateinit var profileButton : ImageButton
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +58,19 @@ class Create : AppCompatActivity(){
                     finish()
                 }
             })
+        }
+        homeButton = findViewById(R.id.homeButton)
+        profileButton = findViewById(R.id.profileButton)
+        profileButton.setOnClickListener {
+            val intent = Intent(this, Profile::class.java)
+            intent.putExtra("userId", "e4e60c56-f038-4a1a-89b9-70a4c869d8e0")
+            startActivity(intent)
+            finish()
+        }
+        homeButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 }

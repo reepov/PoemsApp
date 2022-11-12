@@ -17,6 +17,9 @@ import java.io.IOException
 class Profile : AppCompatActivity() {
     var List : ArrayList<PoemsModel> = arrayListOf()
     var User : UserModel = UserModel("", "", arrayListOf())
+    private lateinit var createButton : ImageButton
+    private lateinit var homeButton : ImageButton
+    private lateinit var profileButton : ImageButton
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         val client = OkHttpClient()
@@ -46,6 +49,25 @@ class Profile : AppCompatActivity() {
         List = User.poems
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile_layout)
+        homeButton = findViewById(R.id.homeButton)
+        createButton = findViewById(R.id.createButton)
+        profileButton = findViewById(R.id.profileButton)
+        profileButton.setOnClickListener {
+            val intent = Intent(this, Profile::class.java)
+            intent.putExtra("userId", "e4e60c56-f038-4a1a-89b9-70a4c869d8e0")
+            startActivity(intent)
+            finish()
+        }
+        createButton.setOnClickListener{
+            val intent = Intent(this, Create::class.java)
+            startActivity(intent)
+            finish()
+        }
+        homeButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
         var nick = findViewById<TextView>(R.id.profileNickName)
         println(nick.text)
         var likes = findViewById<TextView>(R.id.profileCountLikes)
@@ -120,6 +142,8 @@ class Profile : AppCompatActivity() {
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         if (event != null) {
             if (keyCode == KeyEvent.KEYCODE_BACK && !event.isCanceled()) {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
                 finish()
                 return true
             }
