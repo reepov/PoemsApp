@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp">
+
+    <TextView
+        android:id="@+id/textLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:text="Вход"
+        android:textSize="40dp" />
+    <EditText
+        android:id="@+id/enterLogIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textLogin"
+        android:hint="Логин"
+        android:layout_marginTop="40dp"
+        />
+    <EditText
+        android:id="@+id/enterPassWord"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/enterLogIn"
+        android:hint="Пароль"
+        android:layout_marginTop="20dp"
+        android:inputType="textPassword"
+        />
+
+    <Button
+        android:id="@+id/logIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/enterPassWord"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="  Войти  "
+        android:textSize="20dp"/>
+    <TextView
+        android:id="@+id/textIfNotRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Еще не зарегистрированы?"
+        android:textSize="12dp"
+        android:layout_below="@id/logIn"/>
+</RelativeLayout>

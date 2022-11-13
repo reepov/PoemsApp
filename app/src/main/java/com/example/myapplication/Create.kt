@@ -19,6 +19,7 @@ import java.io.IOException
 class Create : AppCompatActivity(){
     private lateinit var homeButton : ImageButton
     private lateinit var profileButton : ImageButton
+    var currentUserId = ""
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +37,9 @@ class Create : AppCompatActivity(){
                 for (i in 0..text.size - 2)
                     text[i] += "|"
             }
+            currentUserId = intent.getStringExtra("currentUserId")!!
             var title = if(editTitle.text.toString() != "") editTitle.text else "Без названия"
-            var url = "http://185.119.56.91/api/Poems/AuthorSendPoem?userId=e4e60c56-f038-4a1a-89b9-70a4c869d8e0&title=$title"
+            var url = "http://185.119.56.91/api/Poems/AuthorSendPoem?userId=$currentUserId&title=$title"
             val client = OkHttpClient()
             val formBody: RequestBody = FormBody.Builder()
                 .add("message", text.toString())
@@ -63,7 +65,7 @@ class Create : AppCompatActivity(){
         profileButton = findViewById(R.id.profileButton)
         profileButton.setOnClickListener {
             val intent = Intent(this, Profile::class.java)
-            intent.putExtra("userId", "e4e60c56-f038-4a1a-89b9-70a4c869d8e0")
+            intent.putExtra("userId", currentUserId)
             startActivity(intent)
             finish()
         }
@@ -72,5 +74,16 @@ class Create : AppCompatActivity(){
             startActivity(intent)
             finish()
         }
+    }
+    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        if (event != null) {
+            if (keyCode == KeyEvent.KEYCODE_BACK && !event.isCanceled()) {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+                return true
+            }
+        }
+        return super.onKeyDown(keyCode, event)
     }
 }

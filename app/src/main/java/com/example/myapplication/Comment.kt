@@ -21,13 +21,15 @@ import java.time.LocalDate
 
 class Comment : AppCompatActivity(){
     var List : ArrayList<CommentModel> = arrayListOf()
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         val client = OkHttpClient()
         var bool = true
         val poemId = intent.getStringExtra("poemId")
+        var currentUserId = intent.getStringExtra("currentUserId")
         val request = Request.Builder()
-            .url("http://185.119.56.91/api/Poems/GetCommentsByPoemId?userId=e4e60c56-f038-4a1a-89b9-70a4c869d8e0&poemId=$poemId")
+            .url("http://185.119.56.91/api/Poems/GetCommentsByPoemId?userId=$currentUserId&poemId=$poemId")
             .build()
         var responseGet : String = ""
         client.newCall(request).enqueue(object: Callback {
@@ -87,7 +89,7 @@ class Comment : AppCompatActivity(){
         sendComment.setOnClickListener {
             val textview : EditText = findViewById(R.id.commentEnterText)
             if (textview.text.toString() != "") {
-                var url = "http://185.119.56.91/api/Poems/SetCommentToPoem?userId=e4e60c56-f038-4a1a-89b9-70a4c869d8e0&poemId=$poemId&text=${textview.text}"
+                var url = "http://185.119.56.91/api/Poems/SetCommentToPoem?userId=$currentUserId&poemId=$poemId&text=${textview.text}"
                 val client = OkHttpClient()
                 val request = Request.Builder()
                     .url(url)

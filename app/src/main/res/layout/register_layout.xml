@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp">
+    <TextView
+        android:id="@+id/textRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="200dp"
+        android:text="Регистрация"
+        android:textSize="40dp" />
+    <EditText
+        android:id="@+id/enterNickname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textRegister"
+        android:hint="Никнейм"
+        android:layout_marginTop="50dp"
+        />
+    <EditText
+        android:id="@+id/enterLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/enterNickname"
+        android:hint="Логин"
+        android:layout_marginTop="20dp"
+        />
+    <EditText
+        android:id="@+id/enterPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/enterLogin"
+        android:hint="Пароль"
+        android:layout_marginTop="20dp"
+        android:inputType="textPassword"
+        />
+    <EditText
+        android:id="@+id/enterPasswordSecond"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/enterPassword"
+        android:hint="Повторите пароль"
+        android:layout_marginTop="20dp"
+        android:inputType="textPassword"
+        />
+
+    <Button
+        android:id="@+id/signIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/enterPasswordSecond"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text=" Зарегистрироваться "
+        android:textSize="15dp" />
+
+</RelativeLayout>

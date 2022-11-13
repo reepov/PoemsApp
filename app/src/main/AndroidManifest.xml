@@ -22,7 +22,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Comment"></activity>
+        <activity android:name=".RegisterUser"/>
+        <activity android:name=".LoginUser"/>
+        <activity android:name=".Comment"/>
         <activity android:name=".Create"/>
         <activity android:name=".Profile"/>
         <activity android:name=".Poems"/>
