@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.Activities
 
 import android.content.Context
 import android.content.Intent
@@ -7,11 +7,13 @@ import android.os.Bundle
 import android.widget.ImageButton
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.example.myapplication.NumberAdapter
+import com.example.myapplication.PoemsModel
+import com.example.myapplication.R
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
 import java.io.IOException
-import kotlin.concurrent.thread
 
 class MainActivity : FragmentActivity() {
 

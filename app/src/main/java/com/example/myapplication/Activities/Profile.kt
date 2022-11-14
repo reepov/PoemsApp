@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.Activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,6 +9,9 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.PoemsModel
+import com.example.myapplication.R
+import com.example.myapplication.UserModel
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
@@ -55,13 +58,13 @@ class Profile : AppCompatActivity() {
         profileButton = findViewById(R.id.profileButton)
         profileButton.setOnClickListener {
             val intent = Intent(this, Profile::class.java)
-            intent.putExtra("userId", currentUserId)
+            intent.putExtra("currentUserId", currentUserId)
             startActivity(intent)
             finish()
         }
         createButton.setOnClickListener{
             val intent = Intent(this, Create::class.java)
-            intent.putExtra("userId", currentUserId)
+            intent.putExtra("currentUserId", currentUserId)
             startActivity(intent)
             finish()
         }
@@ -89,7 +92,7 @@ class Profile : AppCompatActivity() {
             title.setOnClickListener {
                 val intent = Intent(applicationContext, Poems::class.java)
                 intent.putExtra("poemId", poem.poemId)
-                intent.putExtra("userId", currentUserId)
+                intent.putExtra("currentUserId", currentUserId)
                 startActivity(intent)
             }
             linearLayout.addView(child)

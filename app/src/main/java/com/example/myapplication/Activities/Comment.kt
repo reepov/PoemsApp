@@ -1,6 +1,5 @@
-package com.example.myapplication
+package com.example.myapplication.Activities
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
@@ -8,15 +7,13 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.PackageManagerCompat.LOG_TAG
+import com.example.myapplication.CommentModel
+import com.example.myapplication.R
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import com.google.android.gms.common.internal.safeparcel.SafeParcelable
 import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
-import org.w3c.dom.Text
 import java.io.IOException
-import java.time.LocalDate
 
 
 class Comment : AppCompatActivity(){
@@ -27,17 +24,19 @@ class Comment : AppCompatActivity(){
         val client = OkHttpClient()
         var bool = true
         val poemId = intent.getStringExtra("poemId")
-        var currentUserId = intent.getStringExtra("currentUserId")
+        val currentUserId = intent.getStringExtra("currentUserId")
         val request = Request.Builder()
             .url("http://185.119.56.91/api/Poems/GetCommentsByPoemId?userId=$currentUserId&poemId=$poemId")
             .build()
-        var responseGet : String = ""
+        var responseGet : String
+        println(poemId)
+        println(currentUserId)
         client.newCall(request).enqueue(object: Callback {
             override fun onFailure(call: Call, e: IOException) {
                 println("error")
             }
             override fun onResponse(call: Call, response: Response) {
-                responseGet = response?.body?.string().toString()
+                responseGet = response.body?.string().toString()
                 println(response.code.toString() + " " + responseGet + "  dsjkahslfkgjhdflkjghldkfjhglkdjfhglksdfjhg")
                 val JSON = jacksonObjectMapper()
                 List = JSON.readValue<ArrayList<CommentModel>>(responseGet)

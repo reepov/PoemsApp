@@ -1,19 +1,15 @@
-package com.example.myapplication
+package com.example.myapplication.Activities
 
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.StrictMode
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
+import com.example.myapplication.R
 import okhttp3.*
-import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
 
 class LoginUser : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.Activities
 
 import android.content.Intent
 import android.os.Build
@@ -8,6 +8,8 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.PoemsModel
+import com.example.myapplication.R
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
@@ -24,10 +26,9 @@ class Poems : AppCompatActivity() {
         println(poemId)
         val client = OkHttpClient()
         var bool = true
-        val userId = intent.getStringExtra("userId")
-        println(userId)
+        val currentUserId = intent.getStringExtra("currentUserId")
         var request = Request.Builder()
-            .url("http://185.119.56.91/api/Poems/GetPoemById?userId=$userId&poemId=$poemId")
+            .url("http://185.119.56.91/api/Poems/GetPoemById?userId=$currentUserId&poemId=$poemId")
             .build()
         var responseGet : String
         client.newCall(request).enqueue(object: Callback {
@@ -64,7 +65,7 @@ class Poems : AppCompatActivity() {
         commentButton = findViewById(R.id.comment)
         likeButton.setOnClickListener{
             if (poema!!.isLikedByCurrentUser){
-                val url = "http://185.119.56.91/api/Poems/RemoveLikeFromPoem?userId=e4e60c56-f038-4a1a-89b9-70a4c869d8e0&poemId=${poema!!.poemId}"
+                val url = "http://185.119.56.91/api/Poems/RemoveLikeFromPoem?userId=$currentUserId&poemId=${poema!!.poemId}"
                 request = Request.Builder()
                     .url(url)
                     .post(EMPTY_REQUEST)
@@ -85,7 +86,7 @@ class Poems : AppCompatActivity() {
             }
             else
             {
-                val url = "http://185.119.56.91/api/Poems/SetLikeToPoem?userId=e4e60c56-f038-4a1a-89b9-70a4c869d8e0&poemId=${poema!!.poemId}"
+                val url = "http://185.119.56.91/api/Poems/SetLikeToPoem?userId=$currentUserId&poemId=${poema!!.poemId}"
                 request = Request.Builder()
                     .url(url)
                     .post(EMPTY_REQUEST)
@@ -107,6 +108,7 @@ class Poems : AppCompatActivity() {
         commentButton.setOnClickListener{
             val intent = Intent(applicationContext, Comment::class.java)
             intent.putExtra("poemId", poema!!.poemId)
+            intent.putExtra("currentUserId", currentUserId)
             startActivity(intent)
         }
     }

@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.Activities
 
 import android.content.Intent
 import android.os.Build
@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.R
 import io.ktor.client.request.forms.*
 import okhttp3.*
 import java.io.IOException
