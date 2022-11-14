@@ -9,9 +9,9 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.PoemsModel
+import com.example.myapplication.DataModels.PoemsModel
 import com.example.myapplication.R
-import com.example.myapplication.UserModel
+import com.example.myapplication.DataModels.UserModel
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
