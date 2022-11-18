@@ -64,7 +64,7 @@ class NumberFragment() : Fragment() {
 
                         override fun onResponse(call: Call, response: Response) {
                             val like = (likes.text as String).toInt() - 1
-                            likeButton.setImageResource(R.drawable.ic_like_before)
+                            likeButton.setImageResource(R.drawable.ic_like_before_dasha)
                             likes.text = like.toString()
                             poema.isLikedByCurrentUser = !poema.isLikedByCurrentUser
                             poema.likes--
