@@ -13,7 +13,7 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="m">
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,12 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.RegisterUser"/>
-        <activity android:name=".Activities.LoginUser"/>
-        <activity android:name=".Activities.Comment"/>
-        <activity android:name=".Activities.Create"/>
-        <activity android:name=".Activities.Profile"/>
-        <activity android:name=".Activities.Poems"/>
+        <activity android:name=".activities.RegisterUser"/>
+        <activity android:name=".activities.LoginUser"/>
+        <activity android:name=".activities.Comment"/>
+        <activity android:name=".activities.Create"/>
+        <activity android:name=".activities.Profile"/>
+        <activity android:name=".activities.Poems"/>
     </application>
 
 </manifest>

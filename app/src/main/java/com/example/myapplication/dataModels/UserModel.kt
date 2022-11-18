@@ -1,6 +1,5 @@
-package com.example.myapplication.DataModels
+package com.example.myapplication.dataModels
 
-import com.example.myapplication.DataModels.PoemsModel
 import java.io.Serializable
 
 class UserModel(

@@ -1,4 +1,4 @@
-package com.example.myapplication.DataModels
+package com.example.myapplication.dataModels
 
 import java.io.Serializable
 

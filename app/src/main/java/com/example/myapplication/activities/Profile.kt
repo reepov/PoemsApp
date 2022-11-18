@@ -1,4 +1,4 @@
-package com.example.myapplication.Activities
+package com.example.myapplication.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,9 +9,9 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.DataModels.PoemsModel
+import com.example.myapplication.dataModels.PoemsModel
 import com.example.myapplication.R
-import com.example.myapplication.DataModels.UserModel
+import com.example.myapplication.dataModels.UserModel
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*

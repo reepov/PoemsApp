@@ -1,4 +1,4 @@
-package com.example.myapplication.Services
+package com.example.myapplication.services
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,8 +9,8 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.myapplication.Activities.Comment
-import com.example.myapplication.DataModels.PoemsModel
+import com.example.myapplication.activities.Comment
+import com.example.myapplication.dataModels.PoemsModel
 import com.example.myapplication.R
 import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST

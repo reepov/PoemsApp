@@ -1,5 +1,6 @@
-package com.example.myapplication.Activities
+package com.example.myapplication.activities
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
@@ -7,7 +8,7 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.DataModels.CommentModel
+import com.example.myapplication.dataModels.CommentModel
 import com.example.myapplication.R
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -17,15 +18,16 @@ import java.io.IOException
 
 
 class Comment : AppCompatActivity(){
-    var List : ArrayList<CommentModel> = arrayListOf()
+    var list : ArrayList<CommentModel> = arrayListOf()
 
+    @SuppressLint("InflateParams")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
-        val client = OkHttpClient()
+        var client = OkHttpClient()
         var bool = true
         val poemId = intent.getStringExtra("poemId")
         val currentUserId = intent.getStringExtra("currentUserId")
-        val request = Request.Builder()
+        var request = Request.Builder()
             .url("http://185.119.56.91/api/Poems/GetCommentsByPoemId?userId=$currentUserId&poemId=$poemId")
             .build()
         var responseGet : String
@@ -37,9 +39,8 @@ class Comment : AppCompatActivity(){
             }
             override fun onResponse(call: Call, response: Response) {
                 responseGet = response.body?.string().toString()
-                println(response.code.toString() + " " + responseGet + "  dsjkahslfkgjhdflkjghldkfjhglkdjfhglksdfjhg")
-                val JSON = jacksonObjectMapper()
-                List = JSON.readValue<ArrayList<CommentModel>>(responseGet)
+                val json = jacksonObjectMapper()
+                list = json.readValue(responseGet)
                 if(response.code == 200) bool = false
             }
         })
@@ -53,9 +54,9 @@ class Comment : AppCompatActivity(){
         val linearLayout : LinearLayout = findViewById(R.id.linearLayoutComment)
         val sendComment : Button = findViewById(R.id.sendComment)
         var child: View
-        for (i in 0 until List.size)
+        for (i in 0 until list.size)
         {
-            val comment = List[i]
+            val comment = list[i]
             child = layoutInflater.inflate(R.layout.comment_layout_item, null)
             val user = child.findViewById<TextView>(R.id.userName)
             user.text = comment.UserName
@@ -78,7 +79,7 @@ class Comment : AppCompatActivity(){
                 else
                 {
                     val like = (likes.text as String).toInt() + 1
-                    likeButton.setImageResource(R.drawable.ic_like_after);
+                    likeButton.setImageResource(R.drawable.ic_like_after)
                     likes.text = like.toString()
                 }
                 flag = !flag
@@ -88,19 +89,18 @@ class Comment : AppCompatActivity(){
         sendComment.setOnClickListener {
             val textview : EditText = findViewById(R.id.commentEnterText)
             if (textview.text.toString() != "") {
-                var url = "http://185.119.56.91/api/Poems/SetCommentToPoem?userId=$currentUserId&poemId=$poemId&text=${textview.text}"
-                val client = OkHttpClient()
-                val request = Request.Builder()
+                val url = "http://185.119.56.91/api/Poems/SetCommentToPoem?userId=$currentUserId&poemId=$poemId&text=${textview.text}"
+                client = OkHttpClient()
+                request = Request.Builder()
                     .url(url)
                     .post(EMPTY_REQUEST)
                     .build()
                 client.newCall(request).enqueue(object : Callback {
                     override fun onFailure(call: Call, e: IOException) {
-                        println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + e.message)
+
                     }
                     override fun onResponse(call: Call, response: Response) {
                         finish()
-                        println("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN" + response.code)
                     }
                 })
             }
@@ -109,7 +109,7 @@ class Comment : AppCompatActivity(){
     }
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         if (event != null) {
-            if (keyCode == KeyEvent.KEYCODE_BACK && !event.isCanceled()) {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
                 finish()
                 return true
             }

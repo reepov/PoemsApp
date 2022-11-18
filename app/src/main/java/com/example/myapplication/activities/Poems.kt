@@ -1,4 +1,4 @@
-package com.example.myapplication.Activities
+package com.example.myapplication.activities
 
 import android.content.Intent
 import android.os.Build
@@ -8,7 +8,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.DataModels.PoemsModel
+import com.example.myapplication.dataModels.PoemsModel
 import com.example.myapplication.R
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue

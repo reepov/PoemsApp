@@ -1,7 +1,5 @@
-package com.example.myapplication.DataModels
+package com.example.myapplication.dataModels
 
-import android.os.Parcel
-import android.os.Parcelable
 import java.io.Serializable
 
 data class CommentModel(
@@ -13,5 +11,4 @@ data class CommentModel(
     var Created : String?,
     var RepliesId : List<String>?,
     var UpReplyId : String?,
-    var PoemId : String) : Serializable {
-}
+    var PoemId : String) : Serializable

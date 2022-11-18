@@ -1,4 +1,4 @@
-package com.example.myapplication.Activities
+package com.example.myapplication.activities
 
 import android.content.Context
 import android.content.Intent
@@ -19,10 +19,10 @@ class LoginUser : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_layout)
         sharedPreferences = getSharedPreferences("USER_INFO_SP", Context.MODE_PRIVATE)
-        var reg = findViewById<TextView>(R.id.textIfNotRegister)
-        var login = findViewById<EditText>(R.id.enterLogIn)
-        var password = findViewById<EditText>(R.id.enterPassWord)
-        var logIn = findViewById<Button>(R.id.logIn)
+        val reg = findViewById<TextView>(R.id.textIfNotRegister)
+        val login = findViewById<EditText>(R.id.enterLogIn)
+        val password = findViewById<EditText>(R.id.enterPassWord)
+        val logIn = findViewById<Button>(R.id.logIn)
         reg.setOnClickListener {
             val intent = Intent(this, RegisterUser::class.java)
             startActivity(intent)
@@ -40,7 +40,7 @@ class LoginUser : AppCompatActivity() {
                     println("error")
                 }
                 override fun onResponse(call: Call, response: Response) {
-                    userId = response?.body?.string().toString()
+                    userId = response.body?.string().toString()
                     println(response.code.toString() + " " + userId + "  dsjkahslfkgjhdflkjghldkfjhglkdjfhglksdfjhg")
                     if(response.code == 200)
                     {
