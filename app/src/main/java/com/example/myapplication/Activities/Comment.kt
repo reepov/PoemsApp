@@ -58,16 +58,16 @@ class Comment : AppCompatActivity(){
             val comment = List[i]
             child = layoutInflater.inflate(R.layout.comment_layout_item, null)
             val user = child.findViewById<TextView>(R.id.userName)
-            user.text = comment.userName
+            user.text = comment.UserName
             val textComment = child.findViewById<TextView>(R.id.commentText)
-            textComment.text = comment.text
+            textComment.text = comment.Text
             val date = child.findViewById<TextView>(R.id.dateTime)
-            date.text = comment.created
+            date.text = comment.Created
             val image = child.findViewById<ImageView>(R.id.avatar)
             image.setImageResource(R.mipmap.ic_launcher)
             val likeButton = child.findViewById<ImageButton>(R.id.commentLike)
             val likes : TextView = child.findViewById(R.id.countCommLikes)
-            likes.text = comment.likes.toString()
+            likes.text = comment.Likes.toString()
             var flag = true
             likeButton.setOnClickListener{
                 if (!flag){

@@ -4,7 +4,7 @@ import com.example.myapplication.DataModels.PoemsModel
 import java.io.Serializable
 
 class UserModel(
-    val id : String,
-    val nickName : String,
-    val poems : ArrayList<PoemsModel>
+    val Id : String,
+    val NickName : String,
+    val Poems : ArrayList<PoemsModel>
 ) : Serializable

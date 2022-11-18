@@ -50,7 +50,7 @@ class Profile : AppCompatActivity() {
             continue
         }
         bool = true
-        _list = _user.poems
+        _list = _user.Poems
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile_layout)
         homeButton = findViewById(R.id.homeButton)
@@ -78,20 +78,20 @@ class Profile : AppCompatActivity() {
         val likes = findViewById<TextView>(R.id.profileCountLikes)
         val countPoems = findViewById<TextView>(R.id.profileCountPoems)
         var wholeLikes = 0
-        nick.text = _user.nickName
+        nick.text = _user.NickName
         countPoems.text = "${_list.size} posts"
         val linearLayout : LinearLayout = findViewById(R.id.linearLayoutProfile)
         var child: View
         for (i in 0 until _list.size)
         {
             val poem = _list[i]
-            wholeLikes += poem.likes
+            wholeLikes += poem.Likes
             child = layoutInflater.inflate(R.layout.profile_layout_poemitem, null)
             val title = child.findViewById<TextView>(R.id.poemTitle)
-            title.text = title.text.toString() + poem.title
+            title.text = title.text.toString() + poem.Title
             title.setOnClickListener {
                 val intent = Intent(applicationContext, Poems::class.java)
-                intent.putExtra("poemId", poem.poemId)
+                intent.putExtra("poemId", poem.PoemId)
                 intent.putExtra("currentUserId", currentUserId)
                 startActivity(intent)
             }

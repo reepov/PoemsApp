@@ -55,17 +55,17 @@ class Poems : AppCompatActivity() {
         val likes : TextView = findViewById(R.id.countLikes)
         val comments : TextView = findViewById(R.id.countComms)
         textView.movementMethod = ScrollingMovementMethod()
-        likes.text = poema!!.likes.toString()
-        comments.text = if(poema!!.commentIds != null) poema!!.commentIds!!.size.toString() else "0"
-        title.text = poema!!.title
-        textView.text = poema!!.text
+        likes.text = poema!!.Likes.toString()
+        comments.text = if(poema!!.CommentIds != null) poema!!.CommentIds!!.size.toString() else "0"
+        title.text = poema!!.Title
+        textView.text = poema!!.Text
         likeButton = findViewById(R.id.like)
         if(poema!!.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_like_after)
         else likeButton.setImageResource(R.drawable.ic_like_before)
         commentButton = findViewById(R.id.comment)
         likeButton.setOnClickListener{
             if (poema!!.isLikedByCurrentUser){
-                val url = "http://185.119.56.91/api/Poems/RemoveLikeFromPoem?userId=$currentUserId&poemId=${poema!!.poemId}"
+                val url = "http://185.119.56.91/api/Poems/RemoveLikeFromPoem?userId=$currentUserId&poemId=${poema!!.PoemId}"
                 request = Request.Builder()
                     .url(url)
                     .post(EMPTY_REQUEST)
@@ -79,14 +79,14 @@ class Poems : AppCompatActivity() {
                         likeButton.setImageResource(R.drawable.ic_like_before)
                         likes.text = like.toString()
                         poema!!.isLikedByCurrentUser = !poema!!.isLikedByCurrentUser
-                        poema!!.likes--
+                        poema!!.Likes--
                     }
                 })
 
             }
             else
             {
-                val url = "http://185.119.56.91/api/Poems/SetLikeToPoem?userId=$currentUserId&poemId=${poema!!.poemId}"
+                val url = "http://185.119.56.91/api/Poems/SetLikeToPoem?userId=$currentUserId&poemId=${poema!!.PoemId}"
                 request = Request.Builder()
                     .url(url)
                     .post(EMPTY_REQUEST)
@@ -100,14 +100,14 @@ class Poems : AppCompatActivity() {
                         likeButton.setImageResource(R.drawable.ic_like_after)
                         likes.text = like.toString()
                         poema!!.isLikedByCurrentUser = !poema!!.isLikedByCurrentUser
-                        poema!!.likes++
+                        poema!!.Likes++
                     }
                 })
             }
         }
         commentButton.setOnClickListener{
             val intent = Intent(applicationContext, Comment::class.java)
-            intent.putExtra("poemId", poema!!.poemId)
+            intent.putExtra("poemId", poema!!.PoemId)
             intent.putExtra("currentUserId", currentUserId)
             startActivity(intent)
         }

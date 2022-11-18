@@ -31,29 +31,34 @@ class Create : AppCompatActivity(){
         sendPoem.setOnClickListener {
             val policy = ThreadPolicy.Builder().permitAll().build()
             StrictMode.setThreadPolicy(policy)
-            var text =
+            val text =
                 System.getProperty("line.separator")?.let { it1 -> editText.text.split(it1) }
                     ?.toMutableList()
             if (text != null) {
                 for (i in 0..text.size - 2)
                     text[i] += "|"
             }
+
             currentUserId = intent.getStringExtra("currentUserId")!!
-            var title = if(editTitle.text.toString() != "") editTitle.text else "Без названия"
-            var url = "http://185.119.56.91/api/Poems/AuthorSendPoem?userId=$currentUserId&title=$title"
-            val client = OkHttpClient()
-            val formBody: RequestBody = FormBody.Builder()
-                .add("message", text.toString())
+            println(currentUserId)
+            val title = if(editTitle.text.toString() != "") editTitle.text else "Без названия"
+            println("$title" + text.toString())
+            val url = "http://185.119.56.91/api/Poems/AuthorSendPoem?userId=$currentUserId&title=${title}"
+            val client: OkHttpClient = OkHttpClient.Builder()
+                .retryOnConnectionFailure(true)
+                .build()
+            val requestBody: RequestBody = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("message", text.toString())
                 .build()
             val request = Request.Builder()
                 .url(url)
-                .post(formBody)
+                .post(requestBody)
                 .build()
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    println("EEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE" + e.message)
+                    println("EEEEEEEEEEEEEEEEEEEEEEEEEE" + e.message + e.localizedMessage)
                 }
-
                 override fun onResponse(call: Call, response: Response) {
                     val intent = Intent(applicationContext, MainActivity::class.java)
                     //println("NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN" + response.code)

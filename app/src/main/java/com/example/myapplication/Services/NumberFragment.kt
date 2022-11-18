@@ -16,7 +16,6 @@ import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
 
-
 const val ARG_OBJECT = "object"
 
 class NumberFragment() : Fragment() {
@@ -42,17 +41,17 @@ class NumberFragment() : Fragment() {
             val comms : TextView = view.findViewById(R.id.countComms)
             textView.movementMethod = ScrollingMovementMethod()
             val poema = poem!!
-            likes.text = poema.likes.toString()
-            comms.text = if(poema.commentIds != null) poema.commentIds.size.toString() else "0"
-            title.text = poema.title
-            textView.text = poema.text
+            likes.text = poema.Likes.toString()
+            comms.text = if(poema.CommentIds != null) poema.CommentIds.size.toString() else "0"
+            title.text = poema.Title
+            textView.text = poema.Text
             likeButton = requireView().findViewById(R.id.like)
             if(poema.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_like_after)
             else likeButton.setImageResource(R.drawable.ic_like_before)
             commentButton = requireView().findViewById(R.id.comment)
             likeButton.setOnClickListener{
                 if (poema.isLikedByCurrentUser){
-                    val url = "http://185.119.56.91/api/Poems/RemoveLikeFromPoem?userId=$currentUserId&poemId=${poema.poemId}"
+                    val url = "http://185.119.56.91/api/Poems/RemoveLikeFromPoem?userId=$currentUserId&poemId=${poema.PoemId}"
                     val client = OkHttpClient()
                     val request = Request.Builder()
                         .url(url)
@@ -67,14 +66,14 @@ class NumberFragment() : Fragment() {
                             likeButton.setImageResource(R.drawable.ic_like_before_dasha)
                             likes.text = like.toString()
                             poema.isLikedByCurrentUser = !poema.isLikedByCurrentUser
-                            poema.likes--
+                            poema.Likes--
                         }
                     })
 
                 }
                 else
                 {
-                    val url = "http://185.119.56.91/api/Poems/SetLikeToPoem?userId=$currentUserId&poemId=${poema.poemId}"
+                    val url = "http://185.119.56.91/api/Poems/SetLikeToPoem?userId=$currentUserId&poemId=${poema.PoemId}"
                     val client = OkHttpClient()
                     val request = Request.Builder()
                         .url(url)
@@ -89,14 +88,14 @@ class NumberFragment() : Fragment() {
                             likeButton.setImageResource(R.drawable.ic_like_after)
                             likes.text = like.toString()
                             poema.isLikedByCurrentUser = !poema.isLikedByCurrentUser
-                            poema.likes++
+                            poema.Likes++
                         }
                     })
                 }
             }
             commentButton.setOnClickListener{
                 val intent = Intent(context, Comment::class.java)
-                intent.putExtra("poemId", poema.poemId)
+                intent.putExtra("poemId", poema.PoemId)
                 intent.putExtra("currentUserId", currentUserId)
                 startActivity(intent)
             }
