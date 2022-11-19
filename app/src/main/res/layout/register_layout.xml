@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="30dp">
     <TextView
         android:id="@+id/textRegister"
@@ -11,13 +12,15 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="200dp"
         android:text="Регистрация"
-        android:textSize="40dp" />
+        tools:ignore="HardcodedText"
+        android:textSize="40sp" />
     <EditText
         android:id="@+id/enterNickname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textRegister"
         android:hint="Никнейм"
+        tools:ignore="Autofill,HardcodedText,TextFields"
         android:layout_marginTop="50dp"
         />
     <EditText
@@ -26,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/enterNickname"
         android:hint="Логин"
+        tools:ignore="Autofill,HardcodedText,TextFields"
         android:layout_marginTop="20dp"
         />
     <EditText
@@ -34,6 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/enterLogin"
         android:hint="Пароль"
+        tools:ignore="Autofill,HardcodedText"
         android:layout_marginTop="20dp"
         android:inputType="textPassword"
         />
@@ -43,6 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/enterPassword"
         android:hint="Повторите пароль"
+        tools:ignore="Autofill,HardcodedText"
         android:layout_marginTop="20dp"
         android:inputType="textPassword"
         />
@@ -55,6 +61,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:text=" Зарегистрироваться "
-        android:textSize="15dp" />
+        tools:ignore="HardcodedText"
+        android:textSize="15sp" />
 
 </RelativeLayout>

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="30dp">
 
     <TextView
@@ -11,13 +12,15 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="200dp"
         android:text="Вход"
-        android:textSize="40dp" />
+        tools:ignore="HardcodedText"
+        android:textSize="40sp" />
     <EditText
         android:id="@+id/enterLogIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textLogin"
         android:hint="Логин"
+        tools:ignore="HardcodedText,TextFields, Autofill"
         android:layout_marginTop="40dp"
         />
     <EditText
@@ -26,6 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/enterLogIn"
         android:hint="Пароль"
+        tools:ignore="Autofill,HardcodedText"
         android:layout_marginTop="20dp"
         android:inputType="textPassword"
         />
@@ -38,7 +42,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:text="  Войти  "
-        android:textSize="20dp"/>
+        tools:ignore="HardcodedText"
+        android:textSize="20sp"/>
     <TextView
         android:id="@+id/textIfNotRegister"
         android:layout_width="wrap_content"
@@ -46,6 +51,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="Еще не зарегистрированы?"
-        android:textSize="12dp"
+        tools:ignore="HardcodedText"
+        android:textSize="12sp"
         android:layout_below="@id/logIn"/>
 </RelativeLayout>

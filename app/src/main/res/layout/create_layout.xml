@@ -12,7 +12,8 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:text="Введите название произведения:"
-        android:textSize="18dp"
+        tools:ignore="HardcodedText"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,7 +29,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/edittextborders"
-        android:gravity="start|top"/>
+        android:gravity="start|top"
+        tools:ignore="Autofill,LabelFor,TextFields" />
 
     <TextView
         android:id="@+id/text2"
@@ -38,7 +40,8 @@
         android:layout_marginTop="30dp"
         android:layout_below="@id/enterTitle"
         android:text="Введите текст произведения:"
-        android:textSize="18dp"
+        android:textSize="18sp"
+        tools:ignore="HardcodedText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -56,7 +59,8 @@
         android:background="@drawable/edittextborders"
         android:ems="10"
         android:gravity="start|top"
-        android:inputType="textMultiLine" />
+        android:inputType="textMultiLine"
+        tools:ignore="Autofill,LabelFor" />
 
     <Button
         android:id="@+id/sendPoem"
@@ -66,7 +70,8 @@
         android:layout_marginEnd="30dp"
         android:layout_below="@id/enterMainText"
         android:layout_marginTop="10dp"
-        android:text="Отправить" />
+        android:text="Отправить"
+        tools:ignore="HardcodedText"/>
     <View
         android:id="@+id/line"
         android:layout_width="match_parent"
@@ -79,8 +84,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
-        android:layout_weight="10">
+        android:layout_marginBottom="15dp">
 
         <ImageButton
             android:id="@+id/profileButton"
@@ -90,7 +94,8 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="15dp"
             android:src="@drawable/ic_profile_try"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck"
+            android:contentDescription="@string/todo" />
 
         <ImageButton
             android:id="@+id/createButton"
@@ -101,7 +106,8 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="15dp"
             android:src="@drawable/ic_add_try"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck"
+            android:contentDescription="@string/todo" />
 
         <ImageButton
             android:id="@+id/homeButton"
@@ -110,7 +116,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:src="@drawable/ic_home_try"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck"
+            android:contentDescription="@string/todo" />
     </RelativeLayout>
 
 

@@ -11,8 +11,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="20dp"
         android:text="Комментарии"
+        tools:ignore="HardcodedText"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,8 +54,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.2"
+            tools:ignore="Autofill,HardcodedText"
             android:hint="Введите комментарий..."
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:inputType="text" />
 
         <Button
             android:id="@+id/sendComment"
@@ -62,6 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:text="Отправить"
+            tools:ignore="HardcodedText"
             app:layout_constraintBottom_toBottomOf="parent" />
     </LinearLayout>
 

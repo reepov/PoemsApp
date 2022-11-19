@@ -21,7 +21,8 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:gravity="center"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@mipmap/ic_launcher"
+            android:contentDescription="@string/todo" />
     </androidx.cardview.widget.CardView>
 
     <TextView
@@ -31,10 +32,11 @@
         android:layout_marginStart="130dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="80dp"
-        android:text="Your nickname will placed here..."
-        android:textSize="18dp"
+        android:text="@string/text_of__nick"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/view2" />
+        app:layout_constraintTop_toTopOf="@+id/view2"
+        tools:ignore="RelativeOverlap" />
 
     <ImageButton
         android:id="@+id/buttonSettings"
@@ -45,11 +47,11 @@
         android:src="@drawable/ic_settings"
         tools:ignore="SpeakableTextPresentCheck"
         android:layout_marginTop="40dp"
-        />
+        android:contentDescription="@string/todo" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0 subscribers"
+        android:text="@string/_0_subscribers"
         android:id="@+id/profileCountSubscribers"
         android:layout_below="@id/profileNickName"
         android:layout_marginTop="5dp"
@@ -63,7 +65,7 @@
         android:layout_below="@id/profileCountSubscribers"
         android:layout_marginTop="5dp"
         android:layout_marginStart="130dp"
-        />
+        tools:ignore="HardcodedText" />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,6 +74,7 @@
         android:layout_below="@id/profileCountLikes"
         android:layout_marginTop="5dp"
         android:layout_marginStart="130dp"
+        tools:ignore="HardcodedText"
         />
 
     <TextView
@@ -82,14 +85,14 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="40dp"
         android:text="Posts"
-        android:textSize="25dp" />
+        android:textSize="25sp"
+        tools:ignore="HardcodedText"/>
     <RelativeLayout
         android:id="@+id/buttonLay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
-        android:layout_weight="10">
+        android:layout_marginBottom="15dp">
 
         <ImageButton
             android:id="@+id/profileButton"
@@ -99,7 +102,8 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="15dp"
             android:src="@drawable/ic_profile_try"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck"
+            android:contentDescription="@string/todo" />
 
         <ImageButton
             android:id="@+id/createButton"
@@ -110,7 +114,8 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="15dp"
             android:src="@drawable/ic_add_try"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck"
+            android:contentDescription="@string/todo" />
 
         <ImageButton
             android:id="@+id/homeButton"
@@ -119,7 +124,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:src="@drawable/ic_home_try"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck"
+            android:contentDescription="@string/todo" />
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
