@@ -23,7 +23,8 @@ class Profile : AppCompatActivity() {
     private lateinit var createButton : ImageButton
     private lateinit var homeButton : ImageButton
     private lateinit var profileButton : ImageButton
-    @SuppressLint("SetTextI18n", "InflateParams")
+    private lateinit var settingsButton : ImageButton
+    @SuppressLint("SetTextI18n", "InflateParams", "MissingInflatedId")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         val client = OkHttpClient()
@@ -40,6 +41,7 @@ class Profile : AppCompatActivity() {
             }
             override fun onResponse(call: Call, response: Response) {
                 responseGet = response.body?.string().toString()
+                println(responseGet)
                 val json = jacksonObjectMapper()
                 _user = json.readValue(responseGet)
                 if(response.code == 200) bool = false
@@ -56,6 +58,12 @@ class Profile : AppCompatActivity() {
         homeButton = findViewById(R.id.homeButton)
         createButton = findViewById(R.id.createButton)
         profileButton = findViewById(R.id.profileButton)
+        settingsButton = findViewById(R.id.buttonSettings)
+        settingsButton.setOnClickListener {
+            val intent = Intent(this, Settings::class.java)
+            startActivity(intent)
+            finish()
+        }
         profileButton.setOnClickListener {
             val intent = Intent(this, Profile::class.java)
             intent.putExtra("currentUserId", currentUserId)

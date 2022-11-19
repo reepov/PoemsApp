@@ -30,10 +30,22 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="130dp"
         android:layout_marginTop="40dp"
+        android:layout_marginEnd="80dp"
         android:text="Your nickname will placed here..."
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/view2" />
+
+    <ImageButton
+        android:id="@+id/buttonSettings"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_settings"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:layout_marginTop="40dp"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

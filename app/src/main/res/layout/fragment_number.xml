@@ -64,7 +64,7 @@
             android:layout_below="@id/countLikes"
             android:layout_alignParentRight="true"
             android:layout_marginTop="60dp"
-            android:src="@drawable/ic_com_try"
+            android:src="@drawable/ic_com_dasha"
             tools:ignore="SpeakableTextPresentCheck" />
         <TextView
             android:id="@+id/countComms"
@@ -82,7 +82,7 @@
             android:layout_below="@id/comment"
             android:layout_alignParentRight="true"
             android:layout_marginTop="60dp"
-            android:src="@drawable/ic_lrep_try"
+            android:src="@drawable/ic_rep_dasha"
             android:textSize="11sp"
             tools:ignore="SpeakableTextPresentCheck" />
         <TextView

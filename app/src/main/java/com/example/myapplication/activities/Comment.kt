@@ -7,9 +7,10 @@ import android.view.KeyEvent
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.dataModels.CommentModel
 import com.example.myapplication.R
+import com.example.myapplication.dataModels.CommentModel
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
@@ -57,6 +58,7 @@ class Comment : AppCompatActivity(){
         for (i in 0 until list.size)
         {
             val comment = list[i]
+
             child = layoutInflater.inflate(R.layout.comment_layout_item, null)
             val user = child.findViewById<TextView>(R.id.userName)
             user.text = comment.UserName
@@ -67,22 +69,81 @@ class Comment : AppCompatActivity(){
             val image = child.findViewById<ImageView>(R.id.avatar)
             image.setImageResource(R.mipmap.ic_launcher)
             val likeButton = child.findViewById<ImageButton>(R.id.commentLike)
+            if (comment.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_like_after_dasha) else likeButton.setImageResource(R.drawable.ic_like_before_dasha)
             val likes : TextView = child.findViewById(R.id.countCommLikes)
             likes.text = comment.Likes.toString()
-            var flag = true
             likeButton.setOnClickListener{
-                if (!flag){
-                    val like = (likes.text as String).toInt() - 1
-                    likeButton.setImageResource(R.drawable.ic_like_before)
-                    likes.text = like.toString()
+                if (comment.isLikedByCurrentUser){
+                    val url = "http://185.119.56.91/api/Poems/RemoveLikeFromComment?userId=$currentUserId&commentId=${comment.CommentId}"
+                    client = OkHttpClient()
+                    request = Request.Builder()
+                        .url(url)
+                        .post(EMPTY_REQUEST)
+                        .build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            val like = (likes.text as String).toInt() - 1
+                            likeButton.setImageResource(R.drawable.ic_like_before_dasha)
+                            likes.text = like.toString()
+                            comment.isLikedByCurrentUser = !comment.isLikedByCurrentUser
+                            comment.Likes--
+                        }
+                    })
                 }
                 else
                 {
-                    val like = (likes.text as String).toInt() + 1
-                    likeButton.setImageResource(R.drawable.ic_like_after)
-                    likes.text = like.toString()
+                    val url = "http://185.119.56.91/api/Poems/SetLikeToComment?userId=$currentUserId&commentId=${comment.CommentId}"
+                    client = OkHttpClient()
+                    request = Request.Builder()
+                        .url(url)
+                        .post(EMPTY_REQUEST)
+                        .build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                        }
+
+                        override fun onResponse(call: Call, response: Response) {
+                            val like = (likes.text as String).toInt() + 1
+                            likeButton.setImageResource(R.drawable.ic_like_after_dasha)
+                            likes.text = like.toString()
+                            comment.isLikedByCurrentUser = !comment.isLikedByCurrentUser
+                            comment.Likes++
+                        }
+                    })
                 }
-                flag = !flag
+            }
+            child.setOnLongClickListener{
+                val builder1: AlertDialog.Builder = AlertDialog.Builder(this)
+                builder1.setMessage("Вы хотите удалить комментарий?")
+                builder1.setCancelable(true)
+                builder1.setPositiveButton("Да") { dialog, _ ->
+                    var text = ""
+                    val url = "http://185.119.56.91/api/Poems/RemoveCommentFromPoem?commentId=${comment.CommentId}"
+                    client = OkHttpClient()
+                    request = Request.Builder()
+                        .url(url)
+                        .post(EMPTY_REQUEST)
+                        .build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            text = "Что-то пошло не так"
+                        }
+                        override fun onResponse(call: Call, response: Response) {
+                            text = "Комментарий удален"
+                        }
+                    })
+                    while (text == "") Thread.sleep(100)
+                    if(text == "Комментарий удален") linearLayout.removeView(it)
+                    Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+                    dialog.cancel()
+                }
+                builder1.setNegativeButton("Нет") { dialog, _ -> dialog.cancel() }
+                val alert11: AlertDialog = builder1.create()
+                alert11.show()
+                return@setOnLongClickListener true
             }
             linearLayout.addView(child)
         }

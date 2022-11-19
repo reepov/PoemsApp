@@ -46,8 +46,8 @@ class NumberFragment() : Fragment() {
             title.text = poema.Title
             textView.text = poema.Text
             likeButton = requireView().findViewById(R.id.like)
-            if(poema.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_like_after)
-            else likeButton.setImageResource(R.drawable.ic_like_before)
+            if(poema.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_like_after_dasha)
+            else likeButton.setImageResource(R.drawable.ic_like_before_dasha)
             commentButton = requireView().findViewById(R.id.comment)
             likeButton.setOnClickListener{
                 if (poema.isLikedByCurrentUser){
@@ -85,7 +85,7 @@ class NumberFragment() : Fragment() {
 
                         override fun onResponse(call: Call, response: Response) {
                             val like = (likes.text as String).toInt() + 1
-                            likeButton.setImageResource(R.drawable.ic_like_after)
+                            likeButton.setImageResource(R.drawable.ic_like_after_dasha)
                             likes.text = like.toString()
                             poema.isLikedByCurrentUser = !poema.isLikedByCurrentUser
                             poema.Likes++

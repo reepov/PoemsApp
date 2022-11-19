@@ -27,6 +27,7 @@
         <activity android:name=".activities.Create"/>
         <activity android:name=".activities.Profile"/>
         <activity android:name=".activities.Poems"/>
+        <activity android:name=".activities.Settings"/>
     </application>
 
 </manifest>

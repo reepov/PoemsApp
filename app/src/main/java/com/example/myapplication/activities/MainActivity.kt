@@ -23,7 +23,6 @@ class MainActivity : FragmentActivity() {
     private lateinit var homeButton : ImageButton
     private lateinit var profileButton : ImageButton
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var spEditor: SharedPreferences.Editor
     var list : ArrayList<PoemsModel> = arrayListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -33,7 +32,6 @@ class MainActivity : FragmentActivity() {
         val currentUserId = sharedPreferences.getString("CurrentUserId", "")
         if(!sharedPreferences.getBoolean("isRemembered", false))
         {
-            println("slkgjdlkfjgldkfjglkdfjgdf")
             val intent = Intent(this, LoginUser::class.java)
             startActivity(intent)
             finish()
