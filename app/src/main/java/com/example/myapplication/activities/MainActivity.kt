@@ -33,6 +33,7 @@ class MainActivity : FragmentActivity() {
         if(!sharedPreferences.getBoolean("isRemembered", false))
         {
             val intent = Intent(this, LoginUser::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finish()
         }
@@ -68,17 +69,20 @@ class MainActivity : FragmentActivity() {
                 val intent = Intent(this, Profile::class.java)
                 println(currentUserId)
                 intent.putExtra("currentUserId", currentUserId)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
                 finish()
             }
             createButton.setOnClickListener {
                 val intent = Intent(this, Create::class.java)
                 intent.putExtra("currentUserId", currentUserId)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
                 finish()
             }
             homeButton.setOnClickListener {
                 val intent = Intent(this, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
                 finish()
             }

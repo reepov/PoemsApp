@@ -8,6 +8,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.dataModels.PoemsModel
 import com.example.myapplication.R
@@ -15,6 +16,7 @@ import com.example.myapplication.dataModels.UserModel
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
+import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
 
 class Profile : AppCompatActivity() {
@@ -27,11 +29,11 @@ class Profile : AppCompatActivity() {
     @SuppressLint("SetTextI18n", "InflateParams", "MissingInflatedId")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
-        val client = OkHttpClient()
+        var client = OkHttpClient()
         var bool = true
         //val userId = intent.getStringExtra("userId")
         val currentUserId = intent.getStringExtra("currentUserId")
-        val request = Request.Builder()
+        var request = Request.Builder()
             .url("http://185.119.56.91/api/User/GetUserById?currentUserId=$currentUserId&userId=$currentUserId")
             .build()
         var responseGet : String
@@ -61,23 +63,27 @@ class Profile : AppCompatActivity() {
         settingsButton = findViewById(R.id.buttonSettings)
         settingsButton.setOnClickListener {
             val intent = Intent(this, Settings::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finish()
         }
         profileButton.setOnClickListener {
             val intent = Intent(this, Profile::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             intent.putExtra("currentUserId", currentUserId)
             startActivity(intent)
             finish()
         }
         createButton.setOnClickListener{
             val intent = Intent(this, Create::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             intent.putExtra("currentUserId", currentUserId)
             startActivity(intent)
             finish()
         }
         homeButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finish()
         }
@@ -99,9 +105,50 @@ class Profile : AppCompatActivity() {
             title.text = title.text.toString() + poem.Title
             title.setOnClickListener {
                 val intent = Intent(applicationContext, Poems::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 intent.putExtra("poemId", poem.PoemId)
                 intent.putExtra("currentUserId", currentUserId)
                 startActivity(intent)
+            }
+            title.setOnLongClickListener{
+                val builder1: AlertDialog.Builder = AlertDialog.Builder(this)
+                builder1.setMessage("Вы хотите удалить или обновить пост?")
+                builder1.setCancelable(true)
+                builder1.setNegativeButton("Удалить") { dialog, _ ->
+                    var text = ""
+                    val url = "http://185.119.56.91/api/Poems/DeletePoem?poemId=${poem.PoemId}"
+                    client = OkHttpClient()
+                    request = Request.Builder()
+                        .url(url)
+                        .post(EMPTY_REQUEST)
+                        .build()
+                    client.newCall(request).enqueue(object : Callback {
+                        override fun onFailure(call: Call, e: IOException) {
+                            text = "Что-то пошло не так"
+                        }
+                        override fun onResponse(call: Call, response: Response) {
+                            text = "Пост удален"
+                        }
+                    })
+                    while (text == "") Thread.sleep(100)
+                    if(text != "Что-то пошло не так") linearLayout.removeView(it)
+                    Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+                    dialog.cancel()
+                }
+                builder1.setPositiveButton("Обновить") {dialog, _ ->
+                    val intent = Intent(this, Update::class.java)
+                    intent.putExtra("poemId", poem.PoemId)
+                    println(poem.PoemId)
+                    intent.putExtra("currentUserId", currentUserId)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    startActivity(intent)
+                    finish()
+                    dialog.cancel()
+                }
+                builder1.setNeutralButton("Нет") { dialog, _ -> dialog.cancel() }
+                val alert11: AlertDialog = builder1.create()
+                alert11.show()
+                return@setOnLongClickListener true
             }
             linearLayout.addView(child)
         }
@@ -111,6 +158,7 @@ class Profile : AppCompatActivity() {
         if (event != null) {
             if (keyCode == KeyEvent.KEYCODE_BACK && !event.isCanceled) {
                 val intent = Intent(this, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
                 finish()
                 return true

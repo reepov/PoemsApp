@@ -109,6 +109,7 @@ class Poems : AppCompatActivity() {
             val intent = Intent(applicationContext, Comment::class.java)
             intent.putExtra("poemId", poema!!.PoemId)
             intent.putExtra("currentUserId", currentUserId)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
         }
     }

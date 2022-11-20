@@ -43,6 +43,7 @@ class RegisterUser : AppCompatActivity() {
                     }
                     override fun onResponse(call: Call, response: Response) {
                         val intent = Intent(applicationContext, LoginUser::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                         startActivity(intent)
                         finish()
                     }

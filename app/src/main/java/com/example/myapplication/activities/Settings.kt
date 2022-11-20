@@ -29,6 +29,7 @@ class Settings : AppCompatActivity() {
                     .remove("isRemembered")
                     .apply()
                 val intent = Intent(this, LoginUser::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 dialog.cancel()
                 startActivity(intent)
                 finish()

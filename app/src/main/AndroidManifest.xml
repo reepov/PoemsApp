@@ -28,6 +28,7 @@
         <activity android:name=".activities.Profile"/>
         <activity android:name=".activities.Poems"/>
         <activity android:name=".activities.Settings"/>
+        <activity android:name=".activities.Update"/>
     </application>
 
 </manifest>
