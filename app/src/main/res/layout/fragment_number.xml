@@ -4,12 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="80dp"
         android:text="@string/title"
         android:textSize="30sp" />
@@ -19,13 +20,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="150dp"
-        android:layout_marginEnd="90dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="100dp"
         android:scrollbarThumbVertical="@null"
         android:scrollbars="vertical"
         android:text="@string/text"
-        android:textSize="19sp" />
+        android:textSize="19sp"
+        android:layout_below="@+id/titleTextView"/>
+    <TextView
+        android:id="@+id/userLink"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="UserName"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:textSize="25sp"
+        android:layout_above="@+id/publishDate"
+        />
+
+    <TextView
+        android:id="@+id/publishDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Дата публикации:"
+        android:layout_above="@+id/descriptionText"
+        android:layout_marginBottom="15dp"
+        android:layout_marginStart="30dp"
+        android:textSize="16sp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/descriptionText"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="70sp"
+        android:layout_marginBottom="30dp"
+        android:text="Это описание"
+        android:textSize="16sp"
+        android:layout_alignParentBottom="true" />
 
     <LinearLayout
         android:layout_width="wrap_content"

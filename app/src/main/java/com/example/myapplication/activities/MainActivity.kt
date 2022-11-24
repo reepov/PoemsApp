@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.myapplication.services.NumberAdapter
@@ -23,6 +24,8 @@ class MainActivity : FragmentActivity() {
     private lateinit var homeButton : ImageButton
     private lateinit var profileButton : ImageButton
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var type : TextView
+    private lateinit var subsButton : ImageButton
     var list : ArrayList<PoemsModel> = arrayListOf()
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -46,7 +49,7 @@ class MainActivity : FragmentActivity() {
             var responseGet: String
             client.newCall(request).enqueue(object : Callback {
                 override fun onFailure(call: Call, e: IOException) {
-                    println("error")
+
                 }
 
                 override fun onResponse(call: Call, response: Response) {
@@ -62,16 +65,27 @@ class MainActivity : FragmentActivity() {
             homeButton = findViewById(R.id.homeButton)
             viewPager.adapter = adapter
             adapter.list = list
+            println(adapter.list)
             adapter.currentUserId = currentUserId!!
             createButton = findViewById(R.id.createButton)
             profileButton = findViewById(R.id.profileButton)
-            profileButton.setOnClickListener {
-                val intent = Intent(this, Profile::class.java)
-                println(currentUserId)
+            subsButton = findViewById(R.id.subscribersButton)
+            type = findViewById(R.id.type)
+            type.text = "Рекомендации"
+            subsButton.setOnClickListener {
+                val intent = Intent(this, Subscribers::class.java)
                 intent.putExtra("currentUserId", currentUserId)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
                 finish()
+            }
+            profileButton.setOnClickListener {
+                val intent = Intent(this, Profile::class.java)
+                println(currentUserId)
+                intent.putExtra("currentUserId", currentUserId)
+                intent.putExtra("userId", currentUserId)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                startActivity(intent)
             }
             createButton.setOnClickListener {
                 val intent = Intent(this, Create::class.java)

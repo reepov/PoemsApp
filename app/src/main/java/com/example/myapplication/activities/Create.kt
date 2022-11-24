@@ -28,6 +28,7 @@ class Create : AppCompatActivity(){
         val sendPoem = findViewById<Button>(R.id.sendPoem)
         val editTitle = findViewById<EditText>(R.id.enterTitle)
         val editText = findViewById<EditText>(R.id.enterMainText)
+        val description = findViewById<EditText>(R.id.enterDescription)
         sendPoem.setOnClickListener {
             val policy = ThreadPolicy.Builder().permitAll().build()
             StrictMode.setThreadPolicy(policy)
@@ -40,7 +41,7 @@ class Create : AppCompatActivity(){
             }
             currentUserId = intent.getStringExtra("currentUserId")!!
             val title = if(editTitle.text.toString() != "") editTitle.text else "Без названия"
-            val url = "http://185.119.56.91/api/Poems/AuthorSendPoem?userId=$currentUserId&title=${title}"
+            val url = "http://185.119.56.91/api/Poems/AuthorSendPoem?userId=$currentUserId&title=${title}&description=${description.text}"
             val client: OkHttpClient = OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)
                 .build()
@@ -68,6 +69,7 @@ class Create : AppCompatActivity(){
         profileButton = findViewById(R.id.profileButton)
         profileButton.setOnClickListener {
             val intent = Intent(this, Profile::class.java)
+            intent.putExtra("currentUserId", currentUserId)
             intent.putExtra("userId", currentUserId)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)

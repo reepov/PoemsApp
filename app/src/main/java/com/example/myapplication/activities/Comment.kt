@@ -1,16 +1,21 @@
 package com.example.myapplication.activities
 
+import android.R.attr.left
+import android.R.attr.right
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.updateLayoutParams
 import com.example.myapplication.R
 import com.example.myapplication.dataModels.CommentModel
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -62,6 +67,13 @@ class Comment : AppCompatActivity(){
             child = layoutInflater.inflate(R.layout.comment_layout_item, null)
             val user = child.findViewById<TextView>(R.id.userName)
             user.text = if(comment.Created != "-1") comment.UserName else "DELETED"
+            if (comment.Created != "-1") user.setOnClickListener {
+                val intent = Intent(this, Profile::class.java)
+                intent.putExtra("currentUserId", currentUserId)
+                intent.putExtra("userId", comment.UserId)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                startActivity(intent)
+            }
             val textComment = child.findViewById<TextView>(R.id.commentText)
             textComment.text = comment.Text
             val date = child.findViewById<TextView>(R.id.dateTime)
@@ -75,6 +87,8 @@ class Comment : AppCompatActivity(){
             if(comment.Created != "-1") likeButton.setOnClickListener{
                 if (comment.isLikedByCurrentUser){
                     val url = "http://185.119.56.91/api/Poems/RemoveLikeFromComment?userId=$currentUserId&commentId=${comment.CommentId}"
+                    var like = 0
+                    var flag = true
                     client = OkHttpClient()
                     request = Request.Builder()
                         .url(url)
@@ -85,18 +99,23 @@ class Comment : AppCompatActivity(){
                         }
 
                         override fun onResponse(call: Call, response: Response) {
-                            val like = (likes.text as String).toInt() - 1
+                            like = (likes.text as String).toInt() - 1
                             likeButton.setImageResource(R.drawable.ic_like_before_dasha)
-                            likes.text = like.toString()
                             comment.isLikedByCurrentUser = !comment.isLikedByCurrentUser
                             comment.Likes--
+                            flag = false
                         }
                     })
+                    while(flag) Thread.sleep(100)
+                    likes.text = like.toString()
+                    flag = true
                 }
                 else if(comment.Created != "-1")
                 {
                     val url = "http://185.119.56.91/api/Poems/SetLikeToComment?userId=$currentUserId&commentId=${comment.CommentId}"
                     client = OkHttpClient()
+                    var flag = true
+                    var like = 0
                     request = Request.Builder()
                         .url(url)
                         .post(EMPTY_REQUEST)
@@ -106,13 +125,16 @@ class Comment : AppCompatActivity(){
                         }
 
                         override fun onResponse(call: Call, response: Response) {
-                            val like = (likes.text as String).toInt() + 1
+                            like = (likes.text as String).toInt() + 1
                             likeButton.setImageResource(R.drawable.ic_like_after_dasha)
-                            likes.text = like.toString()
                             comment.isLikedByCurrentUser = !comment.isLikedByCurrentUser
                             comment.Likes++
+                            flag = false
                         }
                     })
+                    while(flag) Thread.sleep(100)
+                    likes.text = like.toString()
+                    flag = true
                 }
             }
             if(comment.Created != "-1") child.setOnLongClickListener{
@@ -173,7 +195,7 @@ class Comment : AppCompatActivity(){
                             }
                         })
                         while (text == "") Thread.sleep(100)
-                        if(text == "Комментарий отправлен") sendComment.text = "Ответить"
+                        if(text == "Комментарий отправлен") sendComment.text = "Отправить"
                         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
                         dialog.cancel()
                         imm.hideSoftInputFromWindow(textview.windowToken, 0)
@@ -184,13 +206,16 @@ class Comment : AppCompatActivity(){
                 builder1.setNeutralButton("Отмена") { dialog, _ ->
                     dialog.cancel()
                     nowAnswers = false
-                    sendComment.text = "Ответить"
+                    sendComment.text = "Отправить"
                 }
                 val alert11: AlertDialog = builder1.create()
                 alert11.show()
                 nowAnswers = false
-                sendComment.text = "Ответить"
+                sendComment.text = "Отправить"
                 return@setOnLongClickListener true
+            }
+            if (comment.UpReplyId != null) {
+                child.setPadding(50, 0, 0, 0)
             }
             linearLayout.addView(child)
         }

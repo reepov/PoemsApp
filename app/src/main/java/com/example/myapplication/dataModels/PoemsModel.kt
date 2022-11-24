@@ -11,4 +11,7 @@ data class PoemsModel
      val isViewedByCurrentUser : Boolean,
      var isLikedByCurrentUser : Boolean,
      val CommentIds : List<String>?,
-     val AuthorId : String) : Serializable
+     val AuthorId : String,
+     val Created : String,
+     val UserName : String,
+     val Description: String?) : Serializable

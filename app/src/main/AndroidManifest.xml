@@ -11,9 +11,11 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.MyApplication"
-        tools:targetApi="m">
+        tools:targetApi="m"
+        tools:ignore="LockedOrientationActivity">
         <activity
             android:name=".activities.MainActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,14 +23,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.RegisterUser"/>
-        <activity android:name=".activities.LoginUser"/>
-        <activity android:name=".activities.Comment"/>
-        <activity android:name=".activities.Create"/>
-        <activity android:name=".activities.Profile"/>
-        <activity android:name=".activities.Poems"/>
-        <activity android:name=".activities.Settings"/>
-        <activity android:name=".activities.Update"/>
+        <activity android:name=".activities.RegisterUser"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.LoginUser"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Comment"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Create"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Profile"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Poems"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Settings"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Update"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Subscribers"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

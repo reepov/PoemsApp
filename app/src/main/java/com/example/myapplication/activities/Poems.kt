@@ -24,7 +24,7 @@ class Poems : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val poemId = intent.getStringExtra("poemId")
         println(poemId)
-        val client = OkHttpClient()
+        var client = OkHttpClient()
         var bool = true
         val currentUserId = intent.getStringExtra("currentUserId")
         var request = Request.Builder()
@@ -54,14 +54,20 @@ class Poems : AppCompatActivity() {
         val title : TextView = findViewById(R.id.titleTextView)
         val likes : TextView = findViewById(R.id.countLikes)
         val comments : TextView = findViewById(R.id.countComms)
+        val name : TextView = findViewById(R.id.userLink)
+        val date : TextView = findViewById(R.id.publishDate)
+        val describe : TextView = findViewById(R.id.descriptionText)
         textView.movementMethod = ScrollingMovementMethod()
         likes.text = poema!!.Likes.toString()
         comments.text = if(poema!!.CommentIds != null) poema!!.CommentIds!!.size.toString() else "0"
         title.text = poema!!.Title
         textView.text = poema!!.Text
+        name.text = poema!!.UserName
+        date.text = "${date.text} ${poema!!.Created}"
+        describe.text = poema!!.Description
         likeButton = findViewById(R.id.like)
-        if(poema!!.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_like_after)
-        else likeButton.setImageResource(R.drawable.ic_like_before)
+        if(poema!!.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_like_after_dasha)
+        else likeButton.setImageResource(R.drawable.ic_like_before_dasha)
         commentButton = findViewById(R.id.comment)
         likeButton.setOnClickListener{
             if (poema!!.isLikedByCurrentUser){
@@ -76,7 +82,7 @@ class Poems : AppCompatActivity() {
 
                     override fun onResponse(call: Call, response: Response) {
                         val like = (likes.text as String).toInt() - 1
-                        likeButton.setImageResource(R.drawable.ic_like_before)
+                        likeButton.setImageResource(R.drawable.ic_like_before_dasha)
                         likes.text = like.toString()
                         poema!!.isLikedByCurrentUser = !poema!!.isLikedByCurrentUser
                         poema!!.Likes--
@@ -97,7 +103,7 @@ class Poems : AppCompatActivity() {
 
                     override fun onResponse(call: Call, response: Response) {
                         val like = (likes.text as String).toInt() + 1
-                        likeButton.setImageResource(R.drawable.ic_like_after)
+                        likeButton.setImageResource(R.drawable.ic_like_after_dasha)
                         likes.text = like.toString()
                         poema!!.isLikedByCurrentUser = !poema!!.isLikedByCurrentUser
                         poema!!.Likes++
@@ -112,5 +118,20 @@ class Poems : AppCompatActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
         }
+        val url = "http://185.119.56.91/api/Poems/SetViewToPoem?userId=$currentUserId&poemId=${poema!!.PoemId}"
+        client = OkHttpClient()
+        request = Request.Builder()
+            .url(url)
+            .post(EMPTY_REQUEST)
+            .build()
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+
+            }
+        })
     }
 }

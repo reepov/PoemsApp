@@ -1,6 +1,7 @@
 package com.example.myapplication.services
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
@@ -12,8 +13,13 @@ import androidx.fragment.app.Fragment
 import com.example.myapplication.activities.Comment
 import com.example.myapplication.dataModels.PoemsModel
 import com.example.myapplication.R
+import com.example.myapplication.activities.Profile
+import com.example.myapplication.dataModels.UserModel
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
+import org.w3c.dom.Text
 import java.io.IOException
 
 const val ARG_OBJECT = "object"
@@ -39,16 +45,30 @@ class NumberFragment() : Fragment() {
             val title : TextView = view.findViewById(R.id.titleTextView)
             val likes : TextView = view.findViewById(R.id.countLikes)
             val comms : TextView = view.findViewById(R.id.countComms)
+            val userLink : TextView = view.findViewById(R.id.userLink)
+            val publish : TextView = view.findViewById(R.id.publishDate)
+            val descript : TextView = view.findViewById(R.id.descriptionText)
             textView.movementMethod = ScrollingMovementMethod()
             val poema = poem!!
+            userLink.text = poema.UserName
+            descript.text = poema.Description ?: ""
             likes.text = poema.Likes.toString()
             comms.text = if(poema.CommentIds != null) poema.CommentIds.size.toString() else "0"
             title.text = poema.Title
             textView.text = poema.Text
+            publish.text = "${publish.text} ${poema.Created}"
             likeButton = requireView().findViewById(R.id.like)
             if(poema.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_like_after_dasha)
             else likeButton.setImageResource(R.drawable.ic_like_before_dasha)
             commentButton = requireView().findViewById(R.id.comment)
+
+            userLink.setOnClickListener {
+                val intent = Intent(context, Profile::class.java)
+                intent.putExtra("currentUserId", currentUserId)
+                intent.putExtra("userId", poema.AuthorId)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                startActivity(intent)
+            }
             likeButton.setOnClickListener{
                 if (poema.isLikedByCurrentUser){
                     val url = "http://185.119.56.91/api/Poems/RemoveLikeFromPoem?userId=$currentUserId&poemId=${poema.PoemId}"
@@ -99,6 +119,21 @@ class NumberFragment() : Fragment() {
                 intent.putExtra("currentUserId", currentUserId)
                 startActivity(intent)
             }
+            val url = "http://185.119.56.91/api/Poems/SetViewToPoem?userId=$currentUserId&poemId=${poema.PoemId}"
+            val client = OkHttpClient()
+            val request = Request.Builder()
+                .url(url)
+                .post(EMPTY_REQUEST)
+                .build()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+
+                }
+            })
         }
     }
 }

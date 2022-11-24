@@ -76,63 +76,110 @@
         android:layout_marginStart="130dp"
         tools:ignore="HardcodedText"
         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0 views"
+        android:id="@+id/profileCountViews"
+        android:layout_below="@id/profileCountPoems"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="130dp"
+        tools:ignore="HardcodedText"
+        />
+    <Button
+        android:id="@+id/subscribe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Подписаться "
+
+        android:textSize="10sp"
+        android:layout_below="@+id/view2"
+        android:layout_marginBottom="15sp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        />
 
     <TextView
         android:id="@+id/text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/profileCountPoems"
+        android:layout_below="@id/subscribe"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:text="Posts"
         android:textSize="25sp"
         tools:ignore="HardcodedText"/>
     <RelativeLayout
-        android:id="@+id/buttonLay"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp">
-
+        android:layout_height="61dp"
+        android:layout_alignParentBottom="true">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="60dp"/>
         <ImageButton
-            android:id="@+id/profileButton"
+            android:id="@+id/homeButton"
+            android:layout_marginTop="10dp"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="15dp"
-            android:src="@drawable/ic_profile_try"
+            android:src="@drawable/ic_home_try"
             tools:ignore="SpeakableTextPresentCheck"
-            android:contentDescription="@string/todo" />
+            android:contentDescription="@string/todo"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"/>
+        <ImageButton
+            android:id="@+id/subscribersButton"
+            android:layout_marginTop="10dp"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_subs"
+            tools:ignore="SpeakableTextPresentCheck"
+            android:contentDescription="@string/todo"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@+id/homeButton"/>
 
         <ImageButton
             android:id="@+id/createButton"
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:contentDescription="@string/todo"
             android:src="@drawable/ic_add_try"
-            tools:ignore="SpeakableTextPresentCheck"
-            android:contentDescription="@string/todo" />
-
+            tools:ignore="SpeakableTextPresentCheck" />
         <ImageButton
-            android:id="@+id/homeButton"
+            android:id="@+id/notifyButton"
+            android:layout_marginTop="10dp"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_notify"
+            tools:ignore="SpeakableTextPresentCheck"
+            android:contentDescription="@string/todo"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_toStartOf="@+id/profileButton"/>
+        <ImageButton
+            android:id="@+id/profileButton"
+            android:layout_marginTop="10dp"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:src="@drawable/ic_home_try"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_profile_try"
             tools:ignore="SpeakableTextPresentCheck"
-            android:contentDescription="@string/todo" />
+            android:contentDescription="@string/todo"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"/>
     </RelativeLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/black"
-        android:layout_above="@id/buttonLay"/>
-
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="match_parent"

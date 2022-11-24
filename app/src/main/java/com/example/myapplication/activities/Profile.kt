@@ -21,7 +21,7 @@ import java.io.IOException
 
 class Profile : AppCompatActivity() {
     private var _list : ArrayList<PoemsModel> = arrayListOf()
-    private var _user : UserModel = UserModel("", "", arrayListOf())
+    private var _user : UserModel = UserModel("", "", arrayListOf(), arrayListOf(), false)
     private lateinit var createButton : ImageButton
     private lateinit var homeButton : ImageButton
     private lateinit var profileButton : ImageButton
@@ -31,10 +31,10 @@ class Profile : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         var client = OkHttpClient()
         var bool = true
-        //val userId = intent.getStringExtra("userId")
+        val userId = intent.getStringExtra("userId")
         val currentUserId = intent.getStringExtra("currentUserId")
         var request = Request.Builder()
-            .url("http://185.119.56.91/api/User/GetUserById?currentUserId=$currentUserId&userId=$currentUserId")
+            .url("http://185.119.56.91/api/User/GetUserById?currentUserId=$currentUserId&userId=$userId")
             .build()
         var responseGet : String
         client.newCall(request).enqueue(object: Callback {
@@ -61,16 +61,39 @@ class Profile : AppCompatActivity() {
         createButton = findViewById(R.id.createButton)
         profileButton = findViewById(R.id.profileButton)
         settingsButton = findViewById(R.id.buttonSettings)
+        val subscribe : TextView = findViewById(R.id.subscribe)
+        subscribe.text = if(_user.isSubscribedByCurrentUser) "Отписаться" else "Подписаться"
+        subscribe.setOnClickListener {
+            val url = "http://185.119.56.91/api/User/SubscribeToUser?userId=${_user.Id}&currentUserId=$currentUserId"
+            var bool = true
+            client = OkHttpClient()
+            request = Request.Builder()
+                .url(url)
+                .post(EMPTY_REQUEST)
+                .build()
+            client.newCall(request).enqueue(object : Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    _user.isSubscribedByCurrentUser = response.body?.string().toString() == "true"
+                    if(response.code == 200) bool = false
+                }
+            })
+            while(bool) Thread.sleep(100)
+            subscribe.text = if(_user.isSubscribedByCurrentUser) "Отписаться" else "Подписаться"
+            bool = true
+        }
         settingsButton.setOnClickListener {
             val intent = Intent(this, Settings::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
-            finish()
         }
         profileButton.setOnClickListener {
             val intent = Intent(this, Profile::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             intent.putExtra("currentUserId", currentUserId)
+            intent.putExtra("userId", currentUserId)
             startActivity(intent)
             finish()
         }
@@ -91,15 +114,20 @@ class Profile : AppCompatActivity() {
         println(nick.text)
         val likes = findViewById<TextView>(R.id.profileCountLikes)
         val countPoems = findViewById<TextView>(R.id.profileCountPoems)
+        val countSubs = findViewById<TextView>(R.id.profileCountSubscribers)
+        val countViews = findViewById<TextView>(R.id.profileCountViews)
         var wholeLikes = 0
+        var wholeViews = 0
         nick.text = _user.NickName
-        countPoems.text = "${_list.size} posts"
+        countPoems.text = "Posts: ${_list.size}"
+        countSubs.text = "Subscribers: ${_user.Subscribers.size}"
         val linearLayout : LinearLayout = findViewById(R.id.linearLayoutProfile)
         var child: View
         for (i in 0 until _list.size)
         {
             val poem = _list[i]
             wholeLikes += poem.Likes
+            wholeViews += poem.Views
             child = layoutInflater.inflate(R.layout.profile_layout_poemitem, null)
             val title = child.findViewById<TextView>(R.id.poemTitle)
             title.text = title.text.toString() + poem.Title
@@ -112,7 +140,7 @@ class Profile : AppCompatActivity() {
             }
             title.setOnLongClickListener{
                 val builder1: AlertDialog.Builder = AlertDialog.Builder(this)
-                builder1.setMessage("Вы хотите удалить или обновить пост?")
+                builder1.setMessage("Вы хотите удалить или отредактировать пост?")
                 builder1.setCancelable(true)
                 builder1.setNegativeButton("Удалить") { dialog, _ ->
                     var text = ""
@@ -135,7 +163,7 @@ class Profile : AppCompatActivity() {
                     Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
                     dialog.cancel()
                 }
-                builder1.setPositiveButton("Обновить") {dialog, _ ->
+                builder1.setPositiveButton("Отредактировать") {dialog, _ ->
                     val intent = Intent(this, Update::class.java)
                     intent.putExtra("poemId", poem.PoemId)
                     println(poem.PoemId)
@@ -145,25 +173,14 @@ class Profile : AppCompatActivity() {
                     finish()
                     dialog.cancel()
                 }
-                builder1.setNeutralButton("Нет") { dialog, _ -> dialog.cancel() }
+                builder1.setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
                 val alert11: AlertDialog = builder1.create()
                 alert11.show()
                 return@setOnLongClickListener true
             }
             linearLayout.addView(child)
         }
-        likes.text = "$wholeLikes likes"
-    }
-    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        if (event != null) {
-            if (keyCode == KeyEvent.KEYCODE_BACK && !event.isCanceled) {
-                val intent = Intent(this, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                startActivity(intent)
-                finish()
-                return true
-            }
-        }
-        return super.onKeyDown(keyCode, event)
+        likes.text = "Likes: $wholeLikes"
+        countViews.text = "Views: $wholeViews"
     }
 }
