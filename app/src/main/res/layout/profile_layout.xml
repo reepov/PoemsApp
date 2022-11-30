@@ -92,15 +92,15 @@
         android:layout_height="wrap_content"
         android:text="Подписаться "
 
-        android:textSize="10sp"
+        android:textSize="11sp"
         android:layout_below="@+id/view2"
         android:layout_marginBottom="15sp"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="30dp"
-        />
+        tools:ignore="HardcodedText" />
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/posts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/subscribe"
@@ -108,7 +108,33 @@
         android:layout_marginTop="10dp"
         android:text="Posts"
         android:textSize="25sp"
-        tools:ignore="HardcodedText"/>
+        tools:ignore="HardcodedText"
+        android:fontFamily="@font/montserrat"/>
+    <TextView
+        android:id="@+id/liked"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/subscribe"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="20dp"
+        android:text="Liked"
+        android:textSize="25sp"
+        tools:ignore="HardcodedText"
+        android:fontFamily="@font/montserrat"/>
+    <TextView
+        android:id="@+id/viewed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/subscribe"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:text="Viewed"
+        android:textSize="25sp"
+        tools:ignore="HardcodedText"
+        android:fontFamily="@font/montserrat"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="61dp"
@@ -184,7 +210,7 @@
         android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/text"
+        android:layout_below="@id/posts"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="100dp">
 

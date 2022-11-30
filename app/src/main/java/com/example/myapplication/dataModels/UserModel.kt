@@ -7,5 +7,7 @@ class UserModel(
     val NickName : String,
     val Poems : ArrayList<PoemsModel>,
     val Subscribers : ArrayList<String>,
-    var isSubscribedByCurrentUser : Boolean
+    var isSubscribedByCurrentUser : Boolean,
+    val LikedPoems : ArrayList<PoemsModel>,
+    val ViewedPoems : ArrayList<PoemsModel>
 ) : Serializable

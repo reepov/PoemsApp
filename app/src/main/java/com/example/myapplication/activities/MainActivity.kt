@@ -65,7 +65,6 @@ class MainActivity : FragmentActivity() {
             homeButton = findViewById(R.id.homeButton)
             viewPager.adapter = adapter
             adapter.list = list
-            println(adapter.list)
             adapter.currentUserId = currentUserId!!
             createButton = findViewById(R.id.createButton)
             profileButton = findViewById(R.id.profileButton)

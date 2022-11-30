@@ -27,7 +27,7 @@ class Subscribers : FragmentActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        var currentUserId = intent.getStringExtra("currentUserId")
+        val currentUserId = intent.getStringExtra("currentUserId")
         println(currentUserId)
         var f = true
         val client = OkHttpClient()

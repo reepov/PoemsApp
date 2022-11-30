@@ -31,7 +31,8 @@
         android:background="@drawable/edittextborders"
         android:gravity="start|top"
         tools:ignore="Autofill,LabelFor,TextFields"
-        android:padding="10dp"/>
+        android:padding="10dp"
+        android:cursorVisible="false"/>
 
     <TextView
         android:id="@+id/text2"
@@ -62,7 +63,8 @@
         android:gravity="start|top"
         android:inputType="textMultiLine"
         tools:ignore="Autofill,LabelFor"
-        android:padding="10dp"/>
+        android:padding="10dp"
+        android:cursorVisible="false"/>
 
     <TextView
         android:id="@+id/text3"
@@ -91,7 +93,8 @@
         android:background="@drawable/edittextborders"
         android:gravity="start|top"
         tools:ignore="Autofill,LabelFor,TextFields"
-        android:padding="10dp" />
+        android:padding="10dp"
+        android:cursorVisible="false"/>
 
     <Button
         android:id="@+id/sendPoem"

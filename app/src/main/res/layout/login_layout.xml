@@ -19,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textLogin"
-        android:hint="Логин"
+        android:inputType="phone"
+        android:hint="Номер телефона"
         tools:ignore="HardcodedText,TextFields, Autofill"
         android:layout_marginTop="40dp"
         />
