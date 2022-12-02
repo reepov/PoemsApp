@@ -1,5 +1,6 @@
 package com.example.myapplication.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -20,6 +21,7 @@ class Poems : AppCompatActivity() {
     var poema : PoemsModel? = null
     private lateinit var likeButton : ImageButton
     private lateinit var commentButton : ImageButton
+    @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         val poemId = intent.getStringExtra("poemId")
@@ -66,8 +68,8 @@ class Poems : AppCompatActivity() {
         date.text = "${date.text} ${poema!!.Created}"
         describe.text = poema!!.Description
         likeButton = findViewById(R.id.like)
-        if(poema!!.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_like_after_dasha)
-        else likeButton.setImageResource(R.drawable.ic_like_before_dasha)
+        if(poema!!.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_after_dasha)
+        else likeButton.setImageResource(R.drawable.ic_before_dasha)
         commentButton = findViewById(R.id.comment)
         likeButton.setOnClickListener{
             if (poema!!.isLikedByCurrentUser){
@@ -82,7 +84,7 @@ class Poems : AppCompatActivity() {
 
                     override fun onResponse(call: Call, response: Response) {
                         val like = (likes.text as String).toInt() - 1
-                        likeButton.setImageResource(R.drawable.ic_like_before_dasha)
+                        likeButton.setImageResource(R.drawable.ic_before_dasha)
                         likes.text = like.toString()
                         poema!!.isLikedByCurrentUser = !poema!!.isLikedByCurrentUser
                         poema!!.Likes--
@@ -103,7 +105,7 @@ class Poems : AppCompatActivity() {
 
                     override fun onResponse(call: Call, response: Response) {
                         val like = (likes.text as String).toInt() + 1
-                        likeButton.setImageResource(R.drawable.ic_like_after_dasha)
+                        likeButton.setImageResource(R.drawable.ic_after_dasha)
                         likes.text = like.toString()
                         poema!!.isLikedByCurrentUser = !poema!!.isLikedByCurrentUser
                         poema!!.Likes++

@@ -44,7 +44,7 @@
         android:layout_height="30dp"
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/ic_settings"
+        android:src="@drawable/ic_settings_dasha"
         tools:ignore="SpeakableTextPresentCheck"
         android:layout_marginTop="40dp"
         android:contentDescription="@string/todo" />
@@ -90,14 +90,15 @@
         android:id="@+id/subscribe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Подписаться "
-
+        android:text="Подписаться"
         android:textSize="11sp"
         android:layout_below="@+id/view2"
         android:layout_marginBottom="15sp"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="30dp"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        android:backgroundTint="#ffcc99"
+        />
 
     <TextView
         android:id="@+id/posts"

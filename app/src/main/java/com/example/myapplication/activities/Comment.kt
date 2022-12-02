@@ -1,7 +1,5 @@
 package com.example.myapplication.activities
 
-import android.R.attr.left
-import android.R.attr.right
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -9,13 +7,11 @@ import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.updateLayoutParams
 import com.example.myapplication.R
 import com.example.myapplication.dataModels.CommentModel
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -81,7 +77,7 @@ class Comment : AppCompatActivity(){
             val image = child.findViewById<ImageView>(R.id.avatar)
             image.setImageResource(R.mipmap.ic_launcher)
             val likeButton = child.findViewById<ImageButton>(R.id.commentLike)
-            if (comment.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_like_after_dasha) else likeButton.setImageResource(R.drawable.ic_like_before_dasha)
+            if (comment.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_after_dasha) else likeButton.setImageResource(R.drawable.ic_before_dasha)
             val likes : TextView = child.findViewById(R.id.countCommLikes)
             likes.text = comment.Likes.toString()
             if(comment.Created != "-1") likeButton.setOnClickListener{
@@ -100,7 +96,7 @@ class Comment : AppCompatActivity(){
 
                         override fun onResponse(call: Call, response: Response) {
                             like = (likes.text as String).toInt() - 1
-                            likeButton.setImageResource(R.drawable.ic_like_before_dasha)
+                            likeButton.setImageResource(R.drawable.ic_before_dasha)
                             comment.isLikedByCurrentUser = !comment.isLikedByCurrentUser
                             comment.Likes--
                             flag = false
@@ -126,7 +122,7 @@ class Comment : AppCompatActivity(){
 
                         override fun onResponse(call: Call, response: Response) {
                             like = (likes.text as String).toInt() + 1
-                            likeButton.setImageResource(R.drawable.ic_like_after_dasha)
+                            likeButton.setImageResource(R.drawable.ic_after_dasha)
                             comment.isLikedByCurrentUser = !comment.isLikedByCurrentUser
                             comment.Likes++
                             flag = false
@@ -169,7 +165,7 @@ class Comment : AppCompatActivity(){
                     nowAnswers = true
                     var text = ""
                     sendComment.text = "Ответить"
-                    val textview : EditText = findViewById(R.id.commentEnterText)
+                    var textview : EditText = findViewById(R.id.commentEnterText)
                     textview.isFocusableInTouchMode = true
                     textview.isFocusable = true
                     textview.requestFocus()
@@ -178,7 +174,7 @@ class Comment : AppCompatActivity(){
                     val inputMethodManager = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                     inputMethodManager.showSoftInput(textview, InputMethodManager.SHOW_IMPLICIT)
                     sendComment.setOnClickListener {
-                        val textview : EditText = findViewById(R.id.commentEnterText)
+                        textview = findViewById(R.id.commentEnterText)
                         val url = "http://185.119.56.91/api/Poems/SetReplyToComment?commentId=${comment.CommentId}&userId=$currentUserId&text=Ответ для ${comment.UserName}:\n ${textview.text}"
                         client = OkHttpClient()
                         request = Request.Builder()

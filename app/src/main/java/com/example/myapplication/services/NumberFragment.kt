@@ -1,7 +1,7 @@
 package com.example.myapplication.services
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import android.view.LayoutInflater
@@ -14,12 +14,8 @@ import com.example.myapplication.activities.Comment
 import com.example.myapplication.dataModels.PoemsModel
 import com.example.myapplication.R
 import com.example.myapplication.activities.Profile
-import com.example.myapplication.dataModels.UserModel
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
-import org.w3c.dom.Text
 import java.io.IOException
 
 const val ARG_OBJECT = "object"
@@ -39,6 +35,7 @@ class NumberFragment() : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_number, container, false)
     }
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         arguments?.takeIf { it.containsKey(ARG_OBJECT) }?.apply {
             val textView: TextView = view.findViewById(R.id.textView)
@@ -58,8 +55,8 @@ class NumberFragment() : Fragment() {
             textView.text = poema.Text
             publish.text = "${publish.text} ${poema.Created}"
             likeButton = requireView().findViewById(R.id.like)
-            if(poema.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_like_after_dasha)
-            else likeButton.setImageResource(R.drawable.ic_like_before_dasha)
+            if(poema.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_after_dasha)
+            else likeButton.setImageResource(R.drawable.ic_before_dasha)
             commentButton = requireView().findViewById(R.id.comment)
 
             userLink.setOnClickListener {
@@ -83,7 +80,7 @@ class NumberFragment() : Fragment() {
 
                         override fun onResponse(call: Call, response: Response) {
                             val like = (likes.text as String).toInt() - 1
-                            likeButton.setImageResource(R.drawable.ic_like_before_dasha)
+                            likeButton.setImageResource(R.drawable.ic_before_dasha)
                             likes.text = like.toString()
                             poema.isLikedByCurrentUser = !poema.isLikedByCurrentUser
                             poema.Likes--
@@ -105,7 +102,7 @@ class NumberFragment() : Fragment() {
 
                         override fun onResponse(call: Call, response: Response) {
                             val like = (likes.text as String).toInt() + 1
-                            likeButton.setImageResource(R.drawable.ic_like_after_dasha)
+                            likeButton.setImageResource(R.drawable.ic_after_dasha)
                             likes.text = like.toString()
                             poema.isLikedByCurrentUser = !poema.isLikedByCurrentUser
                             poema.Likes++

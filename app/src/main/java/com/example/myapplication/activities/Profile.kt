@@ -90,8 +90,8 @@ class Profile : AppCompatActivity() {
         var wholeLikes = 0
         var wholeViews = 0
         nick.text = _user.NickName
-        countPoems.text = "Posts: ${_list.size}"
-        countSubs.text = "Subscribers: ${_user.Subscribers.size}"
+        countPoems.text = "Публикации: ${_list.size}"
+        countSubs.text = "Подписчики: ${_user.Subscribers.size}"
         for (i in 0 until _list.size) {
             val poem = _list[i]
             wholeLikes += poem.Likes
@@ -152,8 +152,8 @@ class Profile : AppCompatActivity() {
             }
             linearLayout.addView(child)
         }
-        likes.text = "Likes: $wholeLikes"
-        countViews.text = "Views: $wholeViews"
+        likes.text = "Лайки: $wholeLikes"
+        countViews.text = "Просмотры: $wholeViews"
         subscribe.setOnClickListener {
             val url =
                 "http://185.119.56.91/api/User/SubscribeToUser?userId=${_user.Id}&currentUserId=$currentUserId"
@@ -207,7 +207,7 @@ class Profile : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
-            finish()
+            finishAffinity()
         }
         Posts.setOnClickListener {
             typeFace = ResourcesCompat.getFont(applicationContext, R.font.bold)
