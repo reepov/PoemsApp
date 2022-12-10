@@ -63,7 +63,7 @@
             android:layout_below="@id/commentText"
             android:layout_alignParentEnd="true"
             android:gravity="end"
-            app:srcCompat="@drawable/ic_like_before"
+            app:srcCompat="@drawable/ic_like_before_dasha"
             tools:ignore="SpeakableTextPresentCheck"
         android:contentDescription="@string/todo" />
 

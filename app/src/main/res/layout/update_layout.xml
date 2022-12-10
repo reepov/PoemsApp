@@ -93,15 +93,15 @@
         tools:ignore="Autofill,LabelFor,TextFields"
         android:padding="10dp" />
 
-
     <Button
         android:id="@+id/sendPoem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="30dp"
+        android:layout_marginEnd="10dp"
         android:layout_below="@id/enterDescript"
         android:layout_marginTop="10dp"
         android:text="Обновить"
-        tools:ignore="HardcodedText"/>
+        tools:ignore="HardcodedText"
+        android:backgroundTint="#ffcc99"/>
 </RelativeLayout>

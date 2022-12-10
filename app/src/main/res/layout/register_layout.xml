@@ -67,6 +67,7 @@
         android:layout_marginTop="50dp"
         android:text=" Зарегистрироваться "
         tools:ignore="HardcodedText"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:backgroundTint="#ffcc99"/>
 
 </RelativeLayout>

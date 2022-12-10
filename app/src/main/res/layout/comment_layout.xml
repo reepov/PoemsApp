@@ -67,7 +67,8 @@
             android:layout_weight="0"
             android:text="Отправить"
             tools:ignore="HardcodedText"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:backgroundTint="#ffcc99"/>
     </LinearLayout>
 
 
