@@ -107,6 +107,7 @@ class MainActivity : FragmentActivity() {
     }
 }
 
+
 //TODO
 //1. ShareButton - how to share posts within the link?
 //2. NotifyButton - how and when to send notifications to user?
