@@ -108,7 +108,7 @@ class Profile : AppCompatActivity() {
                 intent.putExtra("currentUserId", currentUserId)
                 startActivity(intent)
             }
-            title.setOnLongClickListener {
+            if(userId == currentUserId) title.setOnLongClickListener {
                 val builder1: AlertDialog.Builder = AlertDialog.Builder(this)
                 builder1.setMessage("Вы хотите удалить или отредактировать пост?")
                 builder1.setCancelable(true)
@@ -181,7 +181,7 @@ class Profile : AppCompatActivity() {
             intent.putExtra("currentUserId", currentUserId)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
-            finish()
+            finishAffinity()
         }
         settingsButton.setOnClickListener {
             val intent = Intent(this, Settings::class.java)
@@ -231,7 +231,7 @@ class Profile : AppCompatActivity() {
                     intent.putExtra("currentUserId", currentUserId)
                     startActivity(intent)
                 }
-                title.setOnLongClickListener {
+                if(userId == currentUserId) title.setOnLongClickListener {
                     val builder1: AlertDialog.Builder = AlertDialog.Builder(this)
                     builder1.setMessage("Вы хотите удалить или отредактировать пост?")
                     builder1.setCancelable(true)
@@ -297,47 +297,6 @@ class Profile : AppCompatActivity() {
                     intent.putExtra("currentUserId", currentUserId)
                     startActivity(intent)
                 }
-                title.setOnLongClickListener {
-                    val builder1: AlertDialog.Builder = AlertDialog.Builder(this)
-                    builder1.setMessage("Вы хотите удалить или отредактировать пост?")
-                    builder1.setCancelable(true)
-                    builder1.setNegativeButton("Удалить") { dialog, _ ->
-                        var text = ""
-                        val url = "http://185.119.56.91/api/Poems/DeletePoem?poemId=${poem.PoemId}"
-                        client = OkHttpClient()
-                        request = Request.Builder()
-                            .url(url)
-                            .post(EMPTY_REQUEST)
-                            .build()
-                        client.newCall(request).enqueue(object : Callback {
-                            override fun onFailure(call: Call, e: IOException) {
-                                text = "Что-то пошло не так"
-                            }
-
-                            override fun onResponse(call: Call, response: Response) {
-                                text = "Пост удален"
-                            }
-                        })
-                        while (text == "") Thread.sleep(100)
-                        if (text != "Что-то пошло не так") linearLayout.removeView(it)
-                        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
-                        dialog.cancel()
-                    }
-                    builder1.setPositiveButton("Отредактировать") { dialog, _ ->
-                        val intent = Intent(this, Update::class.java)
-                        intent.putExtra("poemId", poem.PoemId)
-                        println(poem.PoemId)
-                        intent.putExtra("currentUserId", currentUserId)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                        startActivity(intent)
-                        finish()
-                        dialog.cancel()
-                    }
-                    builder1.setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
-                    val alert11: AlertDialog = builder1.create()
-                    alert11.show()
-                    return@setOnLongClickListener true
-                }
                 linearLayout.addView(child)
             }
         }
@@ -362,48 +321,6 @@ class Profile : AppCompatActivity() {
                     intent.putExtra("poemId", poem.PoemId)
                     intent.putExtra("currentUserId", currentUserId)
                     startActivity(intent)
-                }
-                title.setOnLongClickListener {
-                    val builder1: AlertDialog.Builder = AlertDialog.Builder(this)
-                    builder1.setMessage("Вы хотите удалить или отредактировать пост?")
-                    builder1.setCancelable(true)
-                    builder1.setNegativeButton("Удалить") { dialog, _ ->
-                        var text = ""
-                        val url =
-                            "http://185.119.56.91/api/Poems/DeletePoem?poemId=${poem.PoemId}"
-                        client = OkHttpClient()
-                        request = Request.Builder()
-                            .url(url)
-                            .post(EMPTY_REQUEST)
-                            .build()
-                        client.newCall(request).enqueue(object : Callback {
-                            override fun onFailure(call: Call, e: IOException) {
-                                text = "Что-то пошло не так"
-                            }
-
-                            override fun onResponse(call: Call, response: Response) {
-                                text = "Пост удален"
-                            }
-                        })
-                        while (text == "") Thread.sleep(100)
-                        if (text != "Что-то пошло не так") linearLayout.removeView(it)
-                        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
-                        dialog.cancel()
-                    }
-                    builder1.setPositiveButton("Отредактировать") { dialog, _ ->
-                        val intent = Intent(this, Update::class.java)
-                        intent.putExtra("poemId", poem.PoemId)
-                        println(poem.PoemId)
-                        intent.putExtra("currentUserId", currentUserId)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                        startActivity(intent)
-                        finish()
-                        dialog.cancel()
-                    }
-                    builder1.setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
-                    val alert11: AlertDialog = builder1.create()
-                    alert11.show()
-                    return@setOnLongClickListener true
                 }
                 linearLayout.addView(child)
             }

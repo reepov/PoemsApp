@@ -82,13 +82,11 @@ class Subscribers : FragmentActivity(){
             intent.putExtra("currentUserId", currentUserId)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
-            finish()
         }
         homeButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
-            finish()
         }
     }
     fun set(lists : ArrayList<PoemsModel>)

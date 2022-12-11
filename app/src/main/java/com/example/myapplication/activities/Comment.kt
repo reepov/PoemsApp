@@ -135,47 +135,56 @@ class Comment : AppCompatActivity(){
             }
             if(comment.Created != "-1") child.setOnLongClickListener{
                 val builder1: AlertDialog.Builder = AlertDialog.Builder(this)
-                builder1.setMessage("Вы хотите удалить комментарий или ответить на него?")
-                builder1.setCancelable(true)
-                builder1.setNegativeButton("Удалить") { dialog, _ ->
-                    var text = ""
-                    var responsePost = ""
-                    val url = "http://185.119.56.91/api/Poems/RemoveCommentFromPoem?commentId=${comment.CommentId}"
-                    client = OkHttpClient()
-                    request = Request.Builder()
-                        .url(url)
-                        .post(EMPTY_REQUEST)
-                        .build()
-                    client.newCall(request).enqueue(object : Callback {
-                        override fun onFailure(call: Call, e: IOException) {
-                            text = "Что-то пошло не так"
+                if (comment.UserId != currentUserId)
+                {
+                    builder1.setMessage("Вы хотите ответить на комментарий?")
+                    builder1.setCancelable(true)
+                    builder1.setPositiveButton("Ответить") {dialog, _ ->
+                        nowAnswers = true
+                        var text = ""
+                        sendComment.text = "Ответить"
+                        var textview : EditText = findViewById(R.id.commentEnterText)
+                        textview.isFocusableInTouchMode = true
+                        textview.isFocusable = true
+                        textview.requestFocus()
+                        val imm = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+                        val inputMethodManager = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        inputMethodManager.showSoftInput(textview, InputMethodManager.SHOW_IMPLICIT)
+                        sendComment.setOnClickListener {
+                            textview = findViewById(R.id.commentEnterText)
+                            val url = "http://185.119.56.91/api/Poems/SetReplyToComment?commentId=${comment.CommentId}&userId=$currentUserId&text=Ответ для ${comment.UserName}:\n ${textview.text}"
+                            client = OkHttpClient()
+                            request = Request.Builder()
+                                .url(url)
+                                .post(EMPTY_REQUEST)
+                                .build()
+                            client.newCall(request).enqueue(object : Callback {
+                                override fun onFailure(call: Call, e: IOException) {
+                                    text = "Что-то пошло не так"
+                                }
+                                override fun onResponse(call: Call, response: Response) {
+                                    text = "Комментарий отправлен"
+                                    nowAnswers = false
+                                }
+                            })
+                            while (text == "") Thread.sleep(100)
+                            if(text == "Комментарий отправлен") sendComment.text = "Отправить"
+                            Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+                            dialog.cancel()
+                            imm.hideSoftInputFromWindow(textview.windowToken, 0)
+                            finish()
                         }
-                        override fun onResponse(call: Call, response: Response) {
-                            responsePost = response.body?.string().toString()
-                            text = "Комментарий удален"
-                        }
-                    })
-                    while (responsePost == "") Thread.sleep(100)
-                    if(responsePost == "Ответ") linearLayout.removeView(it)
-                    Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
-                    finish()
-                    dialog.cancel()
+                    }
                 }
-                builder1.setPositiveButton("Ответить") {dialog, _ ->
-                    nowAnswers = true
-                    var text = ""
-                    sendComment.text = "Ответить"
-                    var textview : EditText = findViewById(R.id.commentEnterText)
-                    textview.isFocusableInTouchMode = true
-                    textview.isFocusable = true
-                    textview.requestFocus()
-                    val imm = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-                    val inputMethodManager = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    inputMethodManager.showSoftInput(textview, InputMethodManager.SHOW_IMPLICIT)
-                    sendComment.setOnClickListener {
-                        textview = findViewById(R.id.commentEnterText)
-                        val url = "http://185.119.56.91/api/Poems/SetReplyToComment?commentId=${comment.CommentId}&userId=$currentUserId&text=Ответ для ${comment.UserName}:\n ${textview.text}"
+                else
+                {
+                    builder1.setMessage("Вы хотите удалить комментарий или ответить на него?")
+                    builder1.setCancelable(true)
+                    builder1.setNegativeButton("Удалить") { dialog, _ ->
+                        var text = ""
+                        var responsePost = ""
+                        val url = "http://185.119.56.91/api/Poems/RemoveCommentFromPoem?commentId=${comment.CommentId}"
                         client = OkHttpClient()
                         request = Request.Builder()
                             .url(url)
@@ -186,18 +195,53 @@ class Comment : AppCompatActivity(){
                                 text = "Что-то пошло не так"
                             }
                             override fun onResponse(call: Call, response: Response) {
-                                text = "Комментарий отправлен"
-                                nowAnswers = false
+                                responsePost = response.body?.string().toString()
+                                text = "Комментарий удален"
                             }
                         })
-                        while (text == "") Thread.sleep(100)
-                        if(text == "Комментарий отправлен") sendComment.text = "Отправить"
+                        while (responsePost == "") Thread.sleep(100)
+                        if(responsePost == "Ответ") linearLayout.removeView(it)
                         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
-                        dialog.cancel()
-                        imm.hideSoftInputFromWindow(textview.windowToken, 0)
                         finish()
+                        dialog.cancel()
                     }
-
+                    builder1.setPositiveButton("Ответить") {dialog, _ ->
+                        nowAnswers = true
+                        var text = ""
+                        sendComment.text = "Ответить"
+                        var textview : EditText = findViewById(R.id.commentEnterText)
+                        textview.isFocusableInTouchMode = true
+                        textview.isFocusable = true
+                        textview.requestFocus()
+                        val imm = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+                        val inputMethodManager = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                        inputMethodManager.showSoftInput(textview, InputMethodManager.SHOW_IMPLICIT)
+                        sendComment.setOnClickListener {
+                            textview = findViewById(R.id.commentEnterText)
+                            val url = "http://185.119.56.91/api/Poems/SetReplyToComment?commentId=${comment.CommentId}&userId=$currentUserId&text=Ответ для ${comment.UserName}:\n ${textview.text}"
+                            client = OkHttpClient()
+                            request = Request.Builder()
+                                .url(url)
+                                .post(EMPTY_REQUEST)
+                                .build()
+                            client.newCall(request).enqueue(object : Callback {
+                                override fun onFailure(call: Call, e: IOException) {
+                                    text = "Что-то пошло не так"
+                                }
+                                override fun onResponse(call: Call, response: Response) {
+                                    text = "Комментарий отправлен"
+                                    nowAnswers = false
+                                }
+                            })
+                            while (text == "") Thread.sleep(100)
+                            if(text == "Комментарий отправлен") sendComment.text = "Отправить"
+                            Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+                            dialog.cancel()
+                            imm.hideSoftInputFromWindow(textview.windowToken, 0)
+                            finish()
+                        }
+                    }
                 }
                 builder1.setNeutralButton("Отмена") { dialog, _ ->
                     dialog.cancel()

@@ -20,6 +20,7 @@ import java.io.IOException
 class Create : AppCompatActivity(){
     private lateinit var homeButton : ImageButton
     private lateinit var profileButton : ImageButton
+    private lateinit var subsButton : ImageButton
     private var currentUserId = ""
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,6 +66,7 @@ class Create : AppCompatActivity(){
                 }
             })
         }
+        subsButton = findViewById(R.id.subscribersButton)
         homeButton = findViewById(R.id.homeButton)
         profileButton = findViewById(R.id.profileButton)
         profileButton.setOnClickListener {
@@ -79,10 +81,17 @@ class Create : AppCompatActivity(){
             val intent = Intent(this, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
-            finish()
+            finishAffinity()
+        }
+        subsButton.setOnClickListener {
+            val intent = Intent(this, Subscribers::class.java)
+            intent.putExtra("currentUserId", currentUserId)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            startActivity(intent)
+            finishAffinity()
         }
     }
-    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+    /*override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
         if (event != null) {
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 val intent = Intent(this, MainActivity::class.java)
@@ -93,5 +102,5 @@ class Create : AppCompatActivity(){
             }
         }
         return super.onKeyDown(keyCode, event)
-    }
+    }*/
 }

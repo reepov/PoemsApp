@@ -1,5 +1,6 @@
 package com.example.myapplication.activities
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -27,6 +28,7 @@ class MainActivity : FragmentActivity() {
     private lateinit var type : TextView
     private lateinit var subsButton : ImageButton
     var list : ArrayList<PoemsModel> = arrayListOf()
+    @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -76,7 +78,6 @@ class MainActivity : FragmentActivity() {
                 intent.putExtra("currentUserId", currentUserId)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
-                finish()
             }
             profileButton.setOnClickListener {
                 val intent = Intent(this, Profile::class.java)
@@ -91,7 +92,6 @@ class MainActivity : FragmentActivity() {
                 intent.putExtra("currentUserId", currentUserId)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
-                finish()
             }
             homeButton.setOnClickListener {
                 val intent = Intent(this, MainActivity::class.java)
@@ -106,3 +106,21 @@ class MainActivity : FragmentActivity() {
         list = lists
     }
 }
+
+//TODO
+//1. ShareButton - how to share posts within the link?
+//2. NotifyButton - how and when to send notifications to user?
+//3. Better to remove animation between activities
+//4. How to resend data for each 3 posts?
+//5. Add more posts and users
+//6. More settings
+//7. Rewrite POST to form-data
+//8. Set avatars
+//9. Phone number authenticate
+//10. Forgot the password?
+//11. Playlists
+//12. Pay-to-read
+//13. Privacy policy
+//14. Advertisement
+//15. VIP subs
+//16. VIP author
