@@ -117,7 +117,7 @@ class MainActivity : FragmentActivity() {
 //6. More settings
 //7. Rewrite POST to form-data
 //8. Set avatars
-//9. Phone number authenticate
+//9. Email authenticate
 //10. Forgot the password?
 //11. Playlists
 //12. Pay-to-read

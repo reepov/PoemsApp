@@ -24,17 +24,16 @@
         android:layout_marginTop="50dp"
         android:cursorVisible="false"
         />
+
     <EditText
         android:id="@+id/enterLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/enterNickname"
-        android:hint="Номер телефона"
-        android:inputType="phone"
-        tools:ignore="Autofill,HardcodedText,TextFields"
         android:layout_marginTop="20dp"
         android:cursorVisible="false"
-        />
+        android:hint="Адрес электронной почты"
+        tools:ignore="Autofill,HardcodedText,TextFields" />
     <EditText
         android:id="@+id/enterPassword"
         android:layout_width="match_parent"

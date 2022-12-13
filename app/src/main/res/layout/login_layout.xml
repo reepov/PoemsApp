@@ -14,16 +14,15 @@
         android:text="Вход"
         tools:ignore="HardcodedText"
         android:textSize="40sp" />
+
     <EditText
         android:id="@+id/enterLogIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/textLogin"
-        android:inputType="phone"
-        android:hint="Номер телефона"
-        tools:ignore="HardcodedText,TextFields, Autofill"
         android:layout_marginTop="40dp"
-        />
+        android:hint="Адрес электронной почты"
+        tools:ignore="HardcodedText,TextFields, Autofill" />
     <EditText
         android:id="@+id/enterPassWord"
         android:layout_width="match_parent"
