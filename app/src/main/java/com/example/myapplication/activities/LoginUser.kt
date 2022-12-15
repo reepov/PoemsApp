@@ -31,51 +31,6 @@ class LoginUser : AppCompatActivity() {
         login = findViewById(R.id.enterLogIn)
         val password = findViewById<EditText>(R.id.enterPassWord)
         val logIn = findViewById<Button>(R.id.logIn)
-        login.setText("+7(")
-        val maxLengthOfEditText = 16
-        login.filters = arrayOf<InputFilter>(LengthFilter(maxLengthOfEditText))
-        login.addTextChangedListener(object: TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
-            }
-
-            @SuppressLint("SetTextI18n")
-            override fun onTextChanged(it: CharSequence?, start: Int, before: Int, count: Int) {
-
-                if(start == 13 && before == 1 && count == 0)
-                {
-                    println(login.text)
-                    login.setText(login.text.substring(0, login.text.length - 1))
-                    println(login.text)
-                }
-                else if(start == 10 && before == 1 && count == 0)
-                {
-                    println(login.text)
-                    login.setText(login.text.substring(0, login.text.length - 1))
-                    println(login.text)
-                }
-                else if(start == 6 && before == 1 && count == 0)
-                {
-                    println(login.text)
-                    login.setText(login.text.substring(0, login.text.length - 1))
-                    println(login.text)
-                }
-                when(login.text.length)
-                {
-                    0, 1, 2 -> login.setText("+7(")
-                    6 -> login.setText("$it)")
-                    10 -> login.setText("$it-")
-                    13 -> login.setText("$it-")
-                    else -> {}
-                }
-                login.setSelection(login.length())
-            }
-
-            //+7(926)042-05-45
-            override fun afterTextChanged(it: Editable) {
-
-            }
-        })
 
         reg.setOnClickListener {
             val intent = Intent(this, RegisterUser::class.java)
@@ -83,7 +38,7 @@ class LoginUser : AppCompatActivity() {
             finish()
         }
         logIn.setOnClickListener {
-            if(login.text.length == 16 && password.text.isNotEmpty())
+            if(password.text.isNotEmpty())
             {
                 val client = OkHttpClient()
                 var bool = true
