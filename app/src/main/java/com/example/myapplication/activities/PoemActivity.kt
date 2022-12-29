@@ -17,7 +17,7 @@ import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
 
-class Poems : AppCompatActivity() {
+class PoemActivity : AppCompatActivity() {
     var poema : PoemsModel? = null
     private lateinit var likeButton : ImageButton
     private lateinit var commentButton : ImageButton
@@ -114,7 +114,7 @@ class Poems : AppCompatActivity() {
             }
         }
         commentButton.setOnClickListener{
-            val intent = Intent(applicationContext, Comment::class.java)
+            val intent = Intent(applicationContext, CommentActivity::class.java)
             intent.putExtra("poemId", poema!!.PoemId)
             intent.putExtra("currentUserId", currentUserId)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)

@@ -1,14 +1,9 @@
 package com.example.myapplication.activities
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.text.Editable
-import android.text.InputFilter
-import android.text.InputFilter.LengthFilter
-import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -19,7 +14,7 @@ import okhttp3.*
 import java.io.IOException
 
 
-class LoginUser : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
     lateinit var sharedPreferences: SharedPreferences
     lateinit var spEditor: SharedPreferences.Editor
     lateinit var login: EditText
@@ -33,15 +28,16 @@ class LoginUser : AppCompatActivity() {
         val logIn = findViewById<Button>(R.id.logIn)
 
         reg.setOnClickListener {
-            val intent = Intent(this, RegisterUser::class.java)
+            val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
-            finish()
+            finishAffinity()
         }
         logIn.setOnClickListener {
             if(password.text.isNotEmpty())
             {
                 val client = OkHttpClient()
                 var bool = true
+                var founded = false
                 var userId : String
                 val request = Request.Builder()
                     .url("http://185.119.56.91/api/User/LoginMobile?email=${login.text}&password=${password.text}")
@@ -52,8 +48,9 @@ class LoginUser : AppCompatActivity() {
                     }
                     override fun onResponse(call: Call, response: Response) {
                         userId = response.body?.string().toString()
-                        if(response.code == 200)
+                        if(response.code == 200 && userId != "false")
                         {
+                            founded = true
                             bool = false
                             spEditor = sharedPreferences.edit()
                             spEditor.putString("Login", login.text.toString())
@@ -65,6 +62,11 @@ class LoginUser : AppCompatActivity() {
                             spEditor.putBoolean("isRemembered", true)
                             spEditor.apply()
                         }
+                        else
+                        {
+                            bool = false
+                            founded = false
+                        }
                     }
                 })
                 while(bool){
@@ -72,10 +74,13 @@ class LoginUser : AppCompatActivity() {
                     continue
                 }
                 bool = true
-                val intent = Intent(this, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                startActivity(intent)
-                finish()
+                if(founded){
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    startActivity(intent)
+                    finishAffinity()
+                }
+                else Toast.makeText(applicationContext, "Пользователь не найден", Toast.LENGTH_SHORT).show()
             }
             else Toast.makeText(applicationContext, "Невалидный номер телефона и/или не введен пароль", Toast.LENGTH_SHORT).show()
         }

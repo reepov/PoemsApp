@@ -56,7 +56,6 @@
         android:inputType="textPassword"
         android:cursorVisible="false"
         />
-
     <Button
         android:id="@+id/signIn"
         android:layout_width="wrap_content"
@@ -68,6 +67,16 @@
         tools:ignore="HardcodedText"
         android:textSize="15sp"
         android:backgroundTint="#ffcc99"/>
+    <TextView
+        android:id="@+id/textIfSignedIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="Уже есть аккаунт?"
+        tools:ignore="HardcodedText"
+        android:textSize="12sp"
+        android:layout_below="@id/signIn"/>
     <EditText
         android:id="@+id/enterCode"
         android:layout_width="match_parent"

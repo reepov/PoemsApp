@@ -21,7 +21,7 @@ import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
 
 
-class Profile : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity() {
     private var _list : ArrayList<PoemsModel> = arrayListOf()
     private var _user : UserModel = UserModel("", "", arrayListOf(), arrayListOf(), false, arrayListOf(), arrayListOf())
     private lateinit var createButton : ImageButton
@@ -102,7 +102,7 @@ class Profile : AppCompatActivity() {
             title.text = title.text.toString() + poem.Title
             views.text = poem.Views.toString()
             title.setOnClickListener {
-                val intent = Intent(applicationContext, Poems::class.java)
+                val intent = Intent(applicationContext, PoemActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 intent.putExtra("poemId", poem.PoemId)
                 intent.putExtra("currentUserId", currentUserId)
@@ -136,7 +136,7 @@ class Profile : AppCompatActivity() {
                     dialog.cancel()
                 }
                 builder1.setPositiveButton("Отредактировать") { dialog, _ ->
-                    val intent = Intent(this, Update::class.java)
+                    val intent = Intent(this, UpdateActivity::class.java)
                     intent.putExtra("poemId", poem.PoemId)
                     println(poem.PoemId)
                     intent.putExtra("currentUserId", currentUserId)
@@ -177,19 +177,19 @@ class Profile : AppCompatActivity() {
             bool = true
         }
         subsButton.setOnClickListener {
-            val intent = Intent(this, Subscribers::class.java)
+            val intent = Intent(this, SubscribedActivity::class.java)
             intent.putExtra("currentUserId", currentUserId)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finishAffinity()
         }
         settingsButton.setOnClickListener {
-            val intent = Intent(this, Settings::class.java)
+            val intent = Intent(this, SettingsActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
         }
         profileButton.setOnClickListener {
-            val intent = Intent(this, Profile::class.java)
+            val intent = Intent(this, ProfileActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             intent.putExtra("currentUserId", currentUserId)
             intent.putExtra("userId", currentUserId)
@@ -197,7 +197,7 @@ class Profile : AppCompatActivity() {
             finish()
         }
         createButton.setOnClickListener {
-            val intent = Intent(this, Create::class.java)
+            val intent = Intent(this, CreateActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             intent.putExtra("currentUserId", currentUserId)
             startActivity(intent)
@@ -225,7 +225,7 @@ class Profile : AppCompatActivity() {
                 title.text = title.text.toString() + poem.Title
                 views.text = poem.Views.toString()
                 title.setOnClickListener {
-                    val intent = Intent(applicationContext, Poems::class.java)
+                    val intent = Intent(applicationContext, PoemActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.putExtra("poemId", poem.PoemId)
                     intent.putExtra("currentUserId", currentUserId)
@@ -258,7 +258,7 @@ class Profile : AppCompatActivity() {
                         dialog.cancel()
                     }
                     builder1.setPositiveButton("Отредактировать") { dialog, _ ->
-                        val intent = Intent(this, Update::class.java)
+                        val intent = Intent(this, UpdateActivity::class.java)
                         intent.putExtra("poemId", poem.PoemId)
                         println(poem.PoemId)
                         intent.putExtra("currentUserId", currentUserId)
@@ -291,7 +291,7 @@ class Profile : AppCompatActivity() {
                 title.text = title.text.toString() + poem.Title
                 views.text = poem.Views.toString()
                 title.setOnClickListener {
-                    val intent = Intent(applicationContext, Poems::class.java)
+                    val intent = Intent(applicationContext, PoemActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.putExtra("poemId", poem.PoemId)
                     intent.putExtra("currentUserId", currentUserId)
@@ -316,7 +316,7 @@ class Profile : AppCompatActivity() {
                 title.text = title.text.toString() + poem.Title
                 views.text = poem.Views.toString()
                 title.setOnClickListener {
-                    val intent = Intent(applicationContext, Poems::class.java)
+                    val intent = Intent(applicationContext, PoemActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.putExtra("poemId", poem.PoemId)
                     intent.putExtra("currentUserId", currentUserId)

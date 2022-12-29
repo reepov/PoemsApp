@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
 
-class Settings : AppCompatActivity() {
+class SettingsActivity : AppCompatActivity() {
     lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,11 +28,11 @@ class Settings : AppCompatActivity() {
                     .remove("Login")
                     .remove("isRemembered")
                     .apply()
-                val intent = Intent(this, LoginUser::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 dialog.cancel()
                 startActivity(intent)
-                finish()
+                finishAffinity()
             }
             builder1.setNegativeButton("Нет") { dialog, _ -> dialog.cancel() }
             val alert11: AlertDialog = builder1.create()

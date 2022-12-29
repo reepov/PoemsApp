@@ -8,13 +8,23 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentStart="true"
         android:layout_height="wrap_content"
         android:text="Рекомендации"
         android:textSize="20sp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        android:id="@+id/type"
+        android:id="@+id/recommendations"
+        tools:ignore="HardcodedText" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_height="wrap_content"
+        android:text="Подписки"
+        android:textSize="20sp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="15dp"
+        android:id="@+id/subscribers"
         tools:ignore="HardcodedText" />
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
@@ -29,7 +39,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginBottom="65dp"
         android:layout_marginTop="0dp"
-        android:layout_below="@+id/type"/>
+        android:layout_below="@+id/recommendations"/>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="61dp"

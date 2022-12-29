@@ -5,12 +5,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.myapplication.dataModels.PoemsModel
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
-import okhttp3.*
-import java.io.IOException
 
-class NumberAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragment) {
+class PoemAdapter(fragment: FragmentActivity) : FragmentStateAdapter(fragment) {
     var list : ArrayList<PoemsModel> = arrayListOf()
     var currentUserId = ""
     override fun getItemCount(): Int = list.size

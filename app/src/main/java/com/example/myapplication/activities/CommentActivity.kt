@@ -21,7 +21,7 @@ import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
 
 
-class Comment : AppCompatActivity(){
+class CommentActivity : AppCompatActivity(){
     var list : ArrayList<CommentModel> = arrayListOf()
 
     @SuppressLint("InflateParams")
@@ -64,7 +64,7 @@ class Comment : AppCompatActivity(){
             val user = child.findViewById<TextView>(R.id.userName)
             user.text = if(comment.Created != "-1") comment.UserName else "DELETED"
             if (comment.Created != "-1") user.setOnClickListener {
-                val intent = Intent(this, Profile::class.java)
+                val intent = Intent(this, ProfileActivity::class.java)
                 intent.putExtra("currentUserId", currentUserId)
                 intent.putExtra("userId", comment.UserId)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)

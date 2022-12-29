@@ -10,10 +10,10 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import com.example.myapplication.activities.Comment
+import com.example.myapplication.activities.CommentActivity
 import com.example.myapplication.dataModels.PoemsModel
 import com.example.myapplication.R
-import com.example.myapplication.activities.Profile
+import com.example.myapplication.activities.ProfileActivity
 import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
@@ -60,7 +60,7 @@ class NumberFragment() : Fragment() {
             commentButton = requireView().findViewById(R.id.comment)
 
             userLink.setOnClickListener {
-                val intent = Intent(context, Profile::class.java)
+                val intent = Intent(context, ProfileActivity::class.java)
                 intent.putExtra("currentUserId", currentUserId)
                 intent.putExtra("userId", poema.AuthorId)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
@@ -111,7 +111,7 @@ class NumberFragment() : Fragment() {
                 }
             }
             commentButton.setOnClickListener{
-                val intent = Intent(context, Comment::class.java)
+                val intent = Intent(context, CommentActivity::class.java)
                 intent.putExtra("poemId", poema.PoemId)
                 intent.putExtra("currentUserId", currentUserId)
                 startActivity(intent)

@@ -4,12 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Typeface
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
-import com.example.myapplication.services.NumberAdapter
+import com.example.myapplication.services.PoemAdapter
 import com.example.myapplication.dataModels.PoemsModel
 import com.example.myapplication.R
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -19,14 +21,15 @@ import java.io.IOException
 
 class MainActivity : FragmentActivity() {
 
-    private lateinit var adapter: NumberAdapter
+    private lateinit var adapter: PoemAdapter
     private lateinit var viewPager: ViewPager2
     private lateinit var createButton : ImageButton
     private lateinit var homeButton : ImageButton
     private lateinit var profileButton : ImageButton
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var type : TextView
+    private lateinit var recommsList : TextView
     private lateinit var subsButton : ImageButton
+    private lateinit var subsList : TextView
     var list : ArrayList<PoemsModel> = arrayListOf()
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +40,7 @@ class MainActivity : FragmentActivity() {
         val currentUserId = sharedPreferences.getString("CurrentUserId", "")
         if(!sharedPreferences.getBoolean("isRemembered", false))
         {
-            val intent = Intent(this, LoginUser::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finish()
@@ -62,7 +65,7 @@ class MainActivity : FragmentActivity() {
                 }
             })
             while (list.isEmpty()) continue
-            adapter = NumberAdapter(this)
+            adapter = PoemAdapter(this)
             viewPager = findViewById(R.id.pager)
             homeButton = findViewById(R.id.homeButton)
             viewPager.adapter = adapter
@@ -71,16 +74,36 @@ class MainActivity : FragmentActivity() {
             createButton = findViewById(R.id.createButton)
             profileButton = findViewById(R.id.profileButton)
             subsButton = findViewById(R.id.subscribersButton)
-            type = findViewById(R.id.type)
-            type.text = "Рекомендации"
+            recommsList = findViewById(R.id.recommendations)
+            subsList = findViewById(R.id.subscribers)
+            var typeFace: Typeface? = ResourcesCompat.getFont(applicationContext, R.font.montserrat)
+            subsList.typeface = typeFace
+            typeFace = ResourcesCompat.getFont(applicationContext, R.font.bold)
+            recommsList.typeface = typeFace
+            recommsList.setOnClickListener {
+                typeFace= ResourcesCompat.getFont(applicationContext, R.font.montserrat)
+                subsList.typeface = typeFace
+                typeFace = ResourcesCompat.getFont(applicationContext, R.font.bold)
+                recommsList.typeface = typeFace
+                val intent = Intent(this, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                startActivity(intent)
+                finishAffinity()
+            }
+            subsList.setOnClickListener {
+                val intent = Intent(this, SubscribedActivity::class.java)
+                intent.putExtra("currentUserId", currentUserId)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                startActivity(intent)
+            }
             subsButton.setOnClickListener {
-                val intent = Intent(this, Subscribers::class.java)
+                val intent = Intent(this, SubscribedActivity::class.java)
                 intent.putExtra("currentUserId", currentUserId)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
             }
             profileButton.setOnClickListener {
-                val intent = Intent(this, Profile::class.java)
+                val intent = Intent(this, ProfileActivity::class.java)
                 println(currentUserId)
                 intent.putExtra("currentUserId", currentUserId)
                 intent.putExtra("userId", currentUserId)
@@ -88,7 +111,7 @@ class MainActivity : FragmentActivity() {
                 startActivity(intent)
             }
             createButton.setOnClickListener {
-                val intent = Intent(this, Create::class.java)
+                val intent = Intent(this, CreateActivity::class.java)
                 intent.putExtra("currentUserId", currentUserId)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
@@ -108,20 +131,32 @@ class MainActivity : FragmentActivity() {
 }
 
 
-//TODO
-//1. ShareButton - how to share posts within the link?
-//2. NotifyButton - how and when to send notifications to user?
-//3. Better to remove animation between activities
-//4. How to resend data for each 3 posts?
-//5. Add more posts and users
-//6. More settings
-//7. Rewrite POST to form-data
-//8. Set avatars
-//9. Email authenticate
-//10. Forgot the password?
-//11. Playlists
-//12. Pay-to-read
-//13. Privacy policy
-//14. Advertisement
-//15. VIP subs
-//16. VIP author
+//TODO faster
+// ShareButton - how to share posts within the link?
+// NotifyButton - how and when to send notifications to user?
+// Tips at start
+// Make search activity
+// Add more posts and users
+// Set avatars
+// Forgot the password?
+// Dark Theme
+// Resend code
+// Focus on EditText
+// Password harder
+// Move subs to recommendations (READY)
+// Add already have an account at register (READY)
+// Email unique account check (READY)
+
+//TODO not so fast
+// Better to remove animation between activities
+// How to resend data for each 3 posts?
+// More settings
+// Rewrite POST to form-data
+// Playlists
+// Pay-to-read
+// Privacy policy
+// Advertisement
+// VIP subs
+// VIP author
+
+

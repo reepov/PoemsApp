@@ -24,23 +24,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.RegisterUser"
+        <activity android:name=".activities.RegisterActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.LoginUser"
+        <activity android:name=".activities.LoginActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.Comment"
+        <activity android:name=".activities.CommentActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.Create"
+        <activity android:name=".activities.CreateActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.Profile"
+        <activity android:name=".activities.ProfileActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.Poems"
+        <activity android:name=".activities.PoemActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.Settings"
+        <activity android:name=".activities.SettingsActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.Update"
+        <activity android:name=".activities.UpdateActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.Subscribers"
+        <activity android:name=".activities.SubscribedActivity"
             android:screenOrientation="portrait"/>
     </application>
 
