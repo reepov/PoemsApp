@@ -22,7 +22,7 @@ class UpdateActivity : AppCompatActivity() {
     private lateinit var currentUserId : String
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
-        val client = OkHttpClient()
+        var client = OkHttpClient()
         var bool = true
         poemId = intent.getStringExtra("poemId")!!
         currentUserId = intent.getStringExtra("currentUserId")!!
@@ -68,14 +68,14 @@ class UpdateActivity : AppCompatActivity() {
 
             val title = if(editTitle.text.toString() != "") editTitle.text else "Без названия"
             val url = "http://185.119.56.91/api/Poems/UpdatePoem?poemId=$poemId&title=${title}&description=${descript.text}"
-            val client: OkHttpClient = OkHttpClient.Builder()
+            client = OkHttpClient.Builder()
                 .retryOnConnectionFailure(true)
                 .build()
             val requestBody: RequestBody = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("message", text.toString())
                 .build()
-            val request = Request.Builder()
+            request = Request.Builder()
                 .url(url)
                 .post(requestBody)
                 .build()

@@ -132,7 +132,6 @@ class MainActivity : FragmentActivity() {
 
 
 //TODO faster
-// ShareButton - how to share posts within the link?
 // NotifyButton - how and when to send notifications to user?
 // Tips at start
 // Make search activity
@@ -143,6 +142,7 @@ class MainActivity : FragmentActivity() {
 // Resend code
 // Focus on EditText
 // Password harder
+// ShareButton - how to share posts within the link? (READY)
 // Move subs to recommendations (READY)
 // Add already have an account at register (READY)
 // Email unique account check (READY)
@@ -154,7 +154,7 @@ class MainActivity : FragmentActivity() {
 // Rewrite POST to form-data
 // Playlists
 // Pay-to-read
-// Privacy policy
+// Privacy policySS
 // Advertisement
 // VIP subs
 // VIP author

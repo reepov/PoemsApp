@@ -23,7 +23,7 @@ class SettingsActivity : AppCompatActivity() {
             builder1.setPositiveButton("Да") { dialog, _ ->
                 sharedPreferences = getSharedPreferences("USER_INFO_SP", Context.MODE_PRIVATE)
                 sharedPreferences.edit()
-                    .remove("currentUserId")
+                    .remove("CurrentUserId")
                     .remove("Password")
                     .remove("Login")
                     .remove("isRemembered")

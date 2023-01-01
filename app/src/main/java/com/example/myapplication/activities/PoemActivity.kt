@@ -1,12 +1,15 @@
 package com.example.myapplication.activities
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.dataModels.PoemsModel
@@ -24,34 +27,49 @@ class PoemActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
-        val poemId = intent.getStringExtra("poemId")
-        println(poemId)
-        var client = OkHttpClient()
-        var bool = true
-        val currentUserId = intent.getStringExtra("currentUserId")
-        var request = Request.Builder()
-            .url("http://185.119.56.91/api/Poems/GetPoemById?userId=$currentUserId&poemId=$poemId")
-            .build()
-        var responseGet : String
-        client.newCall(request).enqueue(object: Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                println("error")
-            }
-            override fun onResponse(call: Call, response: Response) {
-                responseGet = response.body?.string().toString()
-                val json = jacksonObjectMapper()
-                poema = json.readValue<PoemsModel>(responseGet)
-                if(response.code == 200) bool = false
-            }
-        })
-        while(bool){
-            Thread.sleep(100)
-            continue
-        }
-        bool = true
-
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_number)
+        val intent : Intent = intent
+        val action : String? = intent.action
+        val data: String? = intent.dataString
+        val poemId : String = if (Intent.ACTION_VIEW == action && data != null) {
+            Log.d("FKJELKFJ", data.toString())
+            data.split("poemId=")[1]
+        } else {
+            intent.getStringExtra("poemId").toString()
+        }
+        val sharedPreferences = getSharedPreferences("USER_INFO_SP", Context.MODE_PRIVATE)
+        val currentUserId = sharedPreferences.getString("CurrentUserId", null)
+        var client = OkHttpClient()
+        if(currentUserId != null)
+        {
+            var bool = true
+            var request = Request.Builder()
+                .url("http://185.119.56.91/api/Poems/GetPoemById?userId=$currentUserId&poemId=$poemId")
+                .build()
+            var responseGet : String
+            client.newCall(request).enqueue(object: Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    println("error")
+                }
+                override fun onResponse(call: Call, response: Response) {
+                    responseGet = response.body?.string().toString()
+                    val json = jacksonObjectMapper()
+                    poema = json.readValue<PoemsModel>(responseGet)
+                    if(response.code == 200) bool = false
+                }
+            })
+            while(bool){
+                Thread.sleep(100)
+                continue
+            }
+            bool = true
+        }
+        else{
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finishAffinity()
+        }
         val textView: TextView = findViewById(R.id.textView)
         val title : TextView = findViewById(R.id.titleTextView)
         val likes : TextView = findViewById(R.id.countLikes)
@@ -74,7 +92,7 @@ class PoemActivity : AppCompatActivity() {
         likeButton.setOnClickListener{
             if (poema!!.isLikedByCurrentUser){
                 val url = "http://185.119.56.91/api/Poems/RemoveLikeFromPoem?userId=$currentUserId&poemId=${poema!!.PoemId}"
-                request = Request.Builder()
+                val request = Request.Builder()
                     .url(url)
                     .post(EMPTY_REQUEST)
                     .build()
@@ -95,7 +113,7 @@ class PoemActivity : AppCompatActivity() {
             else
             {
                 val url = "http://185.119.56.91/api/Poems/SetLikeToPoem?userId=$currentUserId&poemId=${poema!!.PoemId}"
-                request = Request.Builder()
+                val request = Request.Builder()
                     .url(url)
                     .post(EMPTY_REQUEST)
                     .build()
@@ -122,7 +140,7 @@ class PoemActivity : AppCompatActivity() {
         }
         val url = "http://185.119.56.91/api/Poems/SetViewToPoem?userId=$currentUserId&poemId=${poema!!.PoemId}"
         client = OkHttpClient()
-        request = Request.Builder()
+        val request = Request.Builder()
             .url(url)
             .post(EMPTY_REQUEST)
             .build()

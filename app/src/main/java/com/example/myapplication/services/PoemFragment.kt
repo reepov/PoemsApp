@@ -1,6 +1,11 @@
 package com.example.myapplication.services
 
+import android.R.attr.label
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
@@ -9,14 +14,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
-import com.example.myapplication.activities.CommentActivity
-import com.example.myapplication.dataModels.PoemsModel
 import com.example.myapplication.R
+import com.example.myapplication.activities.CommentActivity
 import com.example.myapplication.activities.ProfileActivity
+import com.example.myapplication.dataModels.PoemsModel
 import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
+
 
 const val ARG_OBJECT = "object"
 
@@ -29,6 +37,7 @@ class NumberFragment() : Fragment() {
     }
     private lateinit var likeButton : ImageButton
     private lateinit var commentButton : ImageButton
+    private lateinit var shareButton : ImageButton
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -58,7 +67,7 @@ class NumberFragment() : Fragment() {
             if(poema.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_after_dasha)
             else likeButton.setImageResource(R.drawable.ic_before_dasha)
             commentButton = requireView().findViewById(R.id.comment)
-
+            shareButton = requireView().findViewById(R.id.repost)
             userLink.setOnClickListener {
                 val intent = Intent(context, ProfileActivity::class.java)
                 intent.putExtra("currentUserId", currentUserId)
@@ -115,6 +124,12 @@ class NumberFragment() : Fragment() {
                 intent.putExtra("poemId", poema.PoemId)
                 intent.putExtra("currentUserId", currentUserId)
                 startActivity(intent)
+            }
+            shareButton.setOnClickListener {
+                val myClipboard: ClipboardManager = activity?.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+                val myClip: ClipData = ClipData.newPlainText(poema.Title, "http://185.119.56.91/api/Poems/Redirect/poemId=${poema.PoemId}")
+                myClipboard.setPrimaryClip(myClip)
+                Toast.makeText(context, "Ссылка скопирована в буфер обмена", Toast.LENGTH_SHORT).show()
             }
             val url = "http://185.119.56.91/api/Poems/SetViewToPoem?userId=$currentUserId&poemId=${poema.PoemId}"
             val client = OkHttpClient()

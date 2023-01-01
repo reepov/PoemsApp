@@ -35,7 +35,17 @@
         <activity android:name=".activities.ProfileActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.PoemActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="http"
+                    android:host="185.119.56.91"
+                    android:pathPrefix="/api/Poems/Redirect" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activities.SettingsActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.UpdateActivity"

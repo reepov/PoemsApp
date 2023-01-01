@@ -8,4 +8,13 @@
     <string name="_0">0</string>
     <string name="text_of__nick">Your nickname will placed here…</string>
     <string name="_0_subscribers">0 subscribers</string>
+    <string name="asset_statements">
+  [{
+    \"relation\": [\"delegate_permission/common.handle_all_urls\"],
+    \"target\": {
+      \"namespace\": \"web\",
+      \"site\": \"http://185.119.56.91\"
+    }
+  }]
+</string>
 </resources>
