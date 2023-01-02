@@ -12,4 +12,5 @@ data class CommentModel(
     var RepliesId : List<String>?,
     var UpReplyId : String?,
     var PoemId : String,
-    var UserId : String) : Serializable
+    var UserId : String,
+    var Photo: String?) : Serializable

@@ -3,8 +3,11 @@ package com.example.myapplication.activities
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -75,7 +78,26 @@ class CommentActivity : AppCompatActivity(){
             val date = child.findViewById<TextView>(R.id.dateTime)
             date.text = if(comment.Created == "-1") " " else comment.Created
             val image = child.findViewById<ImageView>(R.id.avatar)
-            image.setImageResource(R.mipmap.ic_launcher)
+            if(comment.Photo != null && comment.Created != "-1") {
+                val decodedByte: ByteArray = Base64.decode(comment.Photo, 0)
+                val b = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
+                image.setImageBitmap(
+                    Bitmap.createScaledBitmap(
+                        b,
+                        b.width / b.height * 50,
+                        50,
+                        false
+                    )
+                )
+            }
+            else image.setImageResource(R.mipmap.ic_launcher)
+            if (comment.Created != "-1") image.setOnClickListener {
+                val intent = Intent(this, ProfileActivity::class.java)
+                intent.putExtra("currentUserId", currentUserId)
+                intent.putExtra("userId", comment.UserId)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                startActivity(intent)
+            }
             val likeButton = child.findViewById<ImageButton>(R.id.commentLike)
             if (comment.isLikedByCurrentUser) likeButton.setImageResource(R.drawable.ic_after_dasha) else likeButton.setImageResource(R.drawable.ic_before_dasha)
             val likes : TextView = child.findViewById(R.id.countCommLikes)

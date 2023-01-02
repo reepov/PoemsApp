@@ -136,22 +136,23 @@ class MainActivity : FragmentActivity() {
 // Tips at start
 // Make search activity
 // Add more posts and users
-// Set avatars
 // Forgot the password?
 // Dark Theme
-// Resend code
-// Focus on EditText
 // Password harder
+// Set avatars (NOT SOLVED AT ALL - SIZE AND SAVE ISSUES)
+// Focus on EditText (NOT SOLVED AT ALL - CAN'T DO ANYTHING)
 // ShareButton - how to share posts within the link? (READY)
 // Move subs to recommendations (READY)
 // Add already have an account at register (READY)
+// Resend code (READY)
 // Email unique account check (READY)
+
 
 //TODO not so fast
 // Better to remove animation between activities
 // How to resend data for each 3 posts?
 // More settings
-// Rewrite POST to form-data
+// Rewrite POST to form-dataS
 // Playlists
 // Pay-to-read
 // Privacy policySS

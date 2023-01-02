@@ -2,9 +2,14 @@ package com.example.myapplication.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Typeface
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Base64
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
@@ -18,27 +23,33 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
+import java.io.ByteArrayOutputStream
+import java.io.FileNotFoundException
 import java.io.IOException
 
 
 class ProfileActivity : AppCompatActivity() {
     private var _list : ArrayList<PoemsModel> = arrayListOf()
-    private var _user : UserModel = UserModel("", "", arrayListOf(), arrayListOf(), false, arrayListOf(), arrayListOf())
+    private var _user : UserModel = UserModel("", "", arrayListOf(), arrayListOf(), false, arrayListOf(), arrayListOf(), "")
     private lateinit var createButton : ImageButton
     private lateinit var homeButton : ImageButton
     private lateinit var profileButton : ImageButton
     private lateinit var settingsButton : ImageButton
     private lateinit var subsButton : ImageButton
+    private lateinit var avatar : ImageView
     private lateinit var Posts : TextView
     private lateinit var Liked : TextView
     private lateinit var Viewed : TextView
+    private val SELECT_PICTURE = 1
+    lateinit var currentUserId : String
+    lateinit var userId : String
     @SuppressLint("SetTextI18n", "InflateParams", "MissingInflatedId")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         var client = OkHttpClient()
         var bool = true
-        val userId = intent.getStringExtra("userId")
-        val currentUserId = intent.getStringExtra("currentUserId")
+        currentUserId = intent.getStringExtra("currentUserId").toString()
+        userId = intent.getStringExtra("userId").toString()
         var request = Request.Builder()
             .url("http://185.119.56.91/api/User/GetUserById?currentUserId=$currentUserId&userId=$userId")
             .build()
@@ -69,6 +80,7 @@ class ProfileActivity : AppCompatActivity() {
         profileButton = findViewById(R.id.profileButton)
         settingsButton = findViewById(R.id.buttonSettings)
         subsButton = findViewById(R.id.subscribersButton)
+        avatar = findViewById(R.id.avatar)
         Posts = findViewById(R.id.posts)
         Liked = findViewById(R.id.liked)
         Viewed = findViewById(R.id.viewed)
@@ -89,6 +101,11 @@ class ProfileActivity : AppCompatActivity() {
         val countViews = findViewById<TextView>(R.id.profileCountViews)
         var wholeLikes = 0
         var wholeViews = 0
+        if(_user.Photo != null) {
+            val decodedByte: ByteArray = Base64.decode(_user.Photo, 0)
+            val b = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
+            avatar.setImageBitmap(Bitmap.createScaledBitmap(b, b.width/b.height * 100, 100, false))
+        }
         nick.text = _user.NickName
         countPoems.text = "Публикации: ${_list.size}"
         countSubs.text = "Подписчики: ${_user.Subscribers.size}"
@@ -195,6 +212,19 @@ class ProfileActivity : AppCompatActivity() {
             intent.putExtra("userId", currentUserId)
             startActivity(intent)
             finish()
+        }
+        avatar.setOnClickListener{
+            if(userId == currentUserId) {
+                val intent = Intent()
+                intent.type = "image/*"
+                intent.action = Intent.ACTION_GET_CONTENT
+                startActivityForResult(
+                    Intent.createChooser(
+                        intent,
+                        "Select Picture"
+                    ), SELECT_PICTURE
+                )
+            }
         }
         createButton.setOnClickListener {
             val intent = Intent(this, CreateActivity::class.java)
@@ -323,6 +353,50 @@ class ProfileActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 linearLayout.addView(child)
+            }
+        }
+    }
+    @Deprecated("Deprecated in Java")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK) {
+            val selectedImage: Uri? = data?.data
+            val bitmap: Bitmap?
+            try {
+                val b = MediaStore.Images.Media.getBitmap(this.contentResolver, selectedImage)
+                bitmap = Bitmap.createScaledBitmap(b, 100, 100, false)
+                val bos = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.PNG, 10, bos)
+                val bArray: ByteArray = bos.toByteArray()
+                val imageEncoded: String = Base64.encodeToString(bArray, Base64.DEFAULT)
+                avatar.setImageBitmap(bitmap)
+                println(imageEncoded.length)
+                println(bitmap.allocationByteCount)
+                println(bos.size())
+                val url = "http://185.119.56.91/api/User/SetAvatarToUser?currentUserId=$userId"
+                val client: OkHttpClient = OkHttpClient.Builder()
+                    .retryOnConnectionFailure(true)
+                    .build()
+                val requestBody: RequestBody = MultipartBody.Builder()
+                    .setType(MultipartBody.FORM)
+                    .addFormDataPart("array", imageEncoded)
+                    .build()
+                val request = Request.Builder()
+                    .url(url)
+                    .post(requestBody)
+                    .build()
+                client.newCall(request).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) {
+
+                    }
+                    override fun onResponse(call: Call, response: Response) {
+
+                    }
+                })
+            } catch (e: FileNotFoundException) {
+                e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
         }
     }

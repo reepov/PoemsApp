@@ -26,8 +26,10 @@ class RegisterActivity : AppCompatActivity() {
         val enteredCode = findViewById<EditText>(R.id.enterCode)
         val sendCode = findViewById<Button>(R.id.sendCode)
         val signed = findViewById<TextView>(R.id.textIfSignedIn)
+        val codeResend = findViewById<TextView>(R.id.textIfResendCode)
         sendCode.isVisible = false
         enteredCode.isVisible = false
+        codeResend.isVisible = false
         signed.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
@@ -73,12 +75,34 @@ class RegisterActivity : AppCompatActivity() {
                 else {
                     enteredCode.isVisible = true
                     sendCode.isVisible = true
+                    codeResend.isVisible = true
                     nickname.isVisible = false
                     login.isVisible = false
                     password.isVisible = false
                     secondPass.isVisible = false
                     register.isVisible = false
                     signed.isVisible = false
+                    codeResend.setOnClickListener {
+                        code = ""
+                        flag = false
+                        url = "http://185.119.56.91/api/User/RegisterMobile?email=${login.text}"
+                        request = Request.Builder()
+                            .url(url)
+                            .post(EMPTY_REQUEST)
+                            .build()
+                        client.newCall(request).enqueue(object : Callback {
+                            override fun onFailure(call: Call, e: IOException) {
+
+                            }
+                            override fun onResponse(call: Call, response: Response) {
+                                code = response.body?.string().toString()
+                                flag  = true
+                            }
+                        })
+                        while(!flag) Thread.sleep(100)
+                        flag = false
+                        Toast.makeText(applicationContext, "Код успешно переотправлен. Проверьте почту ${login.text}", Toast.LENGTH_SHORT).show()
+                    }
                     sendCode.setOnClickListener {
                         println(code)
                         if (enteredCode.text.toString() == code) {

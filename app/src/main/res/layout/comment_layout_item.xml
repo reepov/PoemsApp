@@ -9,22 +9,22 @@
         android:id="@+id/userName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="90dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         tools:ignore="HardcodedText"
         android:text="CommentText"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
     <TextView
         android:id="@+id/commentText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="CommentText"
         tools:ignore="HardcodedText"
-        android:layout_marginStart="90dp"
+        android:layout_marginStart="60dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="1dp"
-        android:textSize="17sp"
+        android:textSize="14sp"
         android:layout_below="@id/userName"/>
 
     <TextView
@@ -33,11 +33,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/commentText"
         android:layout_gravity="center"
-        android:layout_marginStart="90dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="10dp"
         android:text="01-01-1991 00:00:00"
         tools:ignore="HardcodedText"
-        android:textSize="15sp" />
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/countCommLikes"
@@ -52,14 +52,15 @@
         android:text="0"
         tools:ignore="HardcodedText"
         android:textAlignment="gravity"
-        android:textSize="20sp" />
+        android:textSize="16sp" />
 
     <ImageButton
             android:id="@+id/commentLike"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="30dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_below="@id/commentText"
             android:layout_alignParentEnd="true"
             android:gravity="end"
@@ -70,8 +71,8 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/view2"
         android:background="#FFFFFF"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="10dp"
@@ -81,8 +82,8 @@
         app:cardCornerRadius="40dp">
         <ImageView
             android:id="@+id/avatar"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:gravity="center"
             android:src="@mipmap/ic_launcher"
             android:contentDescription="@string/todo" />
