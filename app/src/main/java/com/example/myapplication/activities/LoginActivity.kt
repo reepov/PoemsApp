@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.myapplication.R
 import okhttp3.*
 import java.io.IOException
@@ -21,12 +22,18 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_layout)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         sharedPreferences = getSharedPreferences("USER_INFO_SP", Context.MODE_PRIVATE)
         val reg = findViewById<TextView>(R.id.textIfNotRegister)
+        val forget = findViewById<TextView>(R.id.textIfForgetPassword)
         login = findViewById(R.id.enterLogIn)
         val password = findViewById<EditText>(R.id.enterPassWord)
         val logIn = findViewById<Button>(R.id.logIn)
-
+        forget.setOnClickListener {
+            val intent = Intent(this, ForgetActivity::class.java)
+            startActivity(intent)
+            finishAffinity()
+        }
         reg.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)

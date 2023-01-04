@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="30dp">
+    <TextView
+        android:id="@+id/textForget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Введите электронную почту, к которой привязан ваш аккаунт"
+        tools:ignore="HardcodedText"
+        android:layout_above="@+id/enterEmail"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/textReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Введите новый пароль"
+        tools:ignore="HardcodedText"
+        android:layout_above="@+id/enterNewPassword"
+        android:textSize="18sp" />
+    <EditText
+        android:id="@+id/enterEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="30dp"
+        android:hint="Адрес электронной почты"
+        tools:ignore="HardcodedText,TextFields, Autofill" />
+    <Button
+        android:id="@+id/sendToReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/enterEmail"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="30dp"
+        android:text="Отправить"
+        tools:ignore="HardcodedText"
+        android:textSize="16sp"
+        android:backgroundTint="#ffcc99"/>
+    <EditText
+        android:id="@+id/enterNewPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="40dp"
+        android:hint="Новый пароль"
+        tools:ignore="HardcodedText,TextFields, Autofill"
+        android:inputType="textPassword"/>
+    <EditText
+        android:id="@+id/repeatNewPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/enterNewPassword"
+        android:hint="Повторите новый пароль"
+        tools:ignore="Autofill,HardcodedText"
+        android:layout_marginTop="20dp"
+        android:inputType="textPassword"
+        />
+
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/repeatNewPassword"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="30dp"
+        android:text="Сменить пароль"
+        tools:ignore="HardcodedText"
+        android:textSize="14sp"
+        android:backgroundTint="#ffcc99"/>
+
+</RelativeLayout>

@@ -55,4 +55,14 @@
         tools:ignore="HardcodedText"
         android:textSize="12sp"
         android:layout_below="@id/logIn"/>
+    <TextView
+        android:id="@+id/textIfForgetPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:text="Забыли пароль?"
+        tools:ignore="HardcodedText"
+        android:textSize="12sp"
+        android:layout_below="@id/textIfNotRegister"/>
 </RelativeLayout>

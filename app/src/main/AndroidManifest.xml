@@ -14,6 +14,7 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="m"
+        android:configChanges="uiMode"
         tools:ignore="LockedOrientationActivity">
         <activity
             android:name=".activities.MainActivity"
@@ -26,15 +27,29 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.RegisterActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:configChanges="uiMode"/>
         <activity android:name=".activities.LoginActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:configChanges="uiMode"/>
         <activity android:name=".activities.CommentActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.CreateActivity"
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.ProfileActivity"
             android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ForgetActivity"
+            android:screenOrientation="portrait"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="http"
+                    android:host="185.119.56.91"
+                    android:pathPrefix="/api/User/LinkToResetPassword" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activities.PoemActivity"
             android:screenOrientation="portrait"
             android:exported="true">

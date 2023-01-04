@@ -106,7 +106,6 @@ class RegisterActivity : AppCompatActivity() {
                         Toast.makeText(applicationContext, "Код успешно переотправлен. Проверьте почту ${login.text}", Toast.LENGTH_SHORT).show()
                     }
                     sendCode.setOnClickListener {
-                        println(code)
                         if (enteredCode.text.toString() == code) {
                             url =
                                 "http://185.119.56.91/api/User/EndRegisterMobile?email=${login.text}&nickname=${nickname.text}&password=${password.text}"

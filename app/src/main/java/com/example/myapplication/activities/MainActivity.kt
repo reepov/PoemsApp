@@ -136,8 +136,8 @@ class MainActivity : FragmentActivity() {
 // Tips at start
 // Make search activity
 // Add more posts and users
-// Forgot the password?
-// Dark Theme
+// Forgot the password? (NOT SOLVED AT ALL - MAKE LINKS CLOSED AND ONCE-USED)
+// System Dark Theme lock (READY)
 // Password harder: at least 8 symbols, 1 digit, 1 up letter, 1 low letter, only latina (READY)
 // Fix DateTime (READY)
 // Fix zero in 1-digit month (READY)
