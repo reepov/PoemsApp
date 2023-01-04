@@ -13,6 +13,7 @@ import com.example.myapplication.R
 import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
+import java.util.regex.Pattern
 
 class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,12 +44,13 @@ class RegisterActivity : AppCompatActivity() {
                 "Пароли не совпадают",
                 Toast.LENGTH_SHORT
             ).show()
-            if (!login.text.contains("@") || login.text.indexOf("@") == 0 || login.text.indexOf("@") == login.text.length - 1 ) Toast.makeText(
+            else if (!login.text.contains("@") || login.text.indexOf("@") == 0 || login.text.indexOf("@") == login.text.length - 1 ) Toast.makeText(
                 applicationContext,
                 "Введен некорректный адрес электронной почты",
                 Toast.LENGTH_SHORT
             ).show()
             else if (password.text.isEmpty()) Toast.makeText(applicationContext, "Введите пароль", Toast.LENGTH_SHORT).show()
+            else if (!isValidPasswordFormat(password.text.toString())) Toast.makeText(applicationContext, "Пароль должен содержать минимум 8 цифр, одну заглавную букву, одну строчную букву, и содержать только символы латинского алфавита", Toast.LENGTH_LONG).show()
             else
             {
                 var code = ""
@@ -85,7 +87,7 @@ class RegisterActivity : AppCompatActivity() {
                     codeResend.setOnClickListener {
                         code = ""
                         flag = false
-                        url = "http://185.119.56.91/api/User/RegisterMobile?email=${login.text}"
+                        url = "http://185.119.56.91/api/User/RegisterMobile?email=${login.text}&password=${password.text}"
                         request = Request.Builder()
                             .url(url)
                             .post(EMPTY_REQUEST)
@@ -137,5 +139,15 @@ class RegisterActivity : AppCompatActivity() {
             }
 
         }
+    }
+    fun isValidPasswordFormat(password: String): Boolean {
+        val passwordREGEX = Pattern.compile("^" +
+                "(?=.*[0-9])" +         //at least 1 digit
+                "(?=.*[a-z])" +         //at least 1 lower case letter
+                "(?=.*[A-Z])" +         //at least 1 upper case letter
+                "(?=.*[a-zA-Z])" +      //any letter
+                ".{8,}" +               //at least 8 characters
+                "$");
+        return passwordREGEX.matcher(password).matches()
     }
 }

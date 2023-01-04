@@ -127,7 +127,7 @@ class NumberFragment() : Fragment() {
             }
             shareButton.setOnClickListener {
                 val myClipboard: ClipboardManager = activity?.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-                val myClip: ClipData = ClipData.newPlainText(poema.Title, "http://185.119.56.91/api/Poems/Redirect/poemId=${poema.PoemId}")
+                val myClip: ClipData = ClipData.newPlainText(poema.Title, "http://185.119.56.91/api/Poems/Redirect?poemId=${poema.PoemId}")
                 myClipboard.setPrimaryClip(myClip)
                 Toast.makeText(context, "Ссылка скопирована в буфер обмена", Toast.LENGTH_SHORT).show()
             }

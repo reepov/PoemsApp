@@ -138,7 +138,9 @@ class MainActivity : FragmentActivity() {
 // Add more posts and users
 // Forgot the password?
 // Dark Theme
-// Password harder
+// Password harder: at least 8 symbols, 1 digit, 1 up letter, 1 low letter, only latina (READY)
+// Fix DateTime (READY)
+// Fix zero in 1-digit month (READY)
 // Set avatars (NOT SOLVED AT ALL - SIZE AND SAVE ISSUES)
 // Focus on EditText (NOT SOLVED AT ALL - CAN'T DO ANYTHING)
 // ShareButton - how to share posts within the link? (READY)
