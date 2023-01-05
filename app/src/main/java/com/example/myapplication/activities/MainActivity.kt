@@ -97,7 +97,7 @@ class MainActivity : FragmentActivity() {
                 startActivity(intent)
             }
             subsButton.setOnClickListener {
-                val intent = Intent(this, SubscribedActivity::class.java)
+                val intent = Intent(this, FinderActivity::class.java)
                 intent.putExtra("currentUserId", currentUserId)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
@@ -136,6 +136,7 @@ class MainActivity : FragmentActivity() {
 // Tips at start
 // Make search activity
 // Add more posts and users
+// Load widget
 // Forgot the password? (NOT SOLVED AT ALL - MAKE LINKS CLOSED AND ONCE-USED)
 // System Dark Theme lock (READY)
 // Password harder: at least 8 symbols, 1 digit, 1 up letter, 1 low letter, only latina (READY)

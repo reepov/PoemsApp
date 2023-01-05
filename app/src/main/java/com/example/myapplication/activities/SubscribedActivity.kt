@@ -92,7 +92,7 @@ class SubscribedActivity : FragmentActivity(){
             finishAffinity()
         }
         subsButton.setOnClickListener {
-            val intent = Intent(this, SubscribedActivity::class.java)
+            val intent = Intent(this, FinderActivity::class.java)
             intent.putExtra("currentUserId", currentUserId)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)

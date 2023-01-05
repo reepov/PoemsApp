@@ -1,6 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="10dp"
+    android:paddingBottom="30dp">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchText"
+        android:hint="Поиск"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="15dp"
+        android:layout_toStartOf="@+id/search"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/search"
+        android:layout_marginEnd="15dp"
+        android:layout_alignParentEnd="true"
+        android:text="Поиск"
+        android:textSize="14dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Публикации"
+        android:paddingEnd="15dp"
+        android:paddingStart="30dp"
+        android:textSize="20sp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/searchText"
+        android:layout_alignParentStart="true"
+        android:id="@+id/pubs"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Авторы"
+        android:textSize="20sp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/authors"
+        android:paddingEnd="15dp"
+        android:paddingStart="30dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        android:layout_above="@+id/authors"
+        android:layout_marginBottom="10dp"
+        android:id="@+id/view"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/pubs"
+        android:layout_above="@+id/view"
+        android:id="@+id/layoutPubs"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/authors"
+        android:id="@+id/layoutAuthors"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical" />
+</RelativeLayout>
