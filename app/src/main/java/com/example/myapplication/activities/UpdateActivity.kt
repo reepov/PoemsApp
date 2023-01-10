@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
-import android.view.KeyEvent
 import android.widget.Button
 import android.widget.EditText
 import androidx.annotation.RequiresApi
@@ -15,7 +14,6 @@ import com.example.myapplication.services.APISender
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
-import java.io.IOException
 
 class UpdateActivity : AppCompatActivity() {
     private lateinit var poema : PoemsModel

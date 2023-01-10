@@ -23,7 +23,6 @@ import com.example.myapplication.services.APISender
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
-import okhttp3.internal.EMPTY_REQUEST
 import java.io.ByteArrayOutputStream
 import java.io.FileNotFoundException
 import java.io.IOException
@@ -110,8 +109,7 @@ class ProfileActivity : AppCompatActivity() {
                 builder1.setMessage("Вы хотите удалить или отредактировать пост?")
                 builder1.setCancelable(true)
                 builder1.setNegativeButton("Удалить") { dialog, _ ->
-                    var text = ""
-                    text = if(api.post("http://185.119.56.91/api/Poems/DeletePoem?poemId=${poem.PoemId}", "")) "Пост удален"
+                    val text : String = if(api.post("http://185.119.56.91/api/Poems/DeletePoem?poemId=${poem.PoemId}", "")) "Пост удален"
                     else "Что-то пошло не так"
                     if (text != "Что-то пошло не так") linearLayout.removeView(it)
                     Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
@@ -212,8 +210,7 @@ class ProfileActivity : AppCompatActivity() {
                     builder1.setMessage("Вы хотите удалить или отредактировать пост?")
                     builder1.setCancelable(true)
                     builder1.setNegativeButton("Удалить") { dialog, _ ->
-                        var text = ""
-                        text = if(api.post("http://185.119.56.91/api/Poems/DeletePoem?poemId=${poem.PoemId}", "")) {
+                        val text  : String = if(api.post("http://185.119.56.91/api/Poems/DeletePoem?poemId=${poem.PoemId}", "")) {
                             "Пост удален"
                         } else {
                             "Что-то пошло не так"

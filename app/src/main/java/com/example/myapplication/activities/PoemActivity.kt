@@ -6,10 +6,8 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
-import android.util.Log
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.dataModels.PoemsModel
@@ -18,8 +16,6 @@ import com.example.myapplication.services.APISender
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
-import okhttp3.internal.EMPTY_REQUEST
-import java.io.IOException
 
 class PoemActivity : AppCompatActivity() {
     var poema : PoemsModel? = null

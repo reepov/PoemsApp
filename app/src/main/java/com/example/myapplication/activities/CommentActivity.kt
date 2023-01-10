@@ -21,9 +21,6 @@ import com.example.myapplication.services.APISender
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
-import okhttp3.internal.EMPTY_REQUEST
-import java.io.IOException
-
 
 class CommentActivity : AppCompatActivity(){
     var list : ArrayList<CommentModel> = arrayListOf()
@@ -110,7 +107,7 @@ class CommentActivity : AppCompatActivity(){
                     builder1.setCancelable(true)
                     builder1.setPositiveButton("Ответить") {dialog, _ ->
                         nowAnswers = true
-                        var text = ""
+                        var text : String
                         sendComment.text = "Ответить"
                         var textview : EditText = findViewById(R.id.commentEnterText)
                         textview.isFocusableInTouchMode = true
@@ -142,8 +139,7 @@ class CommentActivity : AppCompatActivity(){
                     builder1.setMessage("Вы хотите удалить комментарий или ответить на него?")
                     builder1.setCancelable(true)
                     builder1.setNegativeButton("Удалить") { dialog, _ ->
-                        var text = ""
-                        text = if(api.post("http://185.119.56.91/api/Poems/RemoveCommentFromPoem?commentId=${comment.CommentId}", "")) {
+                        val text : String = if(api.post("http://185.119.56.91/api/Poems/RemoveCommentFromPoem?commentId=${comment.CommentId}", "")) {
                             "Комментарий удален"
                         } else {
                             "Что-то пошло не так"
@@ -154,7 +150,7 @@ class CommentActivity : AppCompatActivity(){
                     }
                     builder1.setPositiveButton("Ответить") {dialog, _ ->
                         nowAnswers = true
-                        var text = ""
+                        var text : String
                         sendComment.text = "Ответить"
                         var textview : EditText = findViewById(R.id.commentEnterText)
                         textview.isFocusableInTouchMode = true

@@ -14,8 +14,6 @@ import com.example.myapplication.R
 import com.example.myapplication.services.APISender
 import io.ktor.client.request.forms.*
 import okhttp3.*
-import java.io.IOException
-
 
 class CreateActivity : AppCompatActivity(){
     private lateinit var homeButton : ImageButton

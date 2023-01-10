@@ -14,8 +14,6 @@ import com.example.myapplication.services.APISender
 import com.example.myapplication.services.PoemAdapter
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import okhttp3.*
-import java.io.IOException
 
 class SubscribedActivity : FragmentActivity(){
     private lateinit var adapter: PoemAdapter

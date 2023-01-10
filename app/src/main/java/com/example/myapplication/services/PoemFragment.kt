@@ -1,10 +1,8 @@
 package com.example.myapplication.services
 
-import android.R.attr.label
 import android.annotation.SuppressLint
 import android.content.ClipData
 import android.content.ClipboardManager
-import android.content.Context
 import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Intent
 import android.os.Bundle
@@ -15,17 +13,12 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.example.myapplication.R
 import com.example.myapplication.activities.CommentActivity
 import com.example.myapplication.activities.ProfileActivity
 import com.example.myapplication.dataModels.PoemsModel
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.*
-import okhttp3.internal.EMPTY_REQUEST
-import java.io.IOException
-
 
 const val ARG_OBJECT = "object"
 
@@ -56,7 +49,6 @@ class NumberFragment() : Fragment() {
             val publish : TextView = view.findViewById(R.id.publishDate)
             val descript : TextView = view.findViewById(R.id.descriptionText)
             val api = APISender()
-            val json = jacksonObjectMapper()
             textView.movementMethod = ScrollingMovementMethod()
             val poema = poem!!
             userLink.text = poema.UserName

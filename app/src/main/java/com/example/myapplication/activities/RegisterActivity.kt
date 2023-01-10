@@ -133,7 +133,7 @@ class RegisterActivity : AppCompatActivity() {
                 "(?=.*[A-Z])" +         //at least 1 upper case letter
                 "(?=.*[a-zA-Z])" +      //any letter
                 ".{8,}" +               //at least 8 characters
-                "$");
+                "$")
         return passwordREGEX.matcher(password).matches()
     }
 }

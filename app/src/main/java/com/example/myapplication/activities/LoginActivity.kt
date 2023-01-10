@@ -12,9 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.myapplication.R
 import com.example.myapplication.services.APISender
-import okhttp3.*
-import java.io.IOException
-
 
 class LoginActivity : AppCompatActivity() {
     lateinit var sharedPreferences: SharedPreferences
