@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.myapplication.R
+import com.example.myapplication.services.APISender
 import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
@@ -19,15 +20,16 @@ class ForgetActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.forget_layout)
-        var emailText = findViewById<EditText>(R.id.enterEmail)
-        var sendButton = findViewById<Button>(R.id.sendToReset)
-        var text = findViewById<TextView>(R.id.textForget)
-        var textReset = findViewById<TextView>(R.id.textReset)
-        var newPass = findViewById<EditText>(R.id.enterNewPassword)
-        var secondNewPass = findViewById<EditText>(R.id.repeatNewPassword)
-        var resetPassword = findViewById<Button>(R.id.resetButton)
+        val emailText = findViewById<EditText>(R.id.enterEmail)
+        val sendButton = findViewById<Button>(R.id.sendToReset)
+        val text = findViewById<TextView>(R.id.textForget)
+        val textReset = findViewById<TextView>(R.id.textReset)
+        val newPass = findViewById<EditText>(R.id.enterNewPassword)
+        val secondNewPass = findViewById<EditText>(R.id.repeatNewPassword)
+        val resetPassword = findViewById<Button>(R.id.resetButton)
         val action : String? = intent.action
         val data: String? = intent.dataString
+        val api = APISender()
         var email = ""
         if (Intent.ACTION_VIEW == action && data != null){
             email = data.split("email=")[1]
@@ -57,73 +59,23 @@ class ForgetActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
             else{
-                var flag = false
-                var result = false
-                var url = "http://185.119.56.91/api/User/ResetPasswordRequest?email=${emailText.text}"
-                val client = OkHttpClient()
-                var request = Request.Builder()
-                    .url(url)
-                    .post(EMPTY_REQUEST)
-                    .build()
-                client.newCall(request).enqueue(object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-
-                    }
-                    override fun onResponse(call: Call, response: Response) {
-                        if (response.body?.string().toString() == "true") result = true
-                        flag  = true
-                    }
-                })
-                while(!flag) Thread.sleep(100)
-                flag = false
-                if (result){
+                if(api.post("http://185.119.56.91/api/User/ResetPasswordRequest?email=${emailText.text}", "")){
                     Toast.makeText(applicationContext, "На вашу электронную почту было отправлено письмо со ссылкой на смену пароля", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                    finishAffinity()
                 }
-                else
-                {
-                    Toast.makeText(applicationContext, "Произошла неизвестная ошибка. Повторите снова.", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, LoginActivity::class.java)
-                    startActivity(intent)
-                    finishAffinity()
-                }
+                else Toast.makeText(applicationContext, "Произошла неизвестная ошибка. Повторите снова.", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finishAffinity()
             }
         }
         resetPassword.setOnClickListener {
-            var flag = false
-            var result = false
-            var url = "http://185.119.56.91/api/User/ResetPassword?email=${email}&password=${newPass.text}"
-            val client = OkHttpClient()
-            var request = Request.Builder()
-                .url(url)
-                .post(EMPTY_REQUEST)
-                .build()
-            client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-
-                }
-                override fun onResponse(call: Call, response: Response) {
-                    if (response.body?.string().toString() == "true") result = true
-                    flag  = true
-                }
-            })
-            while(!flag) Thread.sleep(100)
-            flag = false
-            if (result){
+            if (api.post("http://185.119.56.91/api/User/ResetPassword?email=${email}&password=${newPass.text}", "")){
                 Toast.makeText(applicationContext, "Ваш пароль был успешно изменен", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finishAffinity()
             }
-            else
-            {
-                Toast.makeText(applicationContext, "Произошла неизвестная ошибка. Повторите снова.", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finishAffinity()
-            }
+            else Toast.makeText(applicationContext, "Произошла неизвестная ошибка. Повторите снова.", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finishAffinity()
         }
     }
 }

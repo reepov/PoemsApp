@@ -11,6 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
 import com.example.myapplication.dataModels.PoemsModel
+import com.example.myapplication.services.APISender
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
@@ -22,30 +23,11 @@ class UpdateActivity : AppCompatActivity() {
     private lateinit var currentUserId : String
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
-        var client = OkHttpClient()
-        var bool = true
         poemId = intent.getStringExtra("poemId")!!
         currentUserId = intent.getStringExtra("currentUserId")!!
-        var request = Request.Builder()
-            .url("http://185.119.56.91/api/Poems/GetPoemById?userId=$currentUserId&poemId=$poemId")
-            .build()
-        var responseGet : String
-        client.newCall(request).enqueue(object: Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                println("error")
-            }
-            override fun onResponse(call: Call, response: Response) {
-                responseGet = response.body?.string().toString()
-                val json = jacksonObjectMapper()
-                poema = json.readValue<PoemsModel>(responseGet)
-                if(response.code == 200) bool = false
-            }
-        })
-        while(bool){
-            Thread.sleep(100)
-            continue
-        }
-        bool = true
+        val api = APISender()
+        val json = jacksonObjectMapper()
+        poema = json.readValue(api.get("http://185.119.56.91/api/Poems/GetPoemById?userId=$currentUserId&poemId=$poemId"))
         super.onCreate(savedInstanceState)
         setContentView(R.layout.update_layout)
         val sendPoem = findViewById<Button>(R.id.sendPoem)
@@ -67,44 +49,15 @@ class UpdateActivity : AppCompatActivity() {
             }
 
             val title = if(editTitle.text.toString() != "") editTitle.text else "Без названия"
-            val url = "http://185.119.56.91/api/Poems/UpdatePoem?poemId=$poemId&title=${title}&description=${descript.text}"
-            client = OkHttpClient.Builder()
-                .retryOnConnectionFailure(true)
-                .build()
-            val requestBody: RequestBody = MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("message", text.toString())
-                .build()
-            request = Request.Builder()
-                .url(url)
-                .post(requestBody)
-                .build()
-            client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-
-                }
-                override fun onResponse(call: Call, response: Response) {
-                    val intent = Intent(applicationContext, ProfileActivity::class.java)
-                    intent.putExtra("currentUserId", currentUserId)
-                    intent.putExtra("userId", currentUserId)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                    startActivity(intent)
-                    finish()
-                }
-            })
-        }
-    }
-    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        if (event != null) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                val intent = Intent(this, ProfileActivity::class.java)
+            if(api.post("http://185.119.56.91/api/Poems/UpdatePoem?poemId=$poemId&title=${title}&description=${descript.text}", text.toString()))
+            {
+                val intent = Intent(applicationContext, ProfileActivity::class.java)
                 intent.putExtra("currentUserId", currentUserId)
+                intent.putExtra("userId", currentUserId)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
                 finish()
-                return true
             }
         }
-        return super.onKeyDown(keyCode, event)
     }
 }

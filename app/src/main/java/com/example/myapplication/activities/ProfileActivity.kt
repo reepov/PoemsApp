@@ -19,6 +19,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.example.myapplication.R
 import com.example.myapplication.dataModels.PoemsModel
 import com.example.myapplication.dataModels.UserModel
+import com.example.myapplication.services.APISender
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
@@ -37,42 +38,21 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var settingsButton : ImageButton
     private lateinit var subsButton : ImageButton
     private lateinit var avatar : ImageView
-    private lateinit var Posts : TextView
-    private lateinit var Liked : TextView
-    private lateinit var Viewed : TextView
-    private val SELECT_PICTURE = 1
+    private lateinit var posts : TextView
+    private lateinit var liked : TextView
+    private lateinit var viewed : TextView
+    private val selectPicture = 1
     lateinit var currentUserId : String
     lateinit var userId : String
     @SuppressLint("SetTextI18n", "InflateParams", "MissingInflatedId")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
-        var client = OkHttpClient()
-        var bool = true
+        val json = jacksonObjectMapper()
+        val api = APISender()
         currentUserId = intent.getStringExtra("currentUserId").toString()
         userId = intent.getStringExtra("userId").toString()
-        var request = Request.Builder()
-            .url("http://185.119.56.91/api/User/GetUserById?currentUserId=$currentUserId&userId=$userId")
-            .build()
-        var responseGet: String
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                println("error")
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                responseGet = response.body?.string().toString()
-                println(responseGet)
-                val json = jacksonObjectMapper()
-                _user = json.readValue(responseGet)
-                if (response.code == 200) bool = false
-            }
-        })
-        while (bool) {
-            Thread.sleep(100)
-            continue
-        }
-        bool = true
-        _list = _user.Poems
+        _user = json.readValue(api.get("http://185.119.56.91/api/User/GetUserById?currentUserId=$currentUserId&userId=$userId"))
+        _list = _user.Poems!!
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile_layout)
         homeButton = findViewById(R.id.homeButton)
@@ -81,14 +61,14 @@ class ProfileActivity : AppCompatActivity() {
         settingsButton = findViewById(R.id.buttonSettings)
         subsButton = findViewById(R.id.subscribersButton)
         avatar = findViewById(R.id.avatar)
-        Posts = findViewById(R.id.posts)
-        Liked = findViewById(R.id.liked)
-        Viewed = findViewById(R.id.viewed)
+        posts = findViewById(R.id.posts)
+        liked = findViewById(R.id.liked)
+        viewed = findViewById(R.id.viewed)
         var typeFace: Typeface? = ResourcesCompat.getFont(applicationContext, R.font.montserrat)
-        Viewed.typeface = typeFace
-        Liked.typeface = typeFace
+        viewed.typeface = typeFace
+        liked.typeface = typeFace
         typeFace = ResourcesCompat.getFont(applicationContext, R.font.bold)
-        Posts.typeface = typeFace
+        posts.typeface = typeFace
         val linearLayout: LinearLayout = findViewById(R.id.linearLayoutProfile)
         var child: View
         val subscribe: TextView = findViewById(R.id.subscribe)
@@ -131,23 +111,8 @@ class ProfileActivity : AppCompatActivity() {
                 builder1.setCancelable(true)
                 builder1.setNegativeButton("Удалить") { dialog, _ ->
                     var text = ""
-                    val url =
-                        "http://185.119.56.91/api/Poems/DeletePoem?poemId=${poem.PoemId}"
-                    client = OkHttpClient()
-                    request = Request.Builder()
-                        .url(url)
-                        .post(EMPTY_REQUEST)
-                        .build()
-                    client.newCall(request).enqueue(object : Callback {
-                        override fun onFailure(call: Call, e: IOException) {
-                            text = "Что-то пошло не так"
-                        }
-
-                        override fun onResponse(call: Call, response: Response) {
-                            text = "Пост удален"
-                        }
-                    })
-                    while (text == "") Thread.sleep(100)
+                    text = if(api.post("http://185.119.56.91/api/Poems/DeletePoem?poemId=${poem.PoemId}", "")) "Пост удален"
+                    else "Что-то пошло не так"
                     if (text != "Что-то пошло не так") linearLayout.removeView(it)
                     Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
                     dialog.cancel()
@@ -155,7 +120,6 @@ class ProfileActivity : AppCompatActivity() {
                 builder1.setPositiveButton("Отредактировать") { dialog, _ ->
                     val intent = Intent(this, UpdateActivity::class.java)
                     intent.putExtra("poemId", poem.PoemId)
-                    println(poem.PoemId)
                     intent.putExtra("currentUserId", currentUserId)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     startActivity(intent)
@@ -172,26 +136,8 @@ class ProfileActivity : AppCompatActivity() {
         likes.text = "Лайки: $wholeLikes"
         countViews.text = "Просмотры: $wholeViews"
         subscribe.setOnClickListener {
-            val url =
-                "http://185.119.56.91/api/User/SubscribeToUser?userId=${_user.Id}&currentUserId=$currentUserId"
-            bool = true
-            client = OkHttpClient()
-            request = Request.Builder()
-                .url(url)
-                .post(EMPTY_REQUEST)
-                .build()
-            client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-                    _user.isSubscribedByCurrentUser = response.body?.string().toString() == "true"
-                    if (response.code == 200) bool = false
-                }
-            })
-            while (bool) Thread.sleep(100)
+            _user.isSubscribedByCurrentUser = api.post("http://185.119.56.91/api/User/SubscribeToUser?userId=${_user.Id}&currentUserId=$currentUserId", "")
             subscribe.text = if (_user.isSubscribedByCurrentUser) "Отписаться" else "Подписаться"
-            bool = true
         }
         subsButton.setOnClickListener {
             val intent = Intent(this, FinderActivity::class.java)
@@ -222,7 +168,7 @@ class ProfileActivity : AppCompatActivity() {
                     Intent.createChooser(
                         intent,
                         "Select Picture"
-                    ), SELECT_PICTURE
+                    ), selectPicture
                 )
             }
         }
@@ -239,13 +185,13 @@ class ProfileActivity : AppCompatActivity() {
             startActivity(intent)
             finishAffinity()
         }
-        Posts.setOnClickListener {
+        posts.setOnClickListener {
             typeFace = ResourcesCompat.getFont(applicationContext, R.font.bold)
-            Posts.typeface = typeFace
+            posts.typeface = typeFace
             typeFace = ResourcesCompat.getFont(applicationContext, R.font.montserrat)
-            Viewed.typeface = typeFace
-            Liked.typeface = typeFace
-            _list = _user.Poems
+            viewed.typeface = typeFace
+            liked.typeface = typeFace
+            _list = _user.Poems!!
             linearLayout.removeAllViews()
             for (i in 0 until _list.size) {
                 val poem = _list[i]
@@ -267,22 +213,11 @@ class ProfileActivity : AppCompatActivity() {
                     builder1.setCancelable(true)
                     builder1.setNegativeButton("Удалить") { dialog, _ ->
                         var text = ""
-                        val url = "http://185.119.56.91/api/Poems/DeletePoem?poemId=${poem.PoemId}"
-                        client = OkHttpClient()
-                        request = Request.Builder()
-                            .url(url)
-                            .post(EMPTY_REQUEST)
-                            .build()
-                        client.newCall(request).enqueue(object : Callback {
-                            override fun onFailure(call: Call, e: IOException) {
-                                text = "Что-то пошло не так"
-                            }
-
-                            override fun onResponse(call: Call, response: Response) {
-                                text = "Пост удален"
-                            }
-                        })
-                        while (text == "") Thread.sleep(100)
+                        text = if(api.post("http://185.119.56.91/api/Poems/DeletePoem?poemId=${poem.PoemId}", "")) {
+                            "Пост удален"
+                        } else {
+                            "Что-то пошло не так"
+                        }
                         if (text != "Что-то пошло не так") linearLayout.removeView(it)
                         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
                         dialog.cancel()
@@ -305,13 +240,13 @@ class ProfileActivity : AppCompatActivity() {
                 linearLayout.addView(child)
             }
         }
-        Viewed.setOnClickListener {
+        viewed.setOnClickListener {
             typeFace = ResourcesCompat.getFont(applicationContext, R.font.bold)
-            Viewed.typeface = typeFace
+            viewed.typeface = typeFace
             typeFace = ResourcesCompat.getFont(applicationContext, R.font.montserrat)
-            Posts.typeface = typeFace
-            Liked.typeface = typeFace
-            _list = _user.ViewedPoems
+            posts.typeface = typeFace
+            liked.typeface = typeFace
+            _list = _user.ViewedPoems!!
             linearLayout.removeAllViews()
             for (i in 0 until _list.size) {
                 val poem = _list[i]
@@ -330,13 +265,13 @@ class ProfileActivity : AppCompatActivity() {
                 linearLayout.addView(child)
             }
         }
-        Liked.setOnClickListener {
+        liked.setOnClickListener {
             typeFace = ResourcesCompat.getFont(applicationContext, R.font.bold)
-            Liked.typeface = typeFace
+            liked.typeface = typeFace
             typeFace = ResourcesCompat.getFont(applicationContext, R.font.montserrat)
-            Viewed.typeface = typeFace
-            Posts.typeface = typeFace
-            _list = _user.LikedPoems
+            viewed.typeface = typeFace
+            posts.typeface = typeFace
+            _list = _user.LikedPoems!!
             linearLayout.removeAllViews()
             for (i in 0 until _list.size) {
                 val poem = _list[i]
@@ -359,9 +294,10 @@ class ProfileActivity : AppCompatActivity() {
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == SELECT_PICTURE && resultCode == RESULT_OK) {
+        if (requestCode == selectPicture && resultCode == RESULT_OK) {
             val selectedImage: Uri? = data?.data
             val bitmap: Bitmap?
+            val api = APISender()
             try {
                 val b = MediaStore.Images.Media.getBitmap(this.contentResolver, selectedImage)
                 bitmap = Bitmap.createScaledBitmap(b, 100, 100, false)
@@ -370,29 +306,7 @@ class ProfileActivity : AppCompatActivity() {
                 val bArray: ByteArray = bos.toByteArray()
                 val imageEncoded: String = Base64.encodeToString(bArray, Base64.DEFAULT)
                 avatar.setImageBitmap(bitmap)
-                println(imageEncoded.length)
-                println(bitmap.allocationByteCount)
-                println(bos.size())
-                val url = "http://185.119.56.91/api/User/SetAvatarToUser?currentUserId=$userId"
-                val client: OkHttpClient = OkHttpClient.Builder()
-                    .retryOnConnectionFailure(true)
-                    .build()
-                val requestBody: RequestBody = MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("array", imageEncoded)
-                    .build()
-                val request = Request.Builder()
-                    .url(url)
-                    .post(requestBody)
-                    .build()
-                client.newCall(request).enqueue(object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-
-                    }
-                    override fun onResponse(call: Call, response: Response) {
-
-                    }
-                })
+                api.post("http://185.119.56.91/api/User/SetAvatarToUser?currentUserId=$userId", imageEncoded)
             } catch (e: FileNotFoundException) {
                 e.printStackTrace()
             } catch (e: IOException) {

@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.dataModels.PoemsModel
 import com.example.myapplication.R
+import com.example.myapplication.services.APISender
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
@@ -32,42 +33,20 @@ class PoemActivity : AppCompatActivity() {
         val intent : Intent = intent
         val action : String? = intent.action
         val data: String? = intent.dataString
+        val api = APISender()
+        val json = jacksonObjectMapper()
         val poemId : String = if (Intent.ACTION_VIEW == action && data != null) {
-            Log.d("FKJELKFJ", data.toString())
             data.split("poemId=")[1]
         } else {
             intent.getStringExtra("poemId").toString()
         }
         val sharedPreferences = getSharedPreferences("USER_INFO_SP", Context.MODE_PRIVATE)
         val currentUserId = sharedPreferences.getString("CurrentUserId", null)
-        var client = OkHttpClient()
-        if(currentUserId != null)
+        if(currentUserId != null) poema = json.readValue<PoemsModel>(api.get("http://185.119.56.91/api/Poems/GetPoemById?userId=$currentUserId&poemId=$poemId"))
+        else
         {
-            var bool = true
-            var request = Request.Builder()
-                .url("http://185.119.56.91/api/Poems/GetPoemById?userId=$currentUserId&poemId=$poemId")
-                .build()
-            var responseGet : String
-            client.newCall(request).enqueue(object: Callback {
-                override fun onFailure(call: Call, e: IOException) {
-                    println("error")
-                }
-                override fun onResponse(call: Call, response: Response) {
-                    responseGet = response.body?.string().toString()
-                    val json = jacksonObjectMapper()
-                    poema = json.readValue<PoemsModel>(responseGet)
-                    if(response.code == 200) bool = false
-                }
-            })
-            while(bool){
-                Thread.sleep(100)
-                continue
-            }
-            bool = true
-        }
-        else{
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
+            val intents = Intent(this, LoginActivity::class.java)
+            startActivity(intents)
             finishAffinity()
         }
         val textView: TextView = findViewById(R.id.textView)
@@ -91,67 +70,34 @@ class PoemActivity : AppCompatActivity() {
         commentButton = findViewById(R.id.comment)
         likeButton.setOnClickListener{
             if (poema!!.isLikedByCurrentUser){
-                val url = "http://185.119.56.91/api/Poems/RemoveLikeFromPoem?userId=$currentUserId&poemId=${poema!!.PoemId}"
-                val request = Request.Builder()
-                    .url(url)
-                    .post(EMPTY_REQUEST)
-                    .build()
-                client.newCall(request).enqueue(object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-                    }
-
-                    override fun onResponse(call: Call, response: Response) {
-                        val like = (likes.text as String).toInt() - 1
-                        likeButton.setImageResource(R.drawable.ic_before_dasha)
-                        likes.text = like.toString()
-                        poema!!.isLikedByCurrentUser = !poema!!.isLikedByCurrentUser
-                        poema!!.Likes--
-                    }
-                })
-
+                if(api.post("http://185.119.56.91/api/Poems/RemoveLikeFromPoem?userId=$currentUserId&poemId=${poema!!.PoemId}", ""))
+                {
+                    val like = (likes.text as String).toInt() - 1
+                    likeButton.setImageResource(R.drawable.ic_before_dasha)
+                    likes.text = like.toString()
+                    poema!!.isLikedByCurrentUser = !poema!!.isLikedByCurrentUser
+                    poema!!.Likes--
+                }
             }
             else
             {
-                val url = "http://185.119.56.91/api/Poems/SetLikeToPoem?userId=$currentUserId&poemId=${poema!!.PoemId}"
-                val request = Request.Builder()
-                    .url(url)
-                    .post(EMPTY_REQUEST)
-                    .build()
-                client.newCall(request).enqueue(object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-                    }
-
-                    override fun onResponse(call: Call, response: Response) {
-                        val like = (likes.text as String).toInt() + 1
-                        likeButton.setImageResource(R.drawable.ic_after_dasha)
-                        likes.text = like.toString()
-                        poema!!.isLikedByCurrentUser = !poema!!.isLikedByCurrentUser
-                        poema!!.Likes++
-                    }
-                })
+                if(api.post("http://185.119.56.91/api/Poems/SetLikeToPoem?userId=$currentUserId&poemId=${poema!!.PoemId}", ""))
+                {
+                    val like = (likes.text as String).toInt() + 1
+                    likeButton.setImageResource(R.drawable.ic_after_dasha)
+                    likes.text = like.toString()
+                    poema!!.isLikedByCurrentUser = !poema!!.isLikedByCurrentUser
+                    poema!!.Likes++
+                }
             }
         }
         commentButton.setOnClickListener{
-            val intent = Intent(applicationContext, CommentActivity::class.java)
-            intent.putExtra("poemId", poema!!.PoemId)
-            intent.putExtra("currentUserId", currentUserId)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-            startActivity(intent)
+            val intents = Intent(applicationContext, CommentActivity::class.java)
+            intents.putExtra("poemId", poema!!.PoemId)
+            intents.putExtra("currentUserId", currentUserId)
+            intents.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+            startActivity(intents)
         }
-        val url = "http://185.119.56.91/api/Poems/SetViewToPoem?userId=$currentUserId&poemId=${poema!!.PoemId}"
-        client = OkHttpClient()
-        val request = Request.Builder()
-            .url(url)
-            .post(EMPTY_REQUEST)
-            .build()
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-
-            }
-        })
+        api.post("http://185.119.56.91/api/Poems/SetViewToPoem?userId=$currentUserId&poemId=${poema!!.PoemId}", "")
     }
 }

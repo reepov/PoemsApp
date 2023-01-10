@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.myapplication.R
+import com.example.myapplication.services.APISender
 import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
@@ -28,6 +29,7 @@ class RegisterActivity : AppCompatActivity() {
         val sendCode = findViewById<Button>(R.id.sendCode)
         val signed = findViewById<TextView>(R.id.textIfSignedIn)
         val codeResend = findViewById<TextView>(R.id.textIfResendCode)
+        val api = APISender()
         sendCode.isVisible = false
         enteredCode.isVisible = false
         codeResend.isVisible = false
@@ -87,7 +89,7 @@ class RegisterActivity : AppCompatActivity() {
                     codeResend.setOnClickListener {
                         code = ""
                         flag = false
-                        url = "http://185.119.56.91/api/User/RegisterMobile?email=${login.text}&password=${password.text}"
+                        url = "http://185.119.56.91/api/User/RegisterMobile?email=${login.text}&"
                         request = Request.Builder()
                             .url(url)
                             .post(EMPTY_REQUEST)
@@ -107,31 +109,16 @@ class RegisterActivity : AppCompatActivity() {
                     }
                     sendCode.setOnClickListener {
                         if (enteredCode.text.toString() == code) {
-                            url =
-                                "http://185.119.56.91/api/User/EndRegisterMobile?email=${login.text}&nickname=${nickname.text}&password=${password.text}"
-                            request = Request.Builder()
-                                .url(url)
-                                .post(EMPTY_REQUEST)
-                                .build()
-                            client.newCall(request).enqueue(object : Callback {
-                                override fun onFailure(call: Call, e: IOException) {
-
-                                }
-                                override fun onResponse(call: Call, response: Response) {
-                                    val intent =
-                                        Intent(applicationContext, LoginActivity::class.java)
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                                    startActivity(intent)
-                                    finishAffinity()
-                                }
-                            })
+                            if(api.post("http://185.119.56.91/api/User/EndRegisterMobile?email=${login.text}&nickname=${nickname.text}&password=${password.text}", ""))
+                            {
+                                val intent = Intent(applicationContext, LoginActivity::class.java)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                startActivity(intent)
+                                finishAffinity()
+                            }
                         } else {
                             enteredCode.setText("")
-                            Toast.makeText(
-                                applicationContext,
-                                "Проверочный код не совпадает",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            Toast.makeText(applicationContext, "Проверочный код не совпадает", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -139,7 +126,7 @@ class RegisterActivity : AppCompatActivity() {
 
         }
     }
-    fun isValidPasswordFormat(password: String): Boolean {
+    private fun isValidPasswordFormat(password: String): Boolean {
         val passwordREGEX = Pattern.compile("^" +
                 "(?=.*[0-9])" +         //at least 1 digit
                 "(?=.*[a-z])" +         //at least 1 lower case letter

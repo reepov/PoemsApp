@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.myapplication.R
+import com.example.myapplication.services.APISender
 import okhttp3.*
 import java.io.IOException
 
@@ -26,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences("USER_INFO_SP", Context.MODE_PRIVATE)
         val reg = findViewById<TextView>(R.id.textIfNotRegister)
         val forget = findViewById<TextView>(R.id.textIfForgetPassword)
+        val api = APISender()
         login = findViewById(R.id.enterLogIn)
         val password = findViewById<EditText>(R.id.enterPassWord)
         val logIn = findViewById<Button>(R.id.logIn)
@@ -42,45 +44,25 @@ class LoginActivity : AppCompatActivity() {
         logIn.setOnClickListener {
             if(password.text.isNotEmpty())
             {
-                val client = OkHttpClient()
-                var bool = true
-                var founded = false
-                var userId : String
-                val request = Request.Builder()
-                    .url("http://185.119.56.91/api/User/LoginMobile?email=${login.text}&password=${password.text}")
-                    .build()
-                client.newCall(request).enqueue(object: Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-                        println("error")
-                    }
-                    override fun onResponse(call: Call, response: Response) {
-                        userId = response.body?.string().toString()
-                        if(response.code == 200 && userId != "false")
-                        {
-                            founded = true
-                            bool = false
-                            spEditor = sharedPreferences.edit()
-                            spEditor.putString("Login", login.text.toString())
-                            println(login.text.toString())
-                            spEditor.putString("Password", password.text.toString())
-                            println(password.text.toString())
-                            spEditor.putString("CurrentUserId", userId)
-                            println(userId)
-                            spEditor.putBoolean("isRemembered", true)
-                            spEditor.apply()
-                        }
-                        else
-                        {
-                            bool = false
-                            founded = false
-                        }
-                    }
-                })
-                while(bool){
-                    Thread.sleep(100)
-                    continue
+                val founded : Boolean
+                val userId = api.get("http://185.119.56.91/api/User/LoginMobile?email=${login.text}&password=${password.text}")
+                if(userId != "false")
+                {
+                    founded = true
+                    spEditor = sharedPreferences.edit()
+                    spEditor.putString("Login", login.text.toString())
+                    println(login.text.toString())
+                    spEditor.putString("Password", password.text.toString())
+                    println(password.text.toString())
+                    spEditor.putString("CurrentUserId", userId)
+                    println(userId)
+                    spEditor.putBoolean("isRemembered", true)
+                    spEditor.apply()
                 }
-                bool = true
+                else
+                {
+                    founded = false
+                }
                 if(founded){
                     val intent = Intent(this, MainActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)

@@ -17,6 +17,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
 import com.example.myapplication.dataModels.CommentModel
+import com.example.myapplication.services.APISender
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
@@ -30,31 +31,12 @@ class CommentActivity : AppCompatActivity(){
     @SuppressLint("InflateParams")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
-        var client = OkHttpClient()
-        var bool = true
         val poemId = intent.getStringExtra("poemId")
         val currentUserId = intent.getStringExtra("currentUserId")
         var nowAnswers = false
-        var request = Request.Builder()
-            .url("http://185.119.56.91/api/Poems/GetCommentsByPoemId?userId=$currentUserId&poemId=$poemId")
-            .build()
-        var responseGet : String
-        client.newCall(request).enqueue(object: Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                println("error")
-            }
-            override fun onResponse(call: Call, response: Response) {
-                responseGet = response.body?.string().toString()
-                val json = jacksonObjectMapper()
-                list = json.readValue(responseGet)
-                if(response.code == 200) bool = false
-            }
-        })
-        while(bool){
-            Thread.sleep(100)
-            continue
-        }
-        bool = true
+        val json = jacksonObjectMapper()
+        val api = APISender()
+        list = json.readValue(api.get("http://185.119.56.91/api/Poems/GetCommentsByPoemId?userId=$currentUserId&poemId=$poemId"))
         super.onCreate(savedInstanceState)
         setContentView(R.layout.comment_layout)
         val linearLayout : LinearLayout = findViewById(R.id.linearLayoutComment)
@@ -81,14 +63,7 @@ class CommentActivity : AppCompatActivity(){
             if(comment.Photo != null && comment.Created != "-1") {
                 val decodedByte: ByteArray = Base64.decode(comment.Photo, 0)
                 val b = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
-                image.setImageBitmap(
-                    Bitmap.createScaledBitmap(
-                        b,
-                        b.width / b.height * 50,
-                        50,
-                        false
-                    )
-                )
+                image.setImageBitmap(Bitmap.createScaledBitmap(b, b.width / b.height * 50, 50, false))
             }
             else image.setImageResource(R.mipmap.ic_launcher)
             if (comment.Created != "-1") image.setOnClickListener {
@@ -104,55 +79,27 @@ class CommentActivity : AppCompatActivity(){
             likes.text = comment.Likes.toString()
             if(comment.Created != "-1") likeButton.setOnClickListener{
                 if (comment.isLikedByCurrentUser){
-                    val url = "http://185.119.56.91/api/Poems/RemoveLikeFromComment?userId=$currentUserId&commentId=${comment.CommentId}"
-                    var like = 0
-                    var flag = true
-                    client = OkHttpClient()
-                    request = Request.Builder()
-                        .url(url)
-                        .post(EMPTY_REQUEST)
-                        .build()
-                    client.newCall(request).enqueue(object : Callback {
-                        override fun onFailure(call: Call, e: IOException) {
-                        }
-
-                        override fun onResponse(call: Call, response: Response) {
-                            like = (likes.text as String).toInt() - 1
-                            likeButton.setImageResource(R.drawable.ic_before_dasha)
-                            comment.isLikedByCurrentUser = !comment.isLikedByCurrentUser
-                            comment.Likes--
-                            flag = false
-                        }
-                    })
-                    while(flag) Thread.sleep(100)
-                    likes.text = like.toString()
-                    flag = true
+                    if(api.post("http://185.119.56.91/api/Poems/RemoveLikeFromComment?userId=$currentUserId&commentId=${comment.CommentId}", ""))
+                    {
+                        val like = (likes.text as String).toInt() - 1
+                        likeButton.setImageResource(R.drawable.ic_before_dasha)
+                        comment.isLikedByCurrentUser = !comment.isLikedByCurrentUser
+                        comment.Likes--
+                        likes.text = like.toString()
+                    }
+                    else Toast.makeText(applicationContext, "Произошла неизвестная ошибка", Toast.LENGTH_SHORT).show()
                 }
-                else if(comment.Created != "-1")
+                else
                 {
-                    val url = "http://185.119.56.91/api/Poems/SetLikeToComment?userId=$currentUserId&commentId=${comment.CommentId}"
-                    client = OkHttpClient()
-                    var flag = true
-                    var like = 0
-                    request = Request.Builder()
-                        .url(url)
-                        .post(EMPTY_REQUEST)
-                        .build()
-                    client.newCall(request).enqueue(object : Callback {
-                        override fun onFailure(call: Call, e: IOException) {
-                        }
-
-                        override fun onResponse(call: Call, response: Response) {
-                            like = (likes.text as String).toInt() + 1
-                            likeButton.setImageResource(R.drawable.ic_after_dasha)
-                            comment.isLikedByCurrentUser = !comment.isLikedByCurrentUser
-                            comment.Likes++
-                            flag = false
-                        }
-                    })
-                    while(flag) Thread.sleep(100)
-                    likes.text = like.toString()
-                    flag = true
+                    if(api.post("http://185.119.56.91/api/Poems/SetLikeToComment?userId=$currentUserId&commentId=${comment.CommentId}", ""))
+                    {
+                        val like = (likes.text as String).toInt() + 1
+                        likeButton.setImageResource(R.drawable.ic_after_dasha)
+                        comment.isLikedByCurrentUser = !comment.isLikedByCurrentUser
+                        comment.Likes++
+                        likes.text = like.toString()
+                    }
+                    else Toast.makeText(applicationContext, "Произошла неизвестная ошибка", Toast.LENGTH_SHORT).show()
                 }
             }
             if(comment.Created != "-1") child.setOnLongClickListener{
@@ -175,22 +122,13 @@ class CommentActivity : AppCompatActivity(){
                         inputMethodManager.showSoftInput(textview, InputMethodManager.SHOW_IMPLICIT)
                         sendComment.setOnClickListener {
                             textview = findViewById(R.id.commentEnterText)
-                            val url = "http://185.119.56.91/api/Poems/SetReplyToComment?commentId=${comment.CommentId}&userId=$currentUserId&text=Ответ для ${comment.UserName}:\n ${textview.text}"
-                            client = OkHttpClient()
-                            request = Request.Builder()
-                                .url(url)
-                                .post(EMPTY_REQUEST)
-                                .build()
-                            client.newCall(request).enqueue(object : Callback {
-                                override fun onFailure(call: Call, e: IOException) {
-                                    text = "Что-то пошло не так"
-                                }
-                                override fun onResponse(call: Call, response: Response) {
-                                    text = "Комментарий отправлен"
-                                    nowAnswers = false
-                                }
-                            })
-                            while (text == "") Thread.sleep(100)
+                            if(api.post("http://185.119.56.91/api/Poems/SetReplyToComment?commentId=${comment.CommentId}&userId=$currentUserId&text=Ответ для ${comment.UserName}:\n ${textview.text}", "")){
+                                text = "Комментарий отправлен"
+                                nowAnswers = false
+                            }
+                            else{
+                                text = "Что-то пошло не так"
+                            }
                             if(text == "Комментарий отправлен") sendComment.text = "Отправить"
                             Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
                             dialog.cancel()
@@ -205,24 +143,11 @@ class CommentActivity : AppCompatActivity(){
                     builder1.setCancelable(true)
                     builder1.setNegativeButton("Удалить") { dialog, _ ->
                         var text = ""
-                        var responsePost = ""
-                        val url = "http://185.119.56.91/api/Poems/RemoveCommentFromPoem?commentId=${comment.CommentId}"
-                        client = OkHttpClient()
-                        request = Request.Builder()
-                            .url(url)
-                            .post(EMPTY_REQUEST)
-                            .build()
-                        client.newCall(request).enqueue(object : Callback {
-                            override fun onFailure(call: Call, e: IOException) {
-                                text = "Что-то пошло не так"
-                            }
-                            override fun onResponse(call: Call, response: Response) {
-                                responsePost = response.body?.string().toString()
-                                text = "Комментарий удален"
-                            }
-                        })
-                        while (responsePost == "") Thread.sleep(100)
-                        if(responsePost == "Ответ") linearLayout.removeView(it)
+                        text = if(api.post("http://185.119.56.91/api/Poems/RemoveCommentFromPoem?commentId=${comment.CommentId}", "")) {
+                            "Комментарий удален"
+                        } else {
+                            "Что-то пошло не так"
+                        }
                         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
                         finish()
                         dialog.cancel()
@@ -241,22 +166,11 @@ class CommentActivity : AppCompatActivity(){
                         inputMethodManager.showSoftInput(textview, InputMethodManager.SHOW_IMPLICIT)
                         sendComment.setOnClickListener {
                             textview = findViewById(R.id.commentEnterText)
-                            val url = "http://185.119.56.91/api/Poems/SetReplyToComment?commentId=${comment.CommentId}&userId=$currentUserId&text=Ответ для ${comment.UserName}:\n ${textview.text}"
-                            client = OkHttpClient()
-                            request = Request.Builder()
-                                .url(url)
-                                .post(EMPTY_REQUEST)
-                                .build()
-                            client.newCall(request).enqueue(object : Callback {
-                                override fun onFailure(call: Call, e: IOException) {
-                                    text = "Что-то пошло не так"
-                                }
-                                override fun onResponse(call: Call, response: Response) {
-                                    text = "Комментарий отправлен"
-                                    nowAnswers = false
-                                }
-                            })
-                            while (text == "") Thread.sleep(100)
+                            text = if(api.post("http://185.119.56.91/api/Poems/SetReplyToComment?commentId=${comment.CommentId}&userId=$currentUserId&text=Ответ для ${comment.UserName}:\n ${textview.text}", "")) {
+                                "Комментарий отправлен"
+                            } else {
+                                "Что-то пошло не так"
+                            }
                             if(text == "Комментарий отправлен") sendComment.text = "Отправить"
                             Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
                             dialog.cancel()
@@ -276,29 +190,12 @@ class CommentActivity : AppCompatActivity(){
                 sendComment.text = "Отправить"
                 return@setOnLongClickListener true
             }
-            if (comment.UpReplyId != null) {
-                child.setPadding(50, 0, 0, 0)
-            }
+            if (comment.UpReplyId != null) child.setPadding(50, 0, 0, 0)
             linearLayout.addView(child)
         }
         if(!nowAnswers) sendComment.setOnClickListener {
             val textview : EditText = findViewById(R.id.commentEnterText)
-            if (textview.text.toString() != "") {
-                val url = "http://185.119.56.91/api/Poems/SetCommentToPoem?userId=$currentUserId&poemId=$poemId&text=${textview.text}"
-                client = OkHttpClient()
-                request = Request.Builder()
-                    .url(url)
-                    .post(EMPTY_REQUEST)
-                    .build()
-                client.newCall(request).enqueue(object : Callback {
-                    override fun onFailure(call: Call, e: IOException) {
-
-                    }
-                    override fun onResponse(call: Call, response: Response) {
-                        finish()
-                    }
-                })
-            }
+            if (textview.text.toString() != "" && api.post("http://185.119.56.91/api/Poems/SetCommentToPoem?userId=$currentUserId&poemId=$poemId&text=${textview.text}","")) finish()
             textview.text.clear()
         }
     }

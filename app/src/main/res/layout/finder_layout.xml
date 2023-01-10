@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="10dp"
-    android:paddingBottom="30dp">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="10dp">
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,7 +61,84 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/authors"
+        android:layout_above="@+id/panel"
         android:id="@+id/layoutAuthors"
         android:layout_marginTop="15dp"
         android:orientation="vertical" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/panel">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="60dp"/>
+        <ImageButton
+            android:id="@+id/homeButton"
+            android:layout_marginTop="10dp"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_home_dasha"
+            tools:ignore="SpeakableTextPresentCheck"
+            android:contentDescription="@string/todo"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginStart="10dp"/>
+        <ImageButton
+            android:id="@+id/subscribersButton"
+            android:layout_marginTop="10dp"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_subscr_dasha"
+            tools:ignore="SpeakableTextPresentCheck"
+            android:contentDescription="@string/todo"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@+id/homeButton"
+            android:layout_toStartOf="@+id/createButton"/>
+
+        <ImageButton
+            android:id="@+id/createButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/todo"
+            android:src="@drawable/ic_add_dasha"
+            tools:ignore="SpeakableTextPresentCheck" />
+        <ImageButton
+            android:id="@+id/notifyButton"
+            android:layout_marginTop="10dp"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_notify_dasha"
+            tools:ignore="SpeakableTextPresentCheck"
+            android:contentDescription="@string/todo"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_toStartOf="@+id/profileButton"
+            android:layout_toEndOf="@+id/createButton"/>
+        <ImageButton
+            android:id="@+id/profileButton"
+            android:layout_marginTop="10dp"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_profile_dasha"
+            tools:ignore="SpeakableTextPresentCheck"
+            android:contentDescription="@string/todo"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"/>
+    </RelativeLayout>
 </RelativeLayout>

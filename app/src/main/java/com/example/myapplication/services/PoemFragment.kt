@@ -21,6 +21,7 @@ import com.example.myapplication.R
 import com.example.myapplication.activities.CommentActivity
 import com.example.myapplication.activities.ProfileActivity
 import com.example.myapplication.dataModels.PoemsModel
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import okhttp3.*
 import okhttp3.internal.EMPTY_REQUEST
 import java.io.IOException
@@ -54,6 +55,8 @@ class NumberFragment() : Fragment() {
             val userLink : TextView = view.findViewById(R.id.userLink)
             val publish : TextView = view.findViewById(R.id.publishDate)
             val descript : TextView = view.findViewById(R.id.descriptionText)
+            val api = APISender()
+            val json = jacksonObjectMapper()
             textView.movementMethod = ScrollingMovementMethod()
             val poema = poem!!
             userLink.text = poema.UserName
@@ -77,46 +80,25 @@ class NumberFragment() : Fragment() {
             }
             likeButton.setOnClickListener{
                 if (poema.isLikedByCurrentUser){
-                    val url = "http://185.119.56.91/api/Poems/RemoveLikeFromPoem?userId=$currentUserId&poemId=${poema.PoemId}"
-                    val client = OkHttpClient()
-                    val request = Request.Builder()
-                        .url(url)
-                        .post(EMPTY_REQUEST)
-                        .build()
-                    client.newCall(request).enqueue(object : Callback {
-                        override fun onFailure(call: Call, e: IOException) {
-                        }
-
-                        override fun onResponse(call: Call, response: Response) {
-                            val like = (likes.text as String).toInt() - 1
-                            likeButton.setImageResource(R.drawable.ic_before_dasha)
-                            likes.text = like.toString()
-                            poema.isLikedByCurrentUser = !poema.isLikedByCurrentUser
-                            poema.Likes--
-                        }
-                    })
-
+                    if(api.post("http://185.119.56.91/api/Poems/RemoveLikeFromPoem?userId=$currentUserId&poemId=${poema.PoemId}", ""))
+                    {
+                        val like = (likes.text as String).toInt() - 1
+                        likeButton.setImageResource(R.drawable.ic_before_dasha)
+                        likes.text = like.toString()
+                        poema.isLikedByCurrentUser = !poema.isLikedByCurrentUser
+                        poema.Likes--
+                    }
                 }
                 else
                 {
-                    val url = "http://185.119.56.91/api/Poems/SetLikeToPoem?userId=$currentUserId&poemId=${poema.PoemId}"
-                    val client = OkHttpClient()
-                    val request = Request.Builder()
-                        .url(url)
-                        .post(EMPTY_REQUEST)
-                        .build()
-                    client.newCall(request).enqueue(object : Callback {
-                        override fun onFailure(call: Call, e: IOException) {
-                        }
-
-                        override fun onResponse(call: Call, response: Response) {
-                            val like = (likes.text as String).toInt() + 1
-                            likeButton.setImageResource(R.drawable.ic_after_dasha)
-                            likes.text = like.toString()
-                            poema.isLikedByCurrentUser = !poema.isLikedByCurrentUser
-                            poema.Likes++
-                        }
-                    })
+                    if(api.post("http://185.119.56.91/api/Poems/SetLikeToPoem?userId=$currentUserId&poemId=${poema.PoemId}", ""))
+                    {
+                        val like = (likes.text as String).toInt() + 1
+                        likeButton.setImageResource(R.drawable.ic_after_dasha)
+                        likes.text = like.toString()
+                        poema.isLikedByCurrentUser = !poema.isLikedByCurrentUser
+                        poema.Likes++
+                    }
                 }
             }
             commentButton.setOnClickListener{
@@ -131,21 +113,7 @@ class NumberFragment() : Fragment() {
                 myClipboard.setPrimaryClip(myClip)
                 Toast.makeText(context, "Ссылка скопирована в буфер обмена", Toast.LENGTH_SHORT).show()
             }
-            val url = "http://185.119.56.91/api/Poems/SetViewToPoem?userId=$currentUserId&poemId=${poema.PoemId}"
-            val client = OkHttpClient()
-            val request = Request.Builder()
-                .url(url)
-                .post(EMPTY_REQUEST)
-                .build()
-            client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
-
-                }
-
-                override fun onResponse(call: Call, response: Response) {
-
-                }
-            })
+            api.post("http://185.119.56.91/api/Poems/SetViewToPoem?userId=$currentUserId&poemId=${poema.PoemId}", "")
         }
     }
 }

@@ -11,6 +11,7 @@ import android.widget.ImageButton
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
+import com.example.myapplication.services.APISender
 import io.ktor.client.request.forms.*
 import okhttp3.*
 import java.io.IOException
@@ -41,29 +42,15 @@ class CreateActivity : AppCompatActivity(){
             }
             currentUserId = intent.getStringExtra("currentUserId")!!
             val title = if(editTitle.text.toString() != "") editTitle.text else "Без названия"
-            val url = "http://185.119.56.91/api/Poems/AuthorSendPoem?userId=$currentUserId&title=${title}&description=${description.text}"
-            val client: OkHttpClient = OkHttpClient.Builder()
-                .retryOnConnectionFailure(true)
-                .build()
-            val requestBody: RequestBody = MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("message", text.toString())
-                .build()
-            val request = Request.Builder()
-                .url(url)
-                .post(requestBody)
-                .build()
-            client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) {
+            val api = APISender()
+            if(api.post("http://185.119.56.91/api/Poems/AuthorSendPoem?userId=$currentUserId&title=${title.toString()}&description=${description.text}", text.toString()))
+            {
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                startActivity(intent)
+                finish()
+            }
 
-                }
-                override fun onResponse(call: Call, response: Response) {
-                    val intent = Intent(applicationContext, MainActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                    startActivity(intent)
-                    finish()
-                }
-            })
         }
         subsButton = findViewById(R.id.subscribersButton)
         homeButton = findViewById(R.id.homeButton)
@@ -90,16 +77,4 @@ class CreateActivity : AppCompatActivity(){
             finishAffinity()
         }
     }
-    /*override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        if (event != null) {
-            if (keyCode == KeyEvent.KEYCODE_BACK) {
-                val intent = Intent(this, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                startActivity(intent)
-                finish()
-                return true
-            }
-        }
-        return super.onKeyDown(keyCode, event)
-    }*/
 }
