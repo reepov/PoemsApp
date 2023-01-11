@@ -6,8 +6,11 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.AttributeSet
+import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
@@ -26,6 +29,7 @@ class MainActivity : FragmentActivity() {
     private lateinit var createButton : ImageButton
     private lateinit var homeButton : ImageButton
     private lateinit var profileButton : ImageButton
+    private lateinit var notifyButton : ImageButton
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var recommendationsList : TextView
     private lateinit var subsButton : ImageButton
@@ -34,7 +38,7 @@ class MainActivity : FragmentActivity() {
     var list : ArrayList<PoemsModel> = arrayListOf()
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
-
+        println("onCreate")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         sharedPreferences = getSharedPreferences("USER_INFO_SP", Context.MODE_PRIVATE)
@@ -76,6 +80,10 @@ class MainActivity : FragmentActivity() {
                 startActivity(intent)
                 finishAffinity()
             }
+            notifyButton = findViewById(R.id.notifyButton)
+            notifyButton.setOnClickListener {
+                Toast.makeText(applicationContext, "Уведомления пока недоступны. Следите за обновлениями!", Toast.LENGTH_LONG).show()
+            }
             subsList.setOnClickListener {
                 val intent = Intent(this, SubscribedActivity::class.java)
                 intent.putExtra("currentUserId", currentUserId)
@@ -90,7 +98,6 @@ class MainActivity : FragmentActivity() {
             }
             profileButton.setOnClickListener {
                 val intent = Intent(this, ProfileActivity::class.java)
-                println(currentUserId)
                 intent.putExtra("currentUserId", currentUserId)
                 intent.putExtra("userId", currentUserId)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
@@ -112,24 +119,22 @@ class MainActivity : FragmentActivity() {
     }
 }
 
-
 //TODO faster
-// NotifyButton - how and when to send notifications to user?
 // Tips at start
 // Add more posts and users
-// Load widget
-// Change requests to APISender methods
 
 //TODO not solved at all
-// Forgot the password? (NOT SOLVED AT ALL - MAKE LINKS CLOSED AND ONCE-USED, PASSWORD HARDER)
+// Forgot the password? (NOT SOLVED AT ALL - MAKE LINKS CLOSED AND ONCE-USED)
 // Set avatars (NOT SOLVED AT ALL - SIZE AND SAVE ISSUES)
 // Focus on EditText (NOT SOLVED AT ALL - CAN'T DO ANYTHING)
+// Load widget (NOT SOLVED AT ALL - CAN'T DO ANYTHING)
 
 //TODO not so fast
+// NotifyButton - how and when to send notifications to user?
 // Better to remove animation between activities
 // How to resend data for each 3 posts?
 // More settings
-// Rewrite POST to form-dataS
+// Rewrite POST to form-data
 // Playlists
 // Pay-to-read
 // Privacy policy
@@ -137,15 +142,4 @@ class MainActivity : FragmentActivity() {
 // VIP subs
 // VIP author
 
-//TODO ready
-// ShareButton - how to share posts within the link? (READY)
-// Move subs to recommendations (READY)
-// Add already have an account at register (READY)
-// Resend code (READY)
-// Make search activity (READY)
-// Email unique account check (READY)
-// System Dark Theme lock (READY)
-// Password harder: at least 8 symbols, 1 digit, 1 up letter, 1 low letter, only latina (READY)
-// Fix DateTime (READY)
-// Fix zero in 1-digit month (READY)
 

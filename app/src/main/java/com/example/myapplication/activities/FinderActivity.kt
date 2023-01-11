@@ -21,6 +21,7 @@ class FinderActivity : AppCompatActivity() {
     private lateinit var homeButton : ImageButton
     private lateinit var profileButton : ImageButton
     private lateinit var subsButton : ImageButton
+    private lateinit var notifyButton : ImageButton
     @SuppressLint("InflateParams", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,6 +122,10 @@ class FinderActivity : AppCompatActivity() {
                 }
                 authorLayout.addView(child)
             }
+        }
+        notifyButton = findViewById(R.id.notifyButton)
+        notifyButton.setOnClickListener {
+            Toast.makeText(applicationContext, "Уведомления пока недоступны. Следите за обновлениями!", Toast.LENGTH_LONG).show()
         }
         subsButton.setOnClickListener {
             val intent = Intent(this, FinderActivity::class.java)

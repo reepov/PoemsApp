@@ -36,6 +36,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var profileButton : ImageButton
     private lateinit var settingsButton : ImageButton
     private lateinit var subsButton : ImageButton
+    private lateinit var notifyButton : ImageButton
     private lateinit var avatar : ImageView
     private lateinit var posts : TextView
     private lateinit var liked : TextView
@@ -136,6 +137,10 @@ class ProfileActivity : AppCompatActivity() {
         subscribe.setOnClickListener {
             _user.isSubscribedByCurrentUser = api.post("http://185.119.56.91/api/User/SubscribeToUser?userId=${_user.Id}&currentUserId=$currentUserId", "")
             subscribe.text = if (_user.isSubscribedByCurrentUser) "Отписаться" else "Подписаться"
+        }
+        notifyButton = findViewById(R.id.notifyButton)
+        notifyButton.setOnClickListener {
+            Toast.makeText(applicationContext, "Уведомления пока недоступны. Следите за обновлениями!", Toast.LENGTH_LONG).show()
         }
         subsButton.setOnClickListener {
             val intent = Intent(this, FinderActivity::class.java)

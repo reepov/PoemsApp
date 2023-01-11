@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import com.example.myapplication.R
 import com.example.myapplication.services.APISender
+import java.util.regex.Pattern
 
 class ForgetActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +65,10 @@ class ForgetActivity : AppCompatActivity() {
             }
         }
         resetPassword.setOnClickListener {
-            if (api.post("http://185.119.56.91/api/User/ResetPassword?email=${email}&password=${newPass.text}", "")){
+            if (newPass.text.isEmpty()) Toast.makeText(applicationContext, "Введите пароль", Toast.LENGTH_SHORT).show()
+            else if(newPass.text.toString() != secondNewPass.text.toString()) Toast.makeText(applicationContext, "Пароли не совпадают", Toast.LENGTH_SHORT).show()
+            else if (!isValidPasswordFormat(newPass.text.toString())) Toast.makeText(applicationContext, "Пароль должен содержать минимум 8 цифр, одну заглавную букву, одну строчную букву, и содержать только символы латинского алфавита", Toast.LENGTH_LONG).show()
+            else if (api.post("http://185.119.56.91/api/User/ResetPassword?email=${email}&password=${newPass.text}", "")){
                 Toast.makeText(applicationContext, "Ваш пароль был успешно изменен", Toast.LENGTH_SHORT).show()
             }
             else Toast.makeText(applicationContext, "Произошла неизвестная ошибка. Повторите снова.", Toast.LENGTH_SHORT).show()
@@ -72,5 +76,15 @@ class ForgetActivity : AppCompatActivity() {
             startActivity(intent)
             finishAffinity()
         }
+    }
+    private fun isValidPasswordFormat(password: String): Boolean {
+        val passwordREGEX = Pattern.compile("^" +
+                "(?=.*[0-9])" +         //at least 1 digit
+                "(?=.*[a-z])" +         //at least 1 lower case letter
+                "(?=.*[A-Z])" +         //at least 1 upper case letter
+                "(?=.*[a-zA-Z])" +      //any letter
+                ".{8,}" +               //at least 8 characters
+                "$")
+        return passwordREGEX.matcher(password).matches()
     }
 }

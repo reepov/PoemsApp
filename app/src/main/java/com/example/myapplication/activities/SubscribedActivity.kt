@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
@@ -24,6 +25,7 @@ class SubscribedActivity : FragmentActivity(){
     private lateinit var recommendationsList : TextView
     private lateinit var subsButton : ImageButton
     private lateinit var subsList : TextView
+    private lateinit var notifyButton : ImageButton
     var list : ArrayList<PoemsModel> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +50,10 @@ class SubscribedActivity : FragmentActivity(){
         recommendationsList.typeface = typeFace
         typeFace = ResourcesCompat.getFont(applicationContext, R.font.bold)
         subsList.typeface = typeFace
+        notifyButton = findViewById(R.id.notifyButton)
+        notifyButton.setOnClickListener {
+            Toast.makeText(applicationContext, "Уведомления пока недоступны. Следите за обновлениями!", Toast.LENGTH_LONG).show()
+        }
         recommendationsList.setOnClickListener {
             typeFace= ResourcesCompat.getFont(applicationContext, R.font.montserrat)
             subsList.typeface = typeFace
