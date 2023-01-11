@@ -11,7 +11,10 @@
         android:hint="Поиск"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="15dp"
-        android:layout_toStartOf="@+id/search"/>
+        android:layout_toStartOf="@+id/search"
+        tools:ignore="HardcodedText"
+        android:inputType="text"
+        android:autofillHints="" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,7 +22,8 @@
         android:layout_marginEnd="15dp"
         android:layout_alignParentEnd="true"
         android:text="Поиск"
-        android:textSize="14dp" />
+        android:textSize="14sp"
+        tools:ignore="HardcodedText" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +34,8 @@
         android:layout_marginTop="15dp"
         android:layout_below="@+id/searchText"
         android:layout_alignParentStart="true"
-        android:id="@+id/pubs"/>
+        android:id="@+id/pubs"
+        tools:ignore="HardcodedText" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,7 +45,8 @@
         android:layout_alignParentStart="true"
         android:id="@+id/authors"
         android:paddingEnd="15dp"
-        android:paddingStart="30dp"/>
+        android:paddingStart="30dp"
+        tools:ignore="HardcodedText" />
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

@@ -13,7 +13,6 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.MyApplication"
-        tools:targetApi="m"
         android:configChanges="uiMode"
         tools:ignore="LockedOrientationActivity">
         <activity

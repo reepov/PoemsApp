@@ -1,25 +1,21 @@
 package com.example.myapplication.activities
 
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.StrictMode
 import android.widget.Button
 import android.widget.EditText
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
 import com.example.myapplication.dataModels.PoemsModel
 import com.example.myapplication.services.APISender
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import okhttp3.*
 
 class UpdateActivity : AppCompatActivity() {
     private lateinit var poema : PoemsModel
     private lateinit var poemId : String
     private lateinit var currentUserId : String
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onCreate(savedInstanceState: Bundle?) {
         poemId = intent.getStringExtra("poemId")!!
         currentUserId = intent.getStringExtra("currentUserId")!!

@@ -6,8 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.AttributeSet
-import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -35,7 +33,7 @@ class MainActivity : FragmentActivity() {
     private lateinit var subsButton : ImageButton
     private lateinit var subsList : TextView
 
-    var list : ArrayList<PoemsModel> = arrayListOf()
+    private var list : ArrayList<PoemsModel> = arrayListOf()
     @SuppressLint("InflateParams")
     override fun onCreate(savedInstanceState: Bundle?) {
         println("onCreate")

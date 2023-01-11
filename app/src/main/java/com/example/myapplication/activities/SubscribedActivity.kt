@@ -26,7 +26,7 @@ class SubscribedActivity : FragmentActivity(){
     private lateinit var subsButton : ImageButton
     private lateinit var subsList : TextView
     private lateinit var notifyButton : ImageButton
-    var list : ArrayList<PoemsModel> = arrayListOf()
+    private var list : ArrayList<PoemsModel> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

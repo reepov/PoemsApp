@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.R
 
 class SettingsActivity : AppCompatActivity() {
-    lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.settings_layout)

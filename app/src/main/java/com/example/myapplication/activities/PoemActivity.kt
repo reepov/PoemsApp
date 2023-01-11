@@ -18,7 +18,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
 
 class PoemActivity : AppCompatActivity() {
-    var poema : PoemsModel? = null
+    private var poema : PoemsModel? = null
     private lateinit var likeButton : ImageButton
     private lateinit var commentButton : ImageButton
     @SuppressLint("SetTextI18n")

@@ -23,7 +23,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import okhttp3.*
 
 class CommentActivity : AppCompatActivity(){
-    var list : ArrayList<CommentModel> = arrayListOf()
+    private var list : ArrayList<CommentModel> = arrayListOf()
 
     @SuppressLint("InflateParams")
     @RequiresApi(Build.VERSION_CODES.O)

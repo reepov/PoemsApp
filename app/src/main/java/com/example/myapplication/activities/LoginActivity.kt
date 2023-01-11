@@ -14,9 +14,9 @@ import com.example.myapplication.R
 import com.example.myapplication.services.APISender
 
 class LoginActivity : AppCompatActivity() {
-    lateinit var sharedPreferences: SharedPreferences
-    lateinit var spEditor: SharedPreferences.Editor
-    lateinit var login: EditText
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var spEditor: SharedPreferences.Editor
+    private lateinit var login: EditText
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_layout)

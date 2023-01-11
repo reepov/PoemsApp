@@ -116,7 +116,6 @@
             tools:ignore="SpeakableTextPresentCheck"
             android:contentDescription="@string/todo" />
         <TextView
-            android:id="@+id/countReposts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"

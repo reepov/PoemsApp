@@ -16,6 +16,7 @@
         android:background="@drawable/edittextborders"
         android:gravity="start|center"
         android:paddingStart="65dp"
+        android:paddingEnd="15dp"
         />
     <ImageView
         android:layout_width="50dp"
