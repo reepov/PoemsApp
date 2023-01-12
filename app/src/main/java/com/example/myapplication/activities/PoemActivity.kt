@@ -44,6 +44,7 @@ class PoemActivity : AppCompatActivity() {
             val intents = Intent(this, LoginActivity::class.java)
             startActivity(intents)
             finishAffinity()
+            overridePendingTransition(0, 0)
         }
         val textView: TextView = findViewById(R.id.textView)
         val title : TextView = findViewById(R.id.titleTextView)
@@ -93,6 +94,7 @@ class PoemActivity : AppCompatActivity() {
             intents.putExtra("currentUserId", currentUserId)
             intents.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intents)
+            overridePendingTransition(0, 0)
         }
         api.post("http://185.119.56.91/api/Poems/SetViewToPoem?userId=$currentUserId&poemId=${poema!!.PoemId}", "")
     }

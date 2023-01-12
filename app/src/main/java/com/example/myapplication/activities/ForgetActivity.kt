@@ -62,6 +62,7 @@ class ForgetActivity : AppCompatActivity() {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finishAffinity()
+                overridePendingTransition(0, 0)
             }
         }
         resetPassword.setOnClickListener {
@@ -75,6 +76,7 @@ class ForgetActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finishAffinity()
+            overridePendingTransition(0, 0)
         }
     }
     private fun isValidPasswordFormat(password: String): Boolean {

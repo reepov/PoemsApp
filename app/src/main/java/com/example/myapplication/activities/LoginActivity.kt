@@ -32,11 +32,13 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, ForgetActivity::class.java)
             startActivity(intent)
             finishAffinity()
+            overridePendingTransition(0, 0)
         }
         reg.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
             finishAffinity()
+            overridePendingTransition(0, 0)
         }
         logIn.setOnClickListener {
             if(password.text.isNotEmpty())
@@ -65,6 +67,7 @@ class LoginActivity : AppCompatActivity() {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     startActivity(intent)
                     finishAffinity()
+                    overridePendingTransition(0, 0)
                 }
                 else Toast.makeText(applicationContext, "Пользователь не найден", Toast.LENGTH_SHORT).show()
             }

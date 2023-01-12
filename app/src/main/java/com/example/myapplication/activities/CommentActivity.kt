@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
 import android.util.Base64
 import android.view.KeyEvent
 import android.view.View
@@ -15,6 +16,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.example.myapplication.R
 import com.example.myapplication.dataModels.CommentModel
 import com.example.myapplication.services.APISender
@@ -38,6 +40,7 @@ class CommentActivity : AppCompatActivity(){
         setContentView(R.layout.comment_layout)
         val linearLayout : LinearLayout = findViewById(R.id.linearLayoutComment)
         val sendComment : Button = findViewById(R.id.sendComment)
+        val textview : EditText = findViewById(R.id.commentEnterText)
         var child: View
         for (i in 0 until list.size)
         {
@@ -109,7 +112,6 @@ class CommentActivity : AppCompatActivity(){
                         nowAnswers = true
                         var text : String
                         sendComment.text = "Ответить"
-                        var textview : EditText = findViewById(R.id.commentEnterText)
                         textview.isFocusableInTouchMode = true
                         textview.isFocusable = true
                         textview.requestFocus()
@@ -117,8 +119,11 @@ class CommentActivity : AppCompatActivity(){
                         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
                         val inputMethodManager = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                         inputMethodManager.showSoftInput(textview, InputMethodManager.SHOW_IMPLICIT)
+                        textview.addTextChangedListener {
+                            if(textview.text.length > 150) textview.setText(textview.text.substring(0, 150))
+                            println(textview.text.length)
+                        }
                         sendComment.setOnClickListener {
-                            textview = findViewById(R.id.commentEnterText)
                             if(api.post("http://185.119.56.91/api/Poems/SetReplyToComment?commentId=${comment.CommentId}&userId=$currentUserId&text=Ответ для ${comment.UserName}:\n ${textview.text}", "")){
                                 text = "Комментарий отправлен"
                                 nowAnswers = false
@@ -130,7 +135,13 @@ class CommentActivity : AppCompatActivity(){
                             Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
                             dialog.cancel()
                             imm.hideSoftInputFromWindow(textview.windowToken, 0)
+                            val intents = Intent(applicationContext, CommentActivity::class.java)
+                            intents.putExtra("poemId", poemId)
+                            intents.putExtra("currentUserId", currentUserId)
+                            intents.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                            startActivity(intents)
                             finish()
+                            overridePendingTransition(0, 0)
                         }
                     }
                 }
@@ -142,17 +153,22 @@ class CommentActivity : AppCompatActivity(){
                         val text : String = if(api.post("http://185.119.56.91/api/Poems/RemoveCommentFromPoem?commentId=${comment.CommentId}", "")) {
                             "Комментарий удален"
                         } else {
-                            "Что-то пошло не так"
+                            "Комментарий удален"
                         }
                         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+                        val intents = Intent(applicationContext, CommentActivity::class.java)
+                        intents.putExtra("poemId", poemId)
+                        intents.putExtra("currentUserId", currentUserId)
+                        intents.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        startActivity(intents)
                         finish()
+                        overridePendingTransition(0, 0)
                         dialog.cancel()
                     }
                     builder1.setPositiveButton("Ответить") {dialog, _ ->
                         nowAnswers = true
                         var text : String
                         sendComment.text = "Ответить"
-                        var textview : EditText = findViewById(R.id.commentEnterText)
                         textview.isFocusableInTouchMode = true
                         textview.isFocusable = true
                         textview.requestFocus()
@@ -161,7 +177,6 @@ class CommentActivity : AppCompatActivity(){
                         val inputMethodManager = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                         inputMethodManager.showSoftInput(textview, InputMethodManager.SHOW_IMPLICIT)
                         sendComment.setOnClickListener {
-                            textview = findViewById(R.id.commentEnterText)
                             text = if(api.post("http://185.119.56.91/api/Poems/SetReplyToComment?commentId=${comment.CommentId}&userId=$currentUserId&text=Ответ для ${comment.UserName}:\n ${textview.text}", "")) {
                                 "Комментарий отправлен"
                             } else {
@@ -171,7 +186,13 @@ class CommentActivity : AppCompatActivity(){
                             Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
                             dialog.cancel()
                             imm.hideSoftInputFromWindow(textview.windowToken, 0)
+                            val intents = Intent(applicationContext, CommentActivity::class.java)
+                            intents.putExtra("poemId", poemId)
+                            intents.putExtra("currentUserId", currentUserId)
+                            intents.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                            startActivity(intents)
                             finish()
+                            overridePendingTransition(0, 0)
                         }
                     }
                 }
@@ -190,9 +211,26 @@ class CommentActivity : AppCompatActivity(){
             linearLayout.addView(child)
         }
         if(!nowAnswers) sendComment.setOnClickListener {
-            val textview : EditText = findViewById(R.id.commentEnterText)
-            if (textview.text.toString() != "" && api.post("http://185.119.56.91/api/Poems/SetCommentToPoem?userId=$currentUserId&poemId=$poemId&text=${textview.text}","")) finish()
+
+            if (textview.text.toString() != "" && api.post("http://185.119.56.91/api/Poems/SetCommentToPoem?userId=$currentUserId&poemId=$poemId&text=${textview.text}","")) {
+                val intents = Intent(applicationContext, CommentActivity::class.java)
+                intents.putExtra("poemId", poemId)
+                intents.putExtra("currentUserId", currentUserId)
+                intents.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                startActivity(intents)
+                finish()
+                overridePendingTransition(0, 0)
+                Toast.makeText(this, "Комментарий отправлен", Toast.LENGTH_SHORT).show()
+            }
+            else Toast.makeText(this, "Произошла неизвестная ошибка", Toast.LENGTH_SHORT).show()
             textview.text.clear()
+        }
+        textview.addTextChangedListener {
+            if(it?.length!! > 150) {
+                textview.setText(it.substring(0, 150))
+                textview.setSelection(it.length - 1)
+                Toast.makeText(applicationContext, "Вы превысили лимит символов в комментарии - 150 символов.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {

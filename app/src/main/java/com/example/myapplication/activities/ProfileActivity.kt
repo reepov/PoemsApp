@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import com.example.myapplication.R
 import com.example.myapplication.dataModels.PoemsModel
 import com.example.myapplication.dataModels.UserModel
@@ -115,6 +116,13 @@ class ProfileActivity : AppCompatActivity() {
                     if (text != "Что-то пошло не так") linearLayout.removeView(it)
                     Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
                     dialog.cancel()
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    intent.putExtra("currentUserId", currentUserId)
+                    intent.putExtra("userId", userId)
+                    startActivity(intent)
+                    finish()
+                    overridePendingTransition(0, 0)
                 }
                 builder1.setPositiveButton("Отредактировать") { dialog, _ ->
                     val intent = Intent(this, UpdateActivity::class.java)
@@ -123,6 +131,7 @@ class ProfileActivity : AppCompatActivity() {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     startActivity(intent)
                     finish()
+                    overridePendingTransition(0, 0)
                     dialog.cancel()
                 }
                 builder1.setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
@@ -134,9 +143,30 @@ class ProfileActivity : AppCompatActivity() {
         }
         likes.text = "Лайки: $wholeLikes"
         countViews.text = "Просмотры: $wholeViews"
-        subscribe.setOnClickListener {
+        if(userId == currentUserId) subscribe.isVisible = false
+        else subscribe.setOnClickListener {
             _user.isSubscribedByCurrentUser = api.post("http://185.119.56.91/api/User/SubscribeToUser?userId=${_user.Id}&currentUserId=$currentUserId", "")
-            subscribe.text = if (_user.isSubscribedByCurrentUser) "Отписаться" else "Подписаться"
+            if (_user.isSubscribedByCurrentUser){
+                subscribe.text = "Отписаться"
+                countSubs.text = "Подписчики: ${_user.Subscribers.size + 1}"
+                val intent = Intent(this, ProfileActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                intent.putExtra("currentUserId", currentUserId)
+                intent.putExtra("userId", userId)
+                startActivity(intent)
+                finish()
+                overridePendingTransition(0, 0)
+            } else {
+                subscribe.text = "Подписаться"
+                countSubs.text = "Подписчики: ${_user.Subscribers.size - 1}"
+                val intent = Intent(this, ProfileActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                intent.putExtra("currentUserId", currentUserId)
+                intent.putExtra("userId", userId)
+                startActivity(intent)
+                finish()
+                overridePendingTransition(0, 0)
+            }
         }
         notifyButton = findViewById(R.id.notifyButton)
         notifyButton.setOnClickListener {
@@ -148,11 +178,13 @@ class ProfileActivity : AppCompatActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finishAffinity()
+            overridePendingTransition(0, 0)
         }
         settingsButton.setOnClickListener {
             val intent = Intent(this, SettingsActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
+            overridePendingTransition(0, 0)
         }
         profileButton.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
@@ -161,6 +193,7 @@ class ProfileActivity : AppCompatActivity() {
             intent.putExtra("userId", currentUserId)
             startActivity(intent)
             finish()
+            overridePendingTransition(0, 0)
         }
         avatar.setOnClickListener{
             if(userId == currentUserId) {
@@ -181,12 +214,14 @@ class ProfileActivity : AppCompatActivity() {
             intent.putExtra("currentUserId", currentUserId)
             startActivity(intent)
             finish()
+            overridePendingTransition(0, 0)
         }
         homeButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finishAffinity()
+            overridePendingTransition(0, 0)
         }
         posts.setOnClickListener {
             typeFace = ResourcesCompat.getFont(applicationContext, R.font.bold)
@@ -209,6 +244,7 @@ class ProfileActivity : AppCompatActivity() {
                     intent.putExtra("poemId", poem.PoemId)
                     intent.putExtra("currentUserId", currentUserId)
                     startActivity(intent)
+                    overridePendingTransition(0, 0)
                 }
                 if(userId == currentUserId) title.setOnLongClickListener {
                     val builder1: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -223,6 +259,14 @@ class ProfileActivity : AppCompatActivity() {
                         if (text != "Что-то пошло не так") linearLayout.removeView(it)
                         Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
                         dialog.cancel()
+                        println("jjjjj")
+                        val intent = Intent(this, ProfileActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        intent.putExtra("currentUserId", currentUserId)
+                        intent.putExtra("userId", userId)
+                        startActivity(intent)
+                        finish()
+                        overridePendingTransition(0, 0)
                     }
                     builder1.setPositiveButton("Отредактировать") { dialog, _ ->
                         val intent = Intent(this, UpdateActivity::class.java)
@@ -232,6 +276,7 @@ class ProfileActivity : AppCompatActivity() {
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                         startActivity(intent)
                         finish()
+                        overridePendingTransition(0, 0)
                         dialog.cancel()
                     }
                     builder1.setNeutralButton("Отмена") { dialog, _ -> dialog.cancel() }
@@ -263,6 +308,7 @@ class ProfileActivity : AppCompatActivity() {
                     intent.putExtra("poemId", poem.PoemId)
                     intent.putExtra("currentUserId", currentUserId)
                     startActivity(intent)
+                    overridePendingTransition(0, 0)
                 }
                 linearLayout.addView(child)
             }
@@ -288,6 +334,7 @@ class ProfileActivity : AppCompatActivity() {
                     intent.putExtra("poemId", poem.PoemId)
                     intent.putExtra("currentUserId", currentUserId)
                     startActivity(intent)
+                    overridePendingTransition(0, 0)
                 }
                 linearLayout.addView(child)
             }

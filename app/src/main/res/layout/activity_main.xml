@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activities.MainActivity">
+    android:layout_height="match_parent">
     <TextView
         android:layout_width="wrap_content"
         android:layout_alignParentStart="true"
@@ -13,8 +11,7 @@
         android:textSize="20sp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="15dp"
-        android:id="@+id/recommendations"
-        tools:ignore="HardcodedText" />
+        android:id="@+id/recommendations"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_alignParentEnd="true"
@@ -23,8 +20,7 @@
         android:textSize="20sp"
         android:layout_marginEnd="30dp"
         android:layout_marginTop="15dp"
-        android:id="@+id/subscribers"
-        tools:ignore="HardcodedText" />
+        android:id="@+id/subscribers" />
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
         android:layout_width="match_parent"
@@ -56,7 +52,6 @@
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_home_dasha"
-            tools:ignore="SpeakableTextPresentCheck"
             android:contentDescription="@string/todo"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
@@ -73,8 +68,7 @@
             android:layout_toStartOf="@+id/createButton"
             android:layout_toEndOf="@+id/homeButton"
             android:contentDescription="@string/todo"
-            android:src="@drawable/ic_subscr_dasha"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:src="@drawable/ic_subscr_dasha" />
 
         <ImageButton
             android:id="@+id/createButton"
@@ -86,8 +80,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:contentDescription="@string/todo"
-            android:src="@drawable/ic_add_dasha"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:src="@drawable/ic_add_dasha" />
         <ImageButton
             android:id="@+id/notifyButton"
             android:layout_marginTop="10dp"
@@ -95,7 +88,6 @@
             android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_notify_dasha"
-            tools:ignore="SpeakableTextPresentCheck"
             android:contentDescription="@string/todo"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
@@ -109,7 +101,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_profile_dasha"
-            tools:ignore="SpeakableTextPresentCheck"
             android:contentDescription="@string/todo"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"

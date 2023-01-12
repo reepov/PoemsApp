@@ -6,6 +6,14 @@ plugins {
 apply plugin: 'kotlin-android'
 
 android {
+    signingConfigs {
+        release {
+            storeFile file(kotlin_version)
+            storePassword kotlin_version
+            keyAlias kotlin_version
+            keyPassword kotlin_version
+        }
+    }
     compileSdk 33
 
     defaultConfig {
@@ -70,6 +78,7 @@ dependencies {
     implementation "io.ktor:ktor-auth-jwt:1.0.1"
     implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 }
 repositories {
     //mavenCentral()

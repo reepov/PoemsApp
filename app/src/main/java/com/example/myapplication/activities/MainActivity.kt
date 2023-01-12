@@ -49,6 +49,7 @@ class MainActivity : FragmentActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finish()
+            overridePendingTransition(0, 0)
         }
         else {
             while (currentUserId == "") Thread.sleep(100)
@@ -77,6 +78,7 @@ class MainActivity : FragmentActivity() {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
                 finishAffinity()
+                overridePendingTransition(0, 0)
             }
             notifyButton = findViewById(R.id.notifyButton)
             notifyButton.setOnClickListener {
@@ -87,12 +89,14 @@ class MainActivity : FragmentActivity() {
                 intent.putExtra("currentUserId", currentUserId)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
+                overridePendingTransition(0, 0)
             }
             subsButton.setOnClickListener {
                 val intent = Intent(this, FinderActivity::class.java)
                 intent.putExtra("currentUserId", currentUserId)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
+                overridePendingTransition(0, 0)
             }
             profileButton.setOnClickListener {
                 val intent = Intent(this, ProfileActivity::class.java)
@@ -100,36 +104,37 @@ class MainActivity : FragmentActivity() {
                 intent.putExtra("userId", currentUserId)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
+                finish()
+                overridePendingTransition(0, 0)
             }
             createButton.setOnClickListener {
                 val intent = Intent(this, CreateActivity::class.java)
                 intent.putExtra("currentUserId", currentUserId)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
+                overridePendingTransition(0, 0)
             }
             homeButton.setOnClickListener {
                 val intent = Intent(this, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
                 finish()
+                overridePendingTransition(0, 0)
             }
         }
     }
 }
 
 //TODO faster
-// Tips at start
 // Add more posts and users
 
 //TODO not solved at all
 // Forgot the password? (NOT SOLVED AT ALL - MAKE LINKS CLOSED AND ONCE-USED)
-// Set avatars (NOT SOLVED AT ALL - SIZE AND SAVE ISSUES)
 // Focus on EditText (NOT SOLVED AT ALL - CAN'T DO ANYTHING)
 // Load widget (NOT SOLVED AT ALL - CAN'T DO ANYTHING)
 
 //TODO not so fast
 // NotifyButton - how and when to send notifications to user?
-// Better to remove animation between activities
 // How to resend data for each 3 posts?
 // More settings
 // Rewrite POST to form-data

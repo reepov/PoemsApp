@@ -23,7 +23,8 @@
         android:layout_alignParentEnd="true"
         android:text="Поиск"
         android:textSize="14sp"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        android:backgroundTint="#ffcc99"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

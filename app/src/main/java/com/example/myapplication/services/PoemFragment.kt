@@ -69,6 +69,7 @@ class NumberFragment() : Fragment() {
                 intent.putExtra("userId", poema.AuthorId)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
+                activity?.overridePendingTransition(0, 0)
             }
             likeButton.setOnClickListener{
                 if (poema.isLikedByCurrentUser){
@@ -98,6 +99,7 @@ class NumberFragment() : Fragment() {
                 intent.putExtra("poemId", poema.PoemId)
                 intent.putExtra("currentUserId", currentUserId)
                 startActivity(intent)
+                activity?.overridePendingTransition(0, 0)
             }
             shareButton.setOnClickListener {
                 val myClipboard: ClipboardManager = activity?.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager

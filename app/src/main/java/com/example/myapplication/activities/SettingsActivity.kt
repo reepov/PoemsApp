@@ -33,6 +33,7 @@ class SettingsActivity : AppCompatActivity() {
                 dialog.cancel()
                 startActivity(intent)
                 finishAffinity()
+                overridePendingTransition(0, 0)
             }
             builder1.setNegativeButton("Нет") { dialog, _ -> dialog.cancel() }
             val alert11: AlertDialog = builder1.create()

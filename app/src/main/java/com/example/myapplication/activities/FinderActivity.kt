@@ -56,6 +56,7 @@ class FinderActivity : AppCompatActivity() {
                 intent.putExtra("poemId", poem.PoemId)
                 intent.putExtra("currentUserId", currentUserId)
                 startActivity(intent)
+                overridePendingTransition(0, 0)
             }
             publishLayout.addView(child)
         }
@@ -77,6 +78,7 @@ class FinderActivity : AppCompatActivity() {
                 intent.putExtra("userId", user.Id)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
+                overridePendingTransition(0, 0)
             }
             authorLayout.addView(child)
         }
@@ -96,6 +98,7 @@ class FinderActivity : AppCompatActivity() {
                     intent.putExtra("poemId", poem.PoemId)
                     intent.putExtra("currentUserId", currentUserId)
                     startActivity(intent)
+                    overridePendingTransition(0, 0)
                 }
                 publishLayout.addView(child)
             }
@@ -119,6 +122,7 @@ class FinderActivity : AppCompatActivity() {
                     intent.putExtra("userId", user.Id)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     startActivity(intent)
+                    overridePendingTransition(0, 0)
                 }
                 authorLayout.addView(child)
             }
@@ -133,6 +137,7 @@ class FinderActivity : AppCompatActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finish()
+            overridePendingTransition(0, 0)
         }
         profileButton.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
@@ -141,6 +146,7 @@ class FinderActivity : AppCompatActivity() {
             intent.putExtra("userId", currentUserId)
             startActivity(intent)
             finish()
+            overridePendingTransition(0, 0)
         }
         createButton.setOnClickListener {
             val intent = Intent(this, CreateActivity::class.java)
@@ -148,12 +154,14 @@ class FinderActivity : AppCompatActivity() {
             intent.putExtra("currentUserId", currentUserId)
             startActivity(intent)
             finish()
+            overridePendingTransition(0, 0)
         }
         homeButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finishAffinity()
+            overridePendingTransition(0, 0)
         }
     }
 }

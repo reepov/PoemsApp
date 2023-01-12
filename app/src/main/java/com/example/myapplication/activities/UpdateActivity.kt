@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.os.StrictMode
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.example.myapplication.R
 import com.example.myapplication.dataModels.PoemsModel
 import com.example.myapplication.services.APISender
@@ -31,6 +33,20 @@ class UpdateActivity : AppCompatActivity() {
         editTitle.setText(poema.Title)
         val editText = findViewById<EditText>(R.id.enterMainText)
         editText.setText(poema.Text)
+        descript.addTextChangedListener {
+            if(it?.length!! > 120) {
+                descript.setText(it.substring(0, 120))
+                descript.setSelection(it.length - 1)
+                Toast.makeText(applicationContext, "Вы превысили лимит символов в описании - 120 символов.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        editTitle.addTextChangedListener {
+            if(it?.length!! > 80) {
+                editTitle.setText(it.substring(0, 80))
+                editTitle.setSelection(it.length - 1)
+                Toast.makeText(applicationContext, "Вы превысили лимит символов в названии - 80 символов.", Toast.LENGTH_SHORT).show()
+            }
+        }
         sendPoem.setOnClickListener {
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
             StrictMode.setThreadPolicy(policy)
@@ -51,6 +67,7 @@ class UpdateActivity : AppCompatActivity() {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
                 finish()
+                overridePendingTransition(0, 0)
             }
         }
     }

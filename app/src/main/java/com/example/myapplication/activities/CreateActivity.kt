@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.example.myapplication.R
 import com.example.myapplication.services.APISender
 
@@ -26,7 +27,20 @@ class CreateActivity : AppCompatActivity(){
         val editText = findViewById<EditText>(R.id.enterMainText)
         val description = findViewById<EditText>(R.id.enterDescription)
         currentUserId = intent.getStringExtra("currentUserId")!!
-        println(currentUserId)
+        description.addTextChangedListener {
+            if(it?.length!! > 120) {
+                description.setText(it.substring(0, 120))
+                description.setSelection(it.length - 1)
+                Toast.makeText(applicationContext, "Вы превысили лимит символов в описании - 120 символов.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        editTitle.addTextChangedListener {
+            if(it?.length!! > 80) {
+                editTitle.setText(it.substring(0, 80))
+                editTitle.setSelection(it.length - 1)
+                Toast.makeText(applicationContext, "Вы превысили лимит символов в названии - 80 символов.", Toast.LENGTH_SHORT).show()
+            }
+        }
         sendPoem.setOnClickListener {
             val policy = ThreadPolicy.Builder().permitAll().build()
             StrictMode.setThreadPolicy(policy)
@@ -45,6 +59,7 @@ class CreateActivity : AppCompatActivity(){
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                 startActivity(intent)
                 finish()
+                overridePendingTransition(0, 0)
             }
         }
         subsButton = findViewById(R.id.subscribersButton)
@@ -61,12 +76,14 @@ class CreateActivity : AppCompatActivity(){
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finish()
+            overridePendingTransition(0, 0)
         }
         homeButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finishAffinity()
+            overridePendingTransition(0, 0)
         }
         subsButton.setOnClickListener {
             val intent = Intent(this, FinderActivity::class.java)
@@ -74,6 +91,7 @@ class CreateActivity : AppCompatActivity(){
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finishAffinity()
+            overridePendingTransition(0, 0)
         }
     }
 }

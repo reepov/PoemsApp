@@ -37,6 +37,7 @@ class RegisterActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
             finishAffinity()
+            overridePendingTransition(0, 0)
         }
         register.setOnClickListener {
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
@@ -115,6 +116,7 @@ class RegisterActivity : AppCompatActivity() {
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                                 startActivity(intent)
                                 finishAffinity()
+                                overridePendingTransition(0, 0)
                             }
                         } else {
                             enteredCode.setText("")

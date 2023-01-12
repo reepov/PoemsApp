@@ -60,6 +60,7 @@ class SubscribedActivity : FragmentActivity(){
             typeFace = ResourcesCompat.getFont(applicationContext, R.font.bold)
             recommendationsList.typeface = typeFace
             finish()
+            overridePendingTransition(0, 0)
         }
         subsList.setOnClickListener {
             typeFace= ResourcesCompat.getFont(applicationContext, R.font.bold)
@@ -71,6 +72,7 @@ class SubscribedActivity : FragmentActivity(){
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finishAffinity()
+            overridePendingTransition(0, 0)
         }
         subsButton.setOnClickListener {
             val intent = Intent(this, FinderActivity::class.java)
@@ -78,6 +80,7 @@ class SubscribedActivity : FragmentActivity(){
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
             finish()
+            overridePendingTransition(0, 0)
         }
         profileButton.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
@@ -86,17 +89,20 @@ class SubscribedActivity : FragmentActivity(){
             intent.putExtra("userId", currentUserId)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
+            overridePendingTransition(0, 0)
         }
         createButton.setOnClickListener {
             val intent = Intent(this, CreateActivity::class.java)
             intent.putExtra("currentUserId", currentUserId)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
+            overridePendingTransition(0, 0)
         }
         homeButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
             startActivity(intent)
+            overridePendingTransition(0, 0)
         }
     }
 }
